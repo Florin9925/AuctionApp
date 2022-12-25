@@ -1,4 +1,4 @@
-using DataMapper.PostgreSqlDAO;
+using DataMapper.PostgresDAO;
 
 var builder = WebApplication.CreateBuilder(args);
 
