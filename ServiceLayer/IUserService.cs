@@ -7,16 +7,8 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer
 {
-    public interface IUserService
+    public interface IUserService : ICRUDService<User>
     {
-        IList<User> GetListOfUserAccounts();
 
-        void DeleteUserAccount(User userAccount);
-
-        void UpdateUserAccount(User userAccount);
-
-        void GetUserAccountById(int id);
-
-        void AddUserAccount(User userAccount);
     }
 }

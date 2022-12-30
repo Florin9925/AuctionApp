@@ -19,27 +19,27 @@ namespace ServiceLayer.ServiceImplementation
             this._userAccountDataServices = userAccountDataServices;
         }
 
-        public void AddUserAccount(User userAccount)
+        void ICRUDService<User>.Delete(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteUserAccount(User userAccount)
+        IList<User> ICRUDService<User>.GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IList<User> GetListOfUserAccounts()
+        void ICRUDService<User>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void GetUserAccountById(int id)
+        void ICRUDService<User>.Insert(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateUserAccount(User userAccount)
+        void ICRUDService<User>.Update(User entity)
         {
             throw new NotImplementedException();
         }
