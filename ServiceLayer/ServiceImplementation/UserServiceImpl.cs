@@ -1,5 +1,6 @@
 ﻿using DataMapper;
 using DataMapper.PostgresDAO;
+using DomainModel.DTO;
 using DomainModel.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,27 +20,36 @@ namespace ServiceLayer.ServiceImplementation
             this.userAccountDataServices = userAccountDataServices;
         }
 
-        void ICRUDService<User>.Delete(User entity)
+        void ICRUDService<UserDto>.Delete(UserDto dto)
         {
             throw new NotImplementedException();
         }
 
-        IList<User> ICRUDService<User>.GetAll()
+        IList<UserDto> ICRUDService<UserDto>.GetAll()
         {
-            return userAccountDataServices.GetAll();
+            var users = userAccountDataServices.GetAll();
+
+            var usersDto = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                usersDto.Add(new UserDto(user));
+            }
+
+            return usersDto;
         }
 
-        void ICRUDService<User>.GetById(int id)
+        void ICRUDService<UserDto>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<User>.Insert(User entity)
+        void ICRUDService<UserDto>.Insert(UserDto dto)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<User>.Update(User entity)
+        void ICRUDService<UserDto>.Update(UserDto dto)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainModel.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer
 {
-    public interface ICategoryService : ICRUDService<ICategoryService>
+    public interface ICategoryService : ICRUDService<CategoryDto>
     {
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DataMapper.PostgresDAO;
 using ServiceLayer;
 using DomainModel.Entity;
+using DomainModel.DTO;
 
 namespace AuctionApp.Controllers
 {
@@ -24,7 +25,7 @@ namespace AuctionApp.Controllers
 
         // GET: api/UserAccounts
         [HttpGet]
-        public ActionResult<IEnumerable<User>> GetUserAccount()
+        public ActionResult<IEnumerable<UserDto>> GetUserAccount()
         {
             var users = userService.GetAll();
             if (users == null)

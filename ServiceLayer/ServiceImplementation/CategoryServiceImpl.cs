@@ -1,5 +1,6 @@
 ﻿using DataMapper;
 using DomainModel;
+using DomainModel.DTO;
 
 namespace ServiceLayer.ServiceImplementation
 {
@@ -12,27 +13,27 @@ namespace ServiceLayer.ServiceImplementation
             this.categoryDataServices = categoryDataServices;
         }
 
-        void ICRUDService<ICategoryService>.Delete(ICategoryService entity)
+        void ICRUDService<CategoryDto>.Delete(CategoryDto dto)
         {
             throw new NotImplementedException();
         }
 
-        IList<ICategoryService> ICRUDService<ICategoryService>.GetAll()
+        IList<CategoryDto> ICRUDService<CategoryDto>.GetAll()
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<ICategoryService>.GetById(int id)
+        void ICRUDService<CategoryDto>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<ICategoryService>.Insert(ICategoryService entity)
+        void ICRUDService<CategoryDto>.Insert(CategoryDto dto)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<ICategoryService>.Update(ICategoryService entity)
+        void ICRUDService<CategoryDto>.Update(CategoryDto dto)
         {
             throw new NotImplementedException();
         }

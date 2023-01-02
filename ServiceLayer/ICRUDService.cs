@@ -11,12 +11,12 @@ namespace ServiceLayer
     {
         IList<T> GetAll();
 
-        void Delete(T entity);
+        void Delete(T dto);
 
-        void Update(T entity);
+        void Update(T dto);
 
         void GetById(int id);
 
-        void Insert(T entity);
+        void Insert(T dto);
     }
 }

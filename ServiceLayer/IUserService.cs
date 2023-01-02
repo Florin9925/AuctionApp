@@ -1,4 +1,5 @@
-﻿using DomainModel.Entity;
+﻿using DomainModel.DTO;
+using DomainModel.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer
 {
-    public interface IUserService : ICRUDService<User>
+    public interface IUserService : ICRUDService<UserDto>
     {
 
     }

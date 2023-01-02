@@ -1,4 +1,5 @@
 ﻿using DataMapper;
+using DomainModel.DTO;
 using DomainModel.Entity;
 using System;
 using System.Collections.Generic;
@@ -17,27 +18,27 @@ namespace ServiceLayer.ServiceImplementation
             this.productDataServices = productDataServices;
         }
 
-        void ICRUDService<Product>.Delete(Product entity)
+        void ICRUDService<ProductDto>.Delete(ProductDto dto)
         {
             throw new NotImplementedException();
         }
 
-        IList<Product> ICRUDService<Product>.GetAll()
+        IList<ProductDto> ICRUDService<ProductDto>.GetAll()
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<Product>.GetById(int id)
+        void ICRUDService<ProductDto>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<Product>.Insert(Product entity)
+        void ICRUDService<ProductDto>.Insert(ProductDto dto)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<Product>.Update(Product entity)
+        void ICRUDService<ProductDto>.Update(ProductDto dto)
         {
             throw new NotImplementedException();
         }

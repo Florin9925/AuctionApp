@@ -1,4 +1,5 @@
 ﻿using DataMapper;
+using DomainModel.DTO;
 using DomainModel.Entity;
 using System;
 using System.Collections.Generic;
@@ -17,27 +18,27 @@ namespace ServiceLayer.ServiceImplementation
             this.auctionDataServices = auctionDataServices;
         }
 
-        void ICRUDService<Product.Auction>.Delete(Product.Auction entity)
+        void ICRUDService<ProductDto.AuctionDto>.Delete(ProductDto.AuctionDto dto)
         {
             throw new NotImplementedException();
         }
 
-        IList<Product.Auction> ICRUDService<Product.Auction>.GetAll()
+        IList<ProductDto.AuctionDto> ICRUDService<ProductDto.AuctionDto>.GetAll()
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<Product.Auction>.GetById(int id)
+        void ICRUDService<ProductDto.AuctionDto>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<Product.Auction>.Insert(Product.Auction entity)
+        void ICRUDService<ProductDto.AuctionDto>.Insert(ProductDto.AuctionDto dto)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<Product.Auction>.Update(Product.Auction entity)
+        void ICRUDService<ProductDto.AuctionDto>.Update(ProductDto.AuctionDto dto)
         {
             throw new NotImplementedException();
         }
