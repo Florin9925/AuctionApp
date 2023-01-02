@@ -1,4 +1,4 @@
-﻿using static DomainModel.Product;
+﻿using static DomainModel.Entity.Product;
 
 namespace DataMapper
 {

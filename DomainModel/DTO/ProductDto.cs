@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainModel
+namespace DomainModel.DTO
 {
-    public enum Currency
+    public class ProductDto
     {
-        USD,
-        EURO,
-        RON
     }
 }

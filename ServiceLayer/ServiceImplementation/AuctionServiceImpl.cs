@@ -1,5 +1,5 @@
 ﻿using DataMapper;
-using DomainModel;
+using DomainModel.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

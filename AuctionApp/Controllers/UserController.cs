@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DataMapper.PostgresDAO;
-using DomainModel;
 using ServiceLayer;
+using DomainModel.Entity;
 
 namespace AuctionApp.Controllers
 {

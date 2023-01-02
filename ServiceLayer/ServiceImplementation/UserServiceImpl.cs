@@ -1,6 +1,6 @@
 ﻿using DataMapper;
 using DataMapper.PostgresDAO;
-using DomainModel;
+using DomainModel.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

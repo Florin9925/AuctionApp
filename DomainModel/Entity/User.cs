@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System.ComponentModel.DataAnnotations;
 
-namespace DomainModel
+namespace DomainModel.Entity
 {
     public class User
     {
