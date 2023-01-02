@@ -1,4 +1,5 @@
-﻿using DomainModel;
+﻿using DataMapper;
+using DomainModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace ServiceLayer.ServiceImplementation
 {
     public class ProductServiceImpl : IProductService
     {
+        private readonly IProductDataServices productDataServices;
+
+        public ProductServiceImpl(IProductDataServices productDataServices)
+        {
+            this.productDataServices = productDataServices;
+        }
+
         void ICRUDService<Product>.Delete(Product entity)
         {
             throw new NotImplementedException();

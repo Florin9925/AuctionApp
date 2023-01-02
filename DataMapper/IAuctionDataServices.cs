@@ -2,7 +2,7 @@
 
 namespace DataMapper
 {
-    internal interface IAuctionDataServices : IRepository<Auction>
+    public interface IAuctionDataServices : IRepository<Auction>
     {
     }
 }

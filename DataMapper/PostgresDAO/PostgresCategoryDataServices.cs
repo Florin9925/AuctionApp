@@ -2,13 +2,13 @@
 
 namespace DataMapper.PostgresDAO
 {
-    internal class PostgresCategoryDataServices : ICategoryDataServices
+    public class PostgresCategoryDataServices : ICategoryDataServices
     {
-        private readonly AuctionAppContext _context;
+        private readonly AuctionAppContext context;
 
         public PostgresCategoryDataServices(AuctionAppContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         void IRepository<Category>.Delete(Category entity)

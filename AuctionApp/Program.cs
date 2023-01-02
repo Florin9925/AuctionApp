@@ -4,23 +4,14 @@ using ServiceLayer;
 using ServiceLayer.ServiceImplementation;
 using Microsoft.Extensions.DependencyInjection;
 using DataMapper;
+using AuctionApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AuctionAppContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("AuctionDatabase") ?? throw new InvalidOperationException("Connection string 'AuctionDatabase' not found."), 
-    b => b.MigrationsAssembly("AuctionApp")));
 
-
+builder.Services.AddStorage(builder.Configuration);
+builder.Services.AddConfiguration();
+builder.Services.AddDomainServices();
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IUserService, UserServiceImpl>();
-builder.Services.AddScoped<IUserDataServices, PostgresUserDataServices>();
-
-
 
 
 var app = builder.Build();

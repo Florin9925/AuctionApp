@@ -26,7 +26,7 @@ namespace AuctionApp.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetUserAccount()
         {
-            var users = userService.GetListOfUserAccounts();
+            var users = userService.GetAll();
             if (users == null)
             {
                 return NotFound();

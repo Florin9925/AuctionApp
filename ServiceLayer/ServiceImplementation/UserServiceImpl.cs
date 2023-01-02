@@ -12,11 +12,11 @@ namespace ServiceLayer.ServiceImplementation
 {
     public class UserServiceImpl : IUserService
     {
-        private IUserDataServices _userAccountDataServices;
+        private IUserDataServices userAccountDataServices;
 
         public UserServiceImpl(IUserDataServices userAccountDataServices)
         {
-            this._userAccountDataServices = userAccountDataServices;
+            this.userAccountDataServices = userAccountDataServices;
         }
 
         void ICRUDService<User>.Delete(User entity)
@@ -26,7 +26,7 @@ namespace ServiceLayer.ServiceImplementation
 
         IList<User> ICRUDService<User>.GetAll()
         {
-            throw new NotImplementedException();
+            return userAccountDataServices.GetAll();
         }
 
         void ICRUDService<User>.GetById(int id)

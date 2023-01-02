@@ -2,13 +2,13 @@
 
 namespace DataMapper.PostgresDAO
 {
-    internal class PostgresAuctionDataServices : IAuctionDataServices
+    public class PostgresAuctionDataServices : IAuctionDataServices
     {
-        private readonly AuctionAppContext _context;
+        private readonly AuctionAppContext context;
 
         public PostgresAuctionDataServices(AuctionAppContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         void IRepository<Product.Auction>.Delete(Product.Auction entity)

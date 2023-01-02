@@ -4,11 +4,11 @@ namespace DataMapper.PostgresDAO
 {
     public class PostgresProductDataServices : IProductDataServices
     {
-        private readonly AuctionAppContext _context;
+        private readonly AuctionAppContext context;
 
         public PostgresProductDataServices(AuctionAppContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         void IRepository<Product>.Delete(Product entity)

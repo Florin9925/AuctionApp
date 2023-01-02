@@ -4,26 +4,26 @@ namespace DataMapper.PostgresDAO
 {
     public class PostgresUserDataServices : IUserDataServices
     {
-        private readonly AuctionAppContext _context;
+        private readonly AuctionAppContext context;
 
         public PostgresUserDataServices(AuctionAppContext context)
         {
-            this._context = context;
+            this.context = context;
         }
 
         void IRepository<User>.Delete(User entity)
         {
-            var userAccount = _context.Users.Find(entity.Id);
+            var userAccount = context.Users.Find(entity.Id);
             if (userAccount == null)
                 return;
 
-            _context.Users.Remove(userAccount);
-            _context.SaveChanges();
+            context.Users.Remove(userAccount);
+            context.SaveChanges();
         }
 
         IList<User> IRepository<User>.GetAll()
         {
-            return _context.Users.ToList();
+            return context.Users.ToList();
         }
 
         User IRepository<User>.GetByID(object id)
