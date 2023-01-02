@@ -1,14 +1,17 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DataMapper.PostgresDAO
 {
     public class PostgresUserDataServices : IUserDataServices
     {
         private readonly AuctionAppContext context;
+        private readonly UserValidator validations;
 
-        public PostgresUserDataServices(AuctionAppContext context)
+        public PostgresUserDataServices(AuctionAppContext context, UserValidator validations)
         {
             this.context = context;
+            this.validations = validations;
         }
 
         void IRepository<User>.Delete(User entity)
@@ -28,17 +31,32 @@ namespace DataMapper.PostgresDAO
 
         User IRepository<User>.GetByID(object id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                throw new ArgumentNullException("id");
+            }
+
+            return context.Users.Find(id);
         }
 
         User IRepository<User>.Insert(User entity)
         {
-            throw new NotImplementedException();
+            validations.ValidateAndThrow(entity);
+
+            var user = context.Users.Add(entity);
+            context.SaveChanges();
+            return user.Entity;
+
         }
 
         User IRepository<User>.Update(User item)
         {
-            throw new NotImplementedException();
+            validations.ValidateAndThrow(item);
+            context.Users.Entry(context.Users.Find(item.Id)).CurrentValues
+                   .SetValues(item);
+            context.SaveChanges();
+            return item;
+
         }
     }
 }

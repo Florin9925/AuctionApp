@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddConfiguration();
 builder.Services.AddDomainServices();
+builder.Services.AddValidators();
 // Add services to the container.
 
 

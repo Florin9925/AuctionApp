@@ -39,17 +39,23 @@ namespace ServiceLayer.ServiceImplementation
             return usersDto;
         }
 
-        void ICRUDService<UserDto>.GetById(int id)
+        UserDto? ICRUDService<UserDto>.GetById(int id)
+        {
+            var user = userAccountDataServices.GetByID(id);
+
+            if (user != null)
+            {
+                return new UserDto(user);
+            }
+            return null;
+        }
+
+        UserDto ICRUDService<UserDto>.Insert(UserDto dto)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<UserDto>.Insert(UserDto dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICRUDService<UserDto>.Update(UserDto dto)
+        UserDto ICRUDService<UserDto>.Update(UserDto dto)
         {
             throw new NotImplementedException();
         }

@@ -13,10 +13,10 @@ namespace ServiceLayer
 
         void Delete(T dto);
 
-        void Update(T dto);
+        T Update(T dto);
 
-        void GetById(int id);
+        T GetById(int id);
 
-        void Insert(T dto);
+        T Insert(T dto);
     }
 }

@@ -28,17 +28,17 @@ namespace ServiceLayer.ServiceImplementation
             throw new NotImplementedException();
         }
 
-        void ICRUDService<ProductDto.AuctionDto>.GetById(int id)
+        ProductDto.AuctionDto ICRUDService<ProductDto.AuctionDto>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<ProductDto.AuctionDto>.Insert(ProductDto.AuctionDto dto)
+        ProductDto.AuctionDto ICRUDService<ProductDto.AuctionDto>.Insert(ProductDto.AuctionDto dto)
         {
             throw new NotImplementedException();
         }
 
-        void ICRUDService<ProductDto.AuctionDto>.Update(ProductDto.AuctionDto dto)
+        ProductDto.AuctionDto ICRUDService<ProductDto.AuctionDto>.Update(ProductDto.AuctionDto dto)
         {
             throw new NotImplementedException();
         }

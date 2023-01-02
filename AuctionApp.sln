@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLaye
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataMapper", "DataMapper\DataMapper.csproj", "{6A4125C2-D0EF-4BDB-9F2D-973BA3A5F487}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDomainModel", "TestDomainModel\TestDomainModel.csproj", "{088F2B2C-055E-475B-B788-C9427E0D6C75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestDomainModel", "TestDomainModel\TestDomainModel.csproj", "{088F2B2C-055E-475B-B788-C9427E0D6C75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
