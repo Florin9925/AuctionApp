@@ -1,21 +1,15 @@
 ﻿using DataMapper;
 using DomainModel.DTO;
-using DomainModel.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer.ServiceImplementation
 {
     public class ProductServiceImpl : IProductService
     {
-        private readonly IProductDataServices productDataServices;
+        private readonly IProductDataServices _productDataServices;
 
         public ProductServiceImpl(IProductDataServices productDataServices)
         {
-            this.productDataServices = productDataServices;
+            _productDataServices = productDataServices;
         }
 
         void ICRUDService<ProductDto>.Delete(ProductDto dto)

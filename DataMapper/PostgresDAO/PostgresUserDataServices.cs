@@ -1,62 +1,63 @@
 ﻿using DomainModel.Entity;
 using FluentValidation;
 
-namespace DataMapper.PostgresDAO
+namespace DataMapper.PostgresDAO;
+
+public class PostgresUserDataServices : IUserDataServices
 {
-    public class PostgresUserDataServices : IUserDataServices
+    private readonly AuctionAppContext _context;
+    private readonly UserValidator _validations;
+
+    public PostgresUserDataServices(AuctionAppContext context, UserValidator validations)
     {
-        private readonly AuctionAppContext context;
-        private readonly UserValidator validations;
+        _context = context;
+        _validations = validations;
+    }
 
-        public PostgresUserDataServices(AuctionAppContext context, UserValidator validations)
+    void IRepository<User>.Delete(User entity)
+    {
+        var userAccount = _context.Users.Find(entity.Id);
+        if (userAccount == null)
+            return;
+
+        _context.Users.Remove(userAccount);
+        _context.SaveChanges();
+    }
+
+    IList<User> IRepository<User>.GetAll()
+    {
+        return _context.Users.ToList();
+    }
+
+    User IRepository<User>.GetById(object id)
+    {
+        if (id == null)
         {
-            this.context = context;
-            this.validations = validations;
+            throw new ArgumentNullException("id");
         }
 
-        void IRepository<User>.Delete(User entity)
-        {
-            var userAccount = context.Users.Find(entity.Id);
-            if (userAccount == null)
-                return;
+        return _context.Users.Find(id);
+    }
 
-            context.Users.Remove(userAccount);
-            context.SaveChanges();
-        }
+    User IRepository<User>.Insert(User entity)
+    {
+        _validations.ValidateAndThrow(entity);
 
-        IList<User> IRepository<User>.GetAll()
-        {
-            return context.Users.ToList();
-        }
+        var user = _context.Users.Add(entity);
+        _context.SaveChanges();
+        return user.Entity;
 
-        User IRepository<User>.GetByID(object id)
-        {
-            if (id == null)
-            {
-                throw new ArgumentNullException("id");
-            }
+    }
 
-            return context.Users.Find(id);
-        }
+    User IRepository<User>.Update(User item)
+    {
+        _validations.ValidateAndThrow(item);
+        var entity = _context.Users.Find(item.Id);
+            
+        _context.Users.Entry(entity).CurrentValues
+            .SetValues(item);
+        _context.SaveChanges();
+        return item;
 
-        User IRepository<User>.Insert(User entity)
-        {
-            validations.ValidateAndThrow(entity);
-
-            var user = context.Users.Add(entity);
-            context.SaveChanges();
-            return user.Entity;
-
-        }
-
-        User IRepository<User>.Update(User item)
-        {
-            validations.ValidateAndThrow(item);
-            context.Users.Entry(context.Users.Find(item.Id)).CurrentValues
-                   .SetValues(item);
-            context.SaveChanges();
-            return item;
-
-        }
     }
 }

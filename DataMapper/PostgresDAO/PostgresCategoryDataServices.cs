@@ -4,11 +4,11 @@ namespace DataMapper.PostgresDAO
 {
     public class PostgresCategoryDataServices : ICategoryDataServices
     {
-        private readonly AuctionAppContext context;
+        private readonly AuctionAppContext _context;
 
         public PostgresCategoryDataServices(AuctionAppContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         void IRepository<Category>.Delete(Category entity)
@@ -18,10 +18,10 @@ namespace DataMapper.PostgresDAO
 
         IList<Category> IRepository<Category>.GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Categories.ToList();
         }
 
-        Category IRepository<Category>.GetByID(object id)
+        Category IRepository<Category>.GetById(object id)
         {
             throw new NotImplementedException();
         }

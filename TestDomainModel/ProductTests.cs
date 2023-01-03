@@ -15,7 +15,6 @@ namespace TestDomainModel
         {
             var product = new Product();
             
-            var offer = new Product.Auction(product);
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using DomainModel.DTO;
 
-namespace ServiceLayer
+namespace ServiceLayer;
+
+public interface IProductService : ICRUDService<ProductDto>
 {
-    public interface IProductService : ICRUDService<ProductDto>
-    {
-    }
 }

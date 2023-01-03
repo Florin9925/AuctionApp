@@ -2,7 +2,6 @@
 
 namespace DataMapper;
 
-public interface IUserDataServices : IRepository<User>
+public interface IRoleDataServices : IRepository<Role>
 {
-
 }

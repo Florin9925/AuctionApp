@@ -1,8 +1,7 @@
 ﻿using DomainModel.Entity;
 
-namespace DataMapper
+namespace DataMapper;
+
+public interface IProductDataServices : IRepository<Product>
 {
-    public interface IProductDataServices : IRepository<Product>
-    {
-    }
 }

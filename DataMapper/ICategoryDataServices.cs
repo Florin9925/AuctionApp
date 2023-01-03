@@ -1,8 +1,7 @@
 ﻿using DomainModel.Entity;
 
-namespace DataMapper
+namespace DataMapper;
+
+public interface ICategoryDataServices : IRepository<Category>
 {
-    public interface ICategoryDataServices : IRepository<Category>
-    {
-    }
 }

@@ -1,39 +1,38 @@
 ﻿using DomainModel.Entity;
 
-namespace DataMapper.PostgresDAO
+namespace DataMapper.PostgresDAO;
+
+public class PostgresProductDataServices : IProductDataServices
 {
-    public class PostgresProductDataServices : IProductDataServices
+    private readonly AuctionAppContext _context;
+
+    public PostgresProductDataServices(AuctionAppContext context)
     {
-        private readonly AuctionAppContext context;
+        _context = context;
+    }
 
-        public PostgresProductDataServices(AuctionAppContext context)
-        {
-            this.context = context;
-        }
+    void IRepository<Product>.Delete(Product entity)
+    {
+        throw new NotImplementedException();
+    }
 
-        void IRepository<Product>.Delete(Product entity)
-        {
-            throw new NotImplementedException();
-        }
+    IList<Product> IRepository<Product>.GetAll()
+    {
+        return _context.Products.ToList();
+    }
 
-        IList<Product> IRepository<Product>.GetAll()
-        {
-            throw new NotImplementedException();
-        }
+    Product IRepository<Product>.GetById(object id)
+    {
+        throw new NotImplementedException();
+    }
 
-        Product IRepository<Product>.GetByID(object id)
-        {
-            throw new NotImplementedException();
-        }
+    Product IRepository<Product>.Insert(Product entity)
+    {
+        throw new NotImplementedException();
+    }
 
-        Product IRepository<Product>.Insert(Product entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        Product IRepository<Product>.Update(Product item)
-        {
-            throw new NotImplementedException();
-        }
+    Product IRepository<Product>.Update(Product item)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DataMapper;
 
-namespace DataMapper
+public interface IRepository<T>
 {
-    public interface IRepository<T>
-    {
-        T Insert(T entity);
+    T Insert(T entity);
 
-        T Update(T item);
+    T Update(T item);
 
-        void Delete(T entity);
+    void Delete(T entity);
 
-        T GetByID(object id);
+    T GetById(object id);
 
-        IList<T> GetAll();
-    }
+    IList<T> GetAll();
 }

@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer
-{
-    public interface IUserService : ICRUDService<UserDto>
-    {
+namespace ServiceLayer;
 
-    }
+public interface IUserService : ICRUDService<UserDto>
+{
+
 }

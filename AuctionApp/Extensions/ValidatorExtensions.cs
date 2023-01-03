@@ -1,15 +1,14 @@
 ﻿using DomainModel.DTO;
 using DomainModel.Entity;
 
-namespace AuctionApp.Extensions
+namespace AuctionApp.Extensions;
+
+public static class ValidatorExtensions
 {
-    public static class ValidatorExtensions
+    public static void AddValidators(this IServiceCollection services)
     {
-        public static void AddValidators(this IServiceCollection services)
-        {
-            services.AddScoped<UserValidator>();
-            services.AddScoped<UserDtoValidator>();
-            services.AddScoped<ProductValidator>();
-        }
+        services.AddScoped<UserValidator>();
+        services.AddScoped<UserDtoValidator>();
+        services.AddScoped<ProductValidator>();
     }
 }

@@ -1,63 +1,42 @@
 ﻿using DataMapper;
-using DataMapper.PostgresDAO;
 using DomainModel.DTO;
-using DomainModel.Entity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ServiceLayer.ServiceImplementation
+namespace ServiceLayer.ServiceImplementation;
+
+public class UserServiceImpl : IUserService
 {
-    public class UserServiceImpl : IUserService
+    private readonly IUserDataServices _userAccountDataServices;
+
+    public UserServiceImpl(IUserDataServices userAccountDataServices)
     {
-        private IUserDataServices userAccountDataServices;
+        _userAccountDataServices = userAccountDataServices;
+    }
 
-        public UserServiceImpl(IUserDataServices userAccountDataServices)
-        {
-            this.userAccountDataServices = userAccountDataServices;
-        }
+    void ICRUDService<UserDto>.Delete(UserDto dto)
+    {
+        throw new NotImplementedException();
+    }
 
-        void ICRUDService<UserDto>.Delete(UserDto dto)
-        {
-            throw new NotImplementedException();
-        }
+    IList<UserDto> ICRUDService<UserDto>.GetAll()
+    {
+        var users = _userAccountDataServices.GetAll();
 
-        IList<UserDto> ICRUDService<UserDto>.GetAll()
-        {
-            var users = userAccountDataServices.GetAll();
+        return users.Select(user => new UserDto(user)).ToList();
+    }
 
-            var usersDto = new List<UserDto>();
+    UserDto ICRUDService<UserDto>.GetById(int id)
+    {
+        var user = _userAccountDataServices.GetById(id);
+        return new UserDto(user);
+    }
 
-            foreach (var user in users)
-            {
-                usersDto.Add(new UserDto(user));
-            }
+    UserDto ICRUDService<UserDto>.Insert(UserDto dto)
+    {
+        throw new NotImplementedException();
+    }
 
-            return usersDto;
-        }
-
-        UserDto? ICRUDService<UserDto>.GetById(int id)
-        {
-            var user = userAccountDataServices.GetByID(id);
-
-            if (user != null)
-            {
-                return new UserDto(user);
-            }
-            return null;
-        }
-
-        UserDto ICRUDService<UserDto>.Insert(UserDto dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        UserDto ICRUDService<UserDto>.Update(UserDto dto)
-        {
-            throw new NotImplementedException();
-        }
+    UserDto ICRUDService<UserDto>.Update(UserDto dto)
+    {
+        throw new NotImplementedException();
     }
 }
