@@ -1,15 +1,18 @@
 ﻿using DataMapper;
 using DomainModel.DTO;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceLayer.ServiceImplementation;
 
 public class ProductServiceImpl : IProductService
 {
     private readonly IProductDataServices _productDataServices;
+    private readonly ILogger _logger;
 
-    public ProductServiceImpl(IProductDataServices productDataServices)
+    public ProductServiceImpl(IProductDataServices productDataServices, ILogger<ProductServiceImpl> logger)
     {
         _productDataServices = productDataServices;
+        _logger = logger;
     }
 
     void ICRUDService<ProductDto>.Delete(ProductDto dto)

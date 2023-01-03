@@ -1,16 +1,19 @@
 ﻿using DataMapper;
 using DomainModel.DTO;
 using DomainModel.Entity;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceLayer.ServiceImplementation;
 
 public class OfferServiceImpl : IOfferService
 {
     private readonly IOfferDataServices _offerDataServices;
+    private readonly ILogger _logger;
 
-    public OfferServiceImpl(IOfferDataServices offerDataServices)
+    public OfferServiceImpl(IOfferDataServices offerDataServices, ILogger<OfferServiceImpl> logger)
     {
         _offerDataServices = offerDataServices;
+        _logger = logger;
     }
 
     public IList<OfferDto> GetAll()

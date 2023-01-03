@@ -1,16 +1,19 @@
 ﻿using DataMapper;
 using DomainModel.DTO;
 using DomainModel.Entity;
+using Microsoft.Extensions.Logging;
 
 namespace ServiceLayer.ServiceImplementation;
 
 public class RoleServiceImpl : IRoleService
 {
     private readonly IRoleDataServices _roleDataServices;
-
-    public RoleServiceImpl(IRoleDataServices roleDataServices)
+    private readonly ILogger _logger;
+    
+    public RoleServiceImpl(IRoleDataServices roleDataServices, ILogger<RoleServiceImpl> logger)
     {
         _roleDataServices = roleDataServices;
+        _logger = logger;
     }
 
     public IList<RoleDto> GetAll()
