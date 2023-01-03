@@ -8,17 +8,17 @@ public class Product : BaseEntity
 {
     [Required]
     [StringLength(100, MinimumLength = 2)]
-    public string? Name { get; set; }
+    public string Name { get; set; }
 
     [Required]
     [StringLength(500, MinimumLength = 2)]
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     [Required] public DateTime StartDate { get; set; }
 
     [Required] public DateTime EndDate { get; set; }
 
-    [Required] public User? Owner { get; set; }
+    [Required] public User Owner { get; set; }
 
     [Required] public int Amount { get; set; } = 0;
 

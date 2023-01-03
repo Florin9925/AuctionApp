@@ -14,9 +14,11 @@ public static class StorageExtensions
                 throw new InvalidOperationException("Connection string 'AuctionDatabase' not found."),
                 b => b.MigrationsAssembly("AuctionApp")));
 
-        services.AddScoped<IUserDataServices, PostgresUserDataServices>();
-        services.AddScoped<IOfferDataServices, PostgresOfferDataServices>();
         services.AddScoped<ICategoryDataServices, PostgresCategoryDataServices>();
+        services.AddScoped<IOfferDataServices, PostgresOfferDataServices>();
         services.AddScoped<IProductDataServices, PostgresProductDataServices>();
+        services.AddScoped<IRoleDataServices, PostgresRoleDataServices>();
+        services.AddScoped<IScoreDataServices, PostgresScoreDataServices>();
+        services.AddScoped<IUserDataServices, PostgresUserDataServices>();
     }
 }
