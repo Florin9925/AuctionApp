@@ -1,6 +1,8 @@
 using AuctionApp.Extensions;
+using DomainModel.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<MyConfiguration>(builder.Configuration.GetSection("myConfiguration"));
 
 builder.Services.AddStorage(builder.Configuration);
 builder.Services.AddConfiguration();
