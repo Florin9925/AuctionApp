@@ -1,4 +1,5 @@
 ﻿using DomainModel.Dto;
+using DomainModel.Entity;
 using DomainModel.Enum;
 using FluentValidation.TestHelper;
 
@@ -8,13 +9,13 @@ namespace TestDomainModelNUnit.Dto;
 public class ProductDtoTest
 {
     private ProductDtoValidator _validator;
-    
+
     [SetUp]
     public void SetUp()
     {
         _validator = new ProductDtoValidator();
     }
-    
+
     [Test]
     public void ProductDtoNameIsNull()
     {
@@ -211,5 +212,37 @@ public class ProductDtoTest
 
         var result = _validator.TestValidate(product);
         result.ShouldHaveValidationErrorFor(p => p.Currency);
+    }
+
+    [Test]
+    public void ProductDtoCtor()
+    {
+        var product = new Product
+        {
+            Id = 1,
+            Name = "Test",
+            Description = "Test Description",
+            StartDate = DateTime.Today.AddDays(1),
+            EndDate = DateTime.Today.AddDays(2),
+            Owner = new User
+            {
+                Id = 1
+            },
+            Amount = 1,
+            Currency = Currency.EURO
+        };
+
+        var productDto = new ProductDto(product);
+        Assert.Multiple(() =>
+        {
+            Assert.That(productDto.Id, Is.EqualTo(product.Id));
+            Assert.That(productDto.Name, Is.EqualTo(product.Name));
+            Assert.That(productDto.Description, Is.EqualTo(product.Description));
+            Assert.That(productDto.StartDate, Is.EqualTo(product.StartDate));
+            Assert.That(productDto.EndDate, Is.EqualTo(product.EndDate));
+            Assert.That(productDto.OwnerId, Is.EqualTo(product.Owner.Id));
+            Assert.That(productDto.Amount, Is.EqualTo(product.Amount));
+            Assert.That(productDto.Currency, Is.EqualTo(product.Currency));
+        });
     }
 }
