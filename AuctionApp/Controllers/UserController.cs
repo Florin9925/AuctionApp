@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
-using DomainModel.DTO;
+using DomainModel.Dto;
 
 namespace AuctionApp.Controllers;
 

@@ -1,6 +1,6 @@
 ﻿using DataMapper;
 using DomainModel.Configuration;
-using DomainModel.DTO;
+using DomainModel.Dto;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

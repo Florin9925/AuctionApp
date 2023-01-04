@@ -19,4 +19,9 @@
     <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto" />
+    <Folder Include="Entity" />
+  </ItemGroup>
+
 </Project>

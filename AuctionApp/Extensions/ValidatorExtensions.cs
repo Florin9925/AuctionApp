@@ -1,4 +1,4 @@
-﻿using DomainModel.DTO;
+﻿using DomainModel.Dto;
 using DomainModel.Entity;
 
 namespace AuctionApp.Extensions;

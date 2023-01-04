@@ -1,4 +1,4 @@
-﻿namespace DomainModel.DTO;
+﻿namespace DomainModel.Dto;
 
 public class BaseDto
 {

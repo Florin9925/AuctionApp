@@ -1,5 +1,5 @@
 ﻿using DataMapper;
-using DomainModel.DTO;
+using DomainModel.Dto;
 using DomainModel.Entity;
 using Microsoft.Extensions.Logging;
 

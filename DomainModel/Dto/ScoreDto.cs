@@ -1,7 +1,7 @@
 ﻿using DomainModel.Entity;
 using FluentValidation;
 
-namespace DomainModel.DTO;
+namespace DomainModel.Dto;
 
 public class ScoreDto : BaseDto
 {

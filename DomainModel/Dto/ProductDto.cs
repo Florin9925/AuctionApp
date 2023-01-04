@@ -2,7 +2,7 @@
 using DomainModel.Enum;
 using FluentValidation;
 
-namespace DomainModel.DTO;
+namespace DomainModel.Dto;
 
 public class ProductDto : BaseDto
 {
