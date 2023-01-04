@@ -1,6 +1,5 @@
 ﻿using DataMapper;
 using DomainModel.DTO;
-using DomainModel.Entity;
 using Microsoft.Extensions.Logging;
 
 namespace ServiceLayer.ServiceImplementation;

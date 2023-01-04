@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DomainModel.DTO;
 
@@ -16,5 +17,13 @@ public class OfferDto : BaseDto
         Price = offer.Price;
         BidderId = offer.Bidder.Id;
         DateTime = offer.DateTime;
+    }
+}
+
+public class OfferDtoValidator : AbstractValidator<OfferDto>
+{
+    public OfferDtoValidator()
+    {
+        RuleFor(o => o.Id).NotNull();
     }
 }

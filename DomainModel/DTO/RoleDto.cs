@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DomainModel.DTO;
 
@@ -10,5 +11,13 @@ public class RoleDto : BaseDto
     {
         Id = role.Id;
         Name = role.Name;
+    }
+}
+
+public class RoleDtoValidator : AbstractValidator<RoleDto>
+{
+    public RoleDtoValidator()
+    {
+        RuleFor(r => r.Id).NotNull();
     }
 }

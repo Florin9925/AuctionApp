@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DomainModel.DTO;
 
@@ -14,5 +15,13 @@ public class ScoreDto : BaseDto
         ReviewerId = score.Reviewer.Id;
         ReceiverId = score.Receiver.Id;
         Value = score.Value;
+    }
+}
+
+public class ScoreDtoValidator : AbstractValidator<ScoreDto>
+{
+    public ScoreDtoValidator()
+    {
+        RuleFor(s => s.Id).NotNull();
     }
 }

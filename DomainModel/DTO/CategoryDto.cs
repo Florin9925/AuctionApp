@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DomainModel.DTO;
 
@@ -10,5 +11,13 @@ public class CategoryDto : BaseDto
     {
         Id = category.Id;
         Name = category.Name;
+    }
+}
+
+public class CategoryDtoValidator : AbstractValidator<CategoryDto>
+{
+    public CategoryDtoValidator()
+    {
+        RuleFor(c => c.Id).NotNull();
     }
 }
