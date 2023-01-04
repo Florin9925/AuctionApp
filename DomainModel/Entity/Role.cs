@@ -14,6 +14,8 @@ public class RoleValidator : AbstractValidator<Role>
 {
     public RoleValidator()
     {
-        RuleFor(r => r.Id).NotNull();
+        RuleFor(r => r.Id).GreaterThanOrEqualTo(0);
+        RuleFor(r => r.Name).MinimumLength(2);
+        RuleFor(r => r.Name).NotNull();
     }
 }
