@@ -18,6 +18,7 @@ public class CategoryValidator : AbstractValidator<Category>
 {
     public CategoryValidator()
     {
-        RuleFor(c => c.Id).NotNull();
+        RuleFor(c => c.Id).GreaterThanOrEqualTo(0);
+        RuleFor(c=> c.Name).NotNull().Length(2, 50);
     }
 }
