@@ -18,6 +18,10 @@ public class OfferValidator : AbstractValidator<Offer>
 {
     public OfferValidator()
     {
-        RuleFor(o => o.Id).NotNull();
+        RuleFor(o => o.Id).GreaterThanOrEqualTo(0);
+        RuleFor(o => o.Price).GreaterThan(0);
+        RuleFor(o => o.Bidder).NotNull();
+        RuleFor(o => o.Product).NotNull();
+        RuleFor(o => o.DateTime).GreaterThanOrEqualTo(DateTime.Now);
     }
 }

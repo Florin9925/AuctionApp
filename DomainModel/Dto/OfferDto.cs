@@ -10,6 +10,10 @@ public class OfferDto : BaseDto
     public int BidderId { get; set; }
     public DateTime DateTime { get; set; }
 
+    public OfferDto()
+    {
+    }
+
     public OfferDto(Offer offer)
     {
         Id = offer.Id;
@@ -24,6 +28,10 @@ public class OfferDtoValidator : AbstractValidator<OfferDto>
 {
     public OfferDtoValidator()
     {
-        RuleFor(o => o.Id).NotNull();
+        RuleFor(o => o.Id).GreaterThanOrEqualTo(0);
+        RuleFor(o => o.Price).GreaterThan(0);
+        RuleFor(o => o.BidderId).GreaterThan(0);
+        RuleFor(o => o.ProductId).GreaterThan(0);
+        RuleFor(o => o.DateTime).GreaterThanOrEqualTo(DateTime.Now);
     }
 }
