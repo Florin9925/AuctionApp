@@ -6,12 +6,12 @@ namespace DataMapper.PostgresDAO;
 public class PostgresUserDataServices : IUserDataServices
 {
     private readonly AuctionAppContext _context;
-    private readonly UserValidator _validations;
+    private readonly UserValidator _validator;
 
-    public PostgresUserDataServices(AuctionAppContext context, UserValidator validations)
+    public PostgresUserDataServices(AuctionAppContext context, UserValidator validator)
     {
         _context = context;
-        _validations = validations;
+        _validator = validator;
     }
 
     void IRepository<User>.Delete(User entity)
@@ -31,33 +31,29 @@ public class PostgresUserDataServices : IUserDataServices
 
     User IRepository<User>.GetById(object id)
     {
-        if (id == null)
-        {
-            throw new ArgumentNullException("id");
-        }
-
+        ArgumentNullException.ThrowIfNull(id);
         return _context.Users.Find(id);
     }
 
     User IRepository<User>.Insert(User entity)
     {
-        _validations.ValidateAndThrow(entity);
+        _validator.ValidateAndThrow(entity);
 
         var user = _context.Users.Add(entity);
         _context.SaveChanges();
         return user.Entity;
-
     }
 
     User IRepository<User>.Update(User item)
     {
-        _validations.ValidateAndThrow(item);
+        _validator.ValidateAndThrow(item);
         var entity = _context.Users.Find(item.Id);
-            
-        _context.Users.Entry(entity).CurrentValues
+
+        ArgumentNullException.ThrowIfNull(entity);
+
+        _context.Entry(entity).CurrentValues
             .SetValues(item);
         _context.SaveChanges();
         return item;
-
     }
 }

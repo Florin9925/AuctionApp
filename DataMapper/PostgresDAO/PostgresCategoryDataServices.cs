@@ -1,19 +1,27 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DataMapper.PostgresDAO
 {
     public class PostgresCategoryDataServices : ICategoryDataServices
     {
         private readonly AuctionAppContext _context;
+        private readonly CategoryValidator _validator;
 
-        public PostgresCategoryDataServices(AuctionAppContext context)
+        public PostgresCategoryDataServices(AuctionAppContext context, CategoryValidator validator)
         {
             _context = context;
+            _validator = validator;
         }
 
         void IRepository<Category>.Delete(Category entity)
         {
-            throw new NotImplementedException();
+            var category = _context.Categories.Find(entity.Id);
+            if (category == null)
+                return;
+
+            _context.Remove(category);
+            _context.SaveChanges();
         }
 
         IList<Category> IRepository<Category>.GetAll()
@@ -23,17 +31,29 @@ namespace DataMapper.PostgresDAO
 
         Category IRepository<Category>.GetById(object id)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(id);
+            return _context.Categories.Find(id);
         }
 
         Category IRepository<Category>.Insert(Category entity)
         {
-            throw new NotImplementedException();
+            _validator.ValidateAndThrow(entity);
+            var category = _context.Add(entity);
+            _context.SaveChanges();
+            return category.Entity;
         }
 
         Category IRepository<Category>.Update(Category item)
         {
-            throw new NotImplementedException();
+            _validator.ValidateAndThrow(item);
+            var entity = _context.Categories.Find(item.Id);
+
+            ArgumentNullException.ThrowIfNull(entity);
+
+            _context.Entry(entity).CurrentValues
+                .SetValues(item);
+            _context.SaveChanges();
+            return item;
         }
     }
 }

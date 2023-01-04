@@ -1,19 +1,27 @@
 ﻿using DomainModel.Entity;
+using FluentValidation;
 
 namespace DataMapper.PostgresDAO;
 
 public class PostgresProductDataServices : IProductDataServices
 {
     private readonly AuctionAppContext _context;
+    private readonly ProductValidator _validator;
 
-    public PostgresProductDataServices(AuctionAppContext context)
+    public PostgresProductDataServices(AuctionAppContext context, ProductValidator validator)
     {
         _context = context;
+        _validator = validator;
     }
 
     void IRepository<Product>.Delete(Product entity)
     {
-        throw new NotImplementedException();
+        var product = _context.Products.Find(entity.Id);
+        if (product == null)
+            return;
+
+        _context.Products.Remove(product);
+        _context.SaveChanges();
     }
 
     IList<Product> IRepository<Product>.GetAll()
@@ -23,16 +31,26 @@ public class PostgresProductDataServices : IProductDataServices
 
     Product IRepository<Product>.GetById(object id)
     {
-        throw new NotImplementedException();
+        return _context.Products.Find(id);
     }
 
     Product IRepository<Product>.Insert(Product entity)
     {
-        throw new NotImplementedException();
+        _validator.ValidateAndThrow(entity);
+        var product = _context.Add(entity);
+        _context.SaveChanges();
+        return product.Entity;
     }
 
     Product IRepository<Product>.Update(Product item)
     {
-        throw new NotImplementedException();
+        _validator.ValidateAndThrow(item);
+        var product = _context.Products.Find(item.Id);
+
+        ArgumentNullException.ThrowIfNull(product);
+
+        _context.Entry(product).CurrentValues.SetValues(item);
+        _context.SaveChanges();
+        return product;
     }
 }
