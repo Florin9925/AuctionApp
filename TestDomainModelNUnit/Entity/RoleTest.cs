@@ -68,4 +68,26 @@ public class RoleTest
         var result = _validator.TestValidate(role);
         result.ShouldNotHaveValidationErrorFor(r => r.Id);
     }
+    
+    [Test]
+    public void RoleUsersIsNull()
+    {
+        var role = new Role
+        {
+            Users = null
+        };
+        var result = _validator.TestValidate(role);
+        result.ShouldHaveValidationErrorFor(r => r.Users);
+    }
+    
+    [Test]
+    public void RoleUsersIsNotNull()
+    {
+        var role = new Role
+        {
+            Users = new List<User>()
+        };
+        var result = _validator.TestValidate(role);
+        result.ShouldNotHaveValidationErrorFor(r => r.Users);
+    }
 }
