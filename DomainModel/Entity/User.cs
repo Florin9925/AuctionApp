@@ -29,6 +29,7 @@ public class User : BaseEntity
     public string Address { get; set; }
 
     public virtual IList<Product> Products { get; set; } = new List<Product>();
+    public virtual IList<Offer> Offers { get; set; } = new List<Offer>();
     public virtual IList<Role> Roles { get; set; } = new List<Role>();
     public virtual IList<Score> GetScores { get; set; } = new List<Score>();
     public virtual IList<Score> GivenScores { get; set; } = new List<Score>();
@@ -50,6 +51,12 @@ public partial class UserValidator : AbstractValidator<User>
             .MinimumLength(10).WithMessage("PhoneNumber must not be less than 10 characters.")
             .MaximumLength(20).WithMessage("PhoneNumber must not exceed 50 characters.")
             .Matches(MyRegex()).WithMessage("PhoneNumber not valid");
+
+        RuleFor(u => u.GetScores).NotNull();
+        RuleFor(u => u.GivenScores).NotNull();
+        RuleFor(u => u.Offers).NotNull();
+        RuleFor(u => u.Products).NotNull();
+        RuleFor(u => u.Roles).NotNull();
     }
 
     [GeneratedRegex("^(\\+4|)?(07[0-9]{2}|02[0-9]{2}|03[0-9]{2}){1}?(\\s|\\.|\\-)?([0-9]{3}(\\s|\\.|\\-|)){2}$")]

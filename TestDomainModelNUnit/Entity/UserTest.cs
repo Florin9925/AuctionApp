@@ -266,4 +266,114 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.PhoneNumber);
     }
+    
+    [Test]
+    public void UserProductsIsNull()
+    {
+        var user = new User
+        {
+            Products = null
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldHaveValidationErrorFor(u => u.Products);
+    }
+    
+    [Test]
+    public void UserProductsIsNotNull()
+    {
+        var user = new User
+        {
+            Products = new List<Product>()
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldNotHaveValidationErrorFor(u => u.Products);
+    }
+    
+    [Test]
+    public void UserRolesIsNull()
+    {
+        var user = new User
+        {
+            Roles = null
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldHaveValidationErrorFor(u => u.Roles);
+    }
+    
+    [Test]
+    public void UserRolesIsNotNull()
+    {
+        var user = new User
+        {
+            Roles = new List<Role>()
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldNotHaveValidationErrorFor(u => u.Roles);
+    }   
+    
+    [Test]
+    public void UserGetScoresIsNull()
+    {
+        var user = new User
+        {
+            GetScores = null
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldHaveValidationErrorFor(u => u.GetScores);
+    }
+    
+    [Test]
+    public void UserGetScoresIsNotNull()
+    {
+        var user = new User
+        {
+            GetScores = new List<Score>()
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldNotHaveValidationErrorFor(u => u.GetScores);
+    }
+    
+    [Test]
+    public void UserGivenScoresIsNull()
+    {
+        var user = new User
+        {
+            GivenScores = null
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldHaveValidationErrorFor(u => u.GivenScores);
+    }
+    
+    [Test]
+    public void UserGivenScoresIsNotNull()
+    {
+        var user = new User
+        {
+            GivenScores = new List<Score>()
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldNotHaveValidationErrorFor(u => u.GivenScores);
+    }
+    
+    [Test]
+    public void UserOffersIsNull()
+    {
+        var user = new User
+        {
+            Offers = null
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldHaveValidationErrorFor(u => u.Offers);
+    }
+    
+    [Test]
+    public void UserOffersIsNotNull()
+    {
+        var user = new User
+        {
+            Offers = new List<Offer>()
+        };
+        var result = _validator.TestValidate(user);
+        result.ShouldNotHaveValidationErrorFor(u => u.Offers);
+    }
 }
