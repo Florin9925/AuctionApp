@@ -68,4 +68,70 @@ public class CategoryTest
         var result = _validator.TestValidate(category);
         result.ShouldNotHaveValidationErrorFor(c => c.Id);
     }
+
+    [Test]
+    public void CategoryProductsIsNull()
+    {
+        var category = new Category
+        {
+            Products = null
+        };
+        var result = _validator.TestValidate(category);
+        result.ShouldHaveValidationErrorFor(c => c.Products);
+    }
+
+    [Test]
+    public void CategoryProductsIsNotNull()
+    {
+        var category = new Category
+        {
+            Products = new List<Product>()
+        };
+        var result = _validator.TestValidate(category);
+        result.ShouldNotHaveValidationErrorFor(c => c.Products);
+    }
+
+    [Test]
+    public void CategoryChildCategoriesIsNull()
+    {
+        var category = new Category
+        {
+            ChildCategories = null
+        };
+        var result = _validator.TestValidate(category);
+        result.ShouldHaveValidationErrorFor(c => c.ChildCategories);
+    }
+
+    [Test]
+    public void CategoryChildCategoriesIsNotNull()
+    {
+        var category = new Category
+        {
+            ChildCategories = new List<Category>()
+        };
+        var result = _validator.TestValidate(category);
+        result.ShouldNotHaveValidationErrorFor(c => c.ChildCategories);
+    }
+
+    [Test]
+    public void CategoryParentCategoriesIsNull()
+    {
+        var category = new Category
+        {
+            ParentCategories = null
+        };
+        var result = _validator.TestValidate(category);
+        result.ShouldHaveValidationErrorFor(c => c.ParentCategories);
+    }
+
+    [Test]
+    public void CategoryParentCategoriesIsNotNull()
+    {
+        var category = new Category
+        {
+            ParentCategories = new List<Category>()
+        };
+        var result = _validator.TestValidate(category);
+        result.ShouldNotHaveValidationErrorFor(c => c.ParentCategories);
+    }
 }
