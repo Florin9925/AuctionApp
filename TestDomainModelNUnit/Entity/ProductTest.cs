@@ -212,4 +212,53 @@ public class ProductTest
         var result = _validator.TestValidate(product);
         result.ShouldHaveValidationErrorFor(p => p.Currency);
     }
+    
+    [Test]
+    public void ProductCategoryIsNull()
+    {
+        var product = new Product
+        {
+            Category = null
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldHaveValidationErrorFor(p => p.Category);
+    }
+
+    [Test]
+    public void ProductCategoryIsNotNull()
+    {
+        var product = new Product
+        {
+            Category = new Category()
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldNotHaveValidationErrorFor(p => p.Category);
+    }
+    
+    [Test]
+    public void ProductOffersIsNull()
+    {
+        var product = new Product
+        {
+            Offers = null
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldHaveValidationErrorFor(p => p.Offers);
+    }
+
+    [Test]
+    public void ProductOffersIsNotNull()
+    {
+        var product = new Product
+        {
+            Offers = new List<Offer>()
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldNotHaveValidationErrorFor(p => p.Offers);
+    }
+    
 }

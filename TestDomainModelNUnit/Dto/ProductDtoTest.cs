@@ -229,7 +229,11 @@ public class ProductDtoTest
                 Id = 1
             },
             Amount = 1,
-            Currency = Currency.EURO
+            Currency = Currency.EURO,
+            Category = new Category
+            {
+                Id = 1
+            }
         };
 
         var productDto = new ProductDto(product);
@@ -243,6 +247,7 @@ public class ProductDtoTest
             Assert.That(productDto.OwnerId, Is.EqualTo(product.Owner.Id));
             Assert.That(productDto.Amount, Is.EqualTo(product.Amount));
             Assert.That(productDto.Currency, Is.EqualTo(product.Currency));
+            Assert.That(productDto.CategoryId, Is.EqualTo(product.Category.Id));
         });
     }
 }

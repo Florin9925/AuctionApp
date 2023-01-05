@@ -24,7 +24,9 @@ public class Product : BaseEntity
 
     [Required] public Currency Currency { get; set; }
 
-    public virtual IList<Offer>? Offers { get; set; }
+    [Required] public Category Category { get; set; }
+
+    public virtual IList<Offer> Offers { get; set; } = new List<Offer>();
 }
 
 public class ProductValidator : AbstractValidator<Product>
@@ -37,8 +39,10 @@ public class ProductValidator : AbstractValidator<Product>
         RuleFor(p => p.Description).MinimumLength(2);
         RuleFor(p => p.StartDate).LessThan(p => p.EndDate).WithMessage("Start date must be before end date");
         RuleFor(p => p.StartDate).GreaterThan(DateTime.Now).WithMessage("Start date must be in the future");
-        RuleFor(p=>p.Owner).NotNull();
+        RuleFor(p => p.Owner).NotNull();
+        RuleFor(p => p.Category).NotNull();
         RuleFor(p => p.Currency).IsInEnum();
         RuleFor(p => p.Amount).GreaterThan(0);
+        RuleFor(p => p.Offers).NotNull();
     }
 }

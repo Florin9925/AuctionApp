@@ -12,6 +12,7 @@ public class ProductDto : BaseDto
     public DateTime EndDate { get; set; }
     public int OwnerId { get; set; }
     public Currency Currency { get; set; }
+    public int CategoryId { get; set; }
     public int Amount { get; set; }
 
     public ProductDto(Product product)
@@ -24,6 +25,7 @@ public class ProductDto : BaseDto
         OwnerId = product.Owner.Id;
         Currency = product.Currency;
         Amount = product.Amount;
+        CategoryId = product.Category.Id;
     }
 
     public ProductDto()
@@ -44,5 +46,6 @@ public class ProductDtoValidator : AbstractValidator<ProductDto>
         RuleFor(p=>p.OwnerId).GreaterThan(0);
         RuleFor(p => p.Currency).IsInEnum();
         RuleFor(p => p.Amount).GreaterThan(0);
+        RuleFor(p => p.CategoryId).GreaterThan(0);
     }
 }
