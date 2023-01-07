@@ -8,16 +8,19 @@ public class RoleServiceImpl : IRoleService
 {
     private readonly IRoleDataServices _roleDataServices;
     private readonly ILogger _logger;
-    
-    public RoleServiceImpl(IRoleDataServices roleDataServices, ILogger<RoleServiceImpl> logger)
+    private readonly RoleDtoValidator _validator;
+
+    public RoleServiceImpl(IRoleDataServices roleDataServices, ILogger logger, RoleDtoValidator validator)
     {
         _roleDataServices = roleDataServices;
         _logger = logger;
+        _validator = validator;
     }
 
     public IList<RoleDto> GetAll()
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Getting all roles");
+        return _roleDataServices.GetAll().Select(role => new RoleDto(role)).ToList();
     }
 
     public void Delete(RoleDto dto)
