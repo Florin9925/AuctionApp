@@ -7,12 +7,17 @@ namespace ServiceLayer.ServiceImplementation;
 public class ScoreServiceImpl : IScoreService
 {
     private readonly IScoreDataServices _scoreDataServices;
-    private readonly ILogger _logger;
+    private readonly IUserDataServices _userDataServices;
+    private readonly ILogger<ScoreServiceImpl> _logger;
 
-    public ScoreServiceImpl(IScoreDataServices scoreDataServices, ILogger<ScoreServiceImpl> logger)
+    public ScoreServiceImpl(
+        IScoreDataServices scoreDataServices,
+        ILogger<ScoreServiceImpl> logger,
+        IUserDataServices userDataServices)
     {
         _scoreDataServices = scoreDataServices;
         _logger = logger;
+        _userDataServices = userDataServices;
     }
 
     public IList<ScoreDto> GetAll()

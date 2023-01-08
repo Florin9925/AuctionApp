@@ -1,10 +1,8 @@
 ﻿using DataMapper;
-using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using ServiceLayer.Exception;
 
 namespace ServiceLayer.ServiceImplementation;
@@ -12,12 +10,12 @@ namespace ServiceLayer.ServiceImplementation;
 public class UserServiceImpl : IUserService
 {
     private readonly IUserDataServices _userAccountDataServices;
-    private readonly ILogger _logger;
+    private readonly ILogger<UserServiceImpl> _logger;
     private readonly UserDtoValidator _validator;
 
     public UserServiceImpl(
         IUserDataServices userAccountDataServices,
-        ILogger logger,
+        ILogger<UserServiceImpl> logger,
         UserDtoValidator validator)
     {
         _userAccountDataServices = userAccountDataServices;
@@ -28,7 +26,14 @@ public class UserServiceImpl : IUserService
     void ICRUDService<UserDto>.Delete(UserDto dto)
     {
         _logger.LogInformation("Delete user with id {0}", dto.Id);
-        _userAccountDataServices.Delete(_userAccountDataServices.GetById(dto.Id));
+
+        var user = _userAccountDataServices.GetById(dto.Id);
+        if (user == null)
+        {
+            throw new NotFoundException<UserDto>(dto);
+        }
+
+        _userAccountDataServices.Delete(user);
     }
 
     IList<UserDto> ICRUDService<UserDto>.GetAll()
@@ -42,7 +47,13 @@ public class UserServiceImpl : IUserService
     UserDto ICRUDService<UserDto>.GetById(int id)
     {
         _logger.LogInformation("Get user with id {0}", id);
+
         var user = _userAccountDataServices.GetById(id);
+        if (user == null)
+        {
+            throw new NotFoundException<UserDto>(id);
+        }
+
         return new UserDto(user);
     }
 
@@ -73,7 +84,7 @@ public class UserServiceImpl : IUserService
         var user = _userAccountDataServices.GetById(dto.Id);
         if (user == null)
         {
-            throw new InvalidUserExeption(dto);
+            throw new NotFoundException<UserDto>(dto);
         }
 
         user.FirstName = dto.FirstName;

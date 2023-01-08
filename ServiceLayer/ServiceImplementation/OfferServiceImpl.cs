@@ -8,11 +8,19 @@ namespace ServiceLayer.ServiceImplementation;
 public class OfferServiceImpl : IOfferService
 {
     private readonly IOfferDataServices _offerDataServices;
-    private readonly ILogger _logger;
+    private readonly IProductDataServices _productDataServices;
+    private readonly IUserDataServices _userDataServices;
+    private readonly ILogger<OfferServiceImpl> _logger;
 
-    public OfferServiceImpl(IOfferDataServices offerDataServices, ILogger<OfferServiceImpl> logger)
+    public OfferServiceImpl(
+        IOfferDataServices offerDataServices,
+        IProductDataServices productDataServices,
+        IUserDataServices userDataServices,
+        ILogger<OfferServiceImpl> logger)
     {
         _offerDataServices = offerDataServices;
+        _productDataServices = productDataServices;
+        _userDataServices = userDataServices;
         _logger = logger;
     }
 

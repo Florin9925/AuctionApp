@@ -8,23 +8,18 @@ namespace AuctionApp.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserService userService;
+    private readonly IUserService _userService;
 
     public UserController(IUserService userService)
     {
-        this.userService = userService;
+        _userService = userService;
     }
 
     // GET: api/UserAccounts
     [HttpGet]
     public ActionResult<IEnumerable<UserDto>> GetUserAccount()
     {
-        var users = userService.GetAll();
-        if (users == null)
-        {
-            return NotFound();
-        }
-
+        var users = _userService.GetAll();
         return users.ToList();
     }
 

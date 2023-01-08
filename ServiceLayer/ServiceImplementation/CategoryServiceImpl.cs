@@ -7,11 +7,16 @@ namespace ServiceLayer.ServiceImplementation;
 public class CategoryServiceImpl : ICategoryService
 {
     private readonly ICategoryDataServices _categoryDataServices;
-    private readonly ILogger _logger;
+    private readonly IUserDataServices _userDataServices;
+    private readonly ILogger<CategoryServiceImpl> _logger;
 
-    public CategoryServiceImpl(ICategoryDataServices categoryDataServices, ILogger<CategoryServiceImpl> logger)
+    public CategoryServiceImpl(
+        ICategoryDataServices categoryDataServices,
+        IUserDataServices userDataServices,
+        ILogger<CategoryServiceImpl> logger)
     {
         _categoryDataServices = categoryDataServices;
+        _userDataServices = userDataServices;
         _logger = logger;
     }
 

@@ -6,13 +6,21 @@ namespace ServiceLayer.ServiceImplementation;
 
 public class ProductServiceImpl : IProductService
 {
+    private readonly ICategoryDataServices _categoryDataServices;
     private readonly IProductDataServices _productDataServices;
-    private readonly ILogger _logger;
+    private readonly IUserDataServices _userDataServices;
+    private readonly ILogger<ProductServiceImpl> _logger;
 
-    public ProductServiceImpl(IProductDataServices productDataServices, ILogger<ProductServiceImpl> logger)
+    public ProductServiceImpl(
+        IProductDataServices productDataServices,
+        ILogger<ProductServiceImpl> logger,
+        ICategoryDataServices categoryDataServices,
+        IUserDataServices userDataServices)
     {
         _productDataServices = productDataServices;
         _logger = logger;
+        _categoryDataServices = categoryDataServices;
+        _userDataServices = userDataServices;
     }
 
     void ICRUDService<ProductDto>.Delete(ProductDto dto)
