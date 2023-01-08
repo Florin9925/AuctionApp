@@ -34,7 +34,7 @@ public class RoleServiceImpl : IRoleService
         var role = _roleDataServices.GetById(dto.Id);
         if (role == null)
         {
-            throw new NotFoundException<RoleDto>(dto);
+            throw new NotFoundException<RoleDto>(dto, _logger);
         }
 
         _roleDataServices.Delete(role);
@@ -48,8 +48,8 @@ public class RoleServiceImpl : IRoleService
 
         var role = _roleDataServices.GetById(dto.Id);
         if (role == null)
-        {
-            throw new NotFoundException<RoleDto>(dto);
+        { 
+            throw new NotFoundException<RoleDto>(dto, _logger);
         }
 
         role.Name = dto.Name;
@@ -64,7 +64,7 @@ public class RoleServiceImpl : IRoleService
         var role = _roleDataServices.GetById(id);
         if (role == null)
         {
-            throw new NotFoundException<RoleDto>(id);
+            throw new NotFoundException<RoleDto>(id, _logger);
         }
 
         return new RoleDto(role);

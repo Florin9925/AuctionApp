@@ -30,7 +30,7 @@ public class CategoryServiceImpl : ICategoryService
         var category = _categoryDataServices.GetById(dto.Id);
         if (category == null)
         {
-            throw new NotFoundException<CategoryDto>(dto);
+            throw new NotFoundException<CategoryDto>(dto, _logger);
         }
 
         _categoryDataServices.Delete(category);
@@ -50,7 +50,7 @@ public class CategoryServiceImpl : ICategoryService
         var category = _categoryDataServices.GetById(id);
         if (category == null)
         {
-            throw new NotFoundException<CategoryDto>(id);
+            throw new NotFoundException<CategoryDto>(id, _logger);
         }
 
         return new CategoryDto(category);
@@ -84,7 +84,7 @@ public class CategoryServiceImpl : ICategoryService
         var category = _categoryDataServices.GetById(dto.Id);
         if (category == null)
         {
-            throw new NotFoundException<CategoryDto>(dto);
+            throw new NotFoundException<CategoryDto>(dto, _logger);
         }
 
         category.Name = dto.Name;

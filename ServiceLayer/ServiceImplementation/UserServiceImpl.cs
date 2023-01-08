@@ -30,7 +30,7 @@ public class UserServiceImpl : IUserService
         var user = _userAccountDataServices.GetById(dto.Id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(dto);
+            throw new NotFoundException<UserDto>(dto, _logger);
         }
 
         _userAccountDataServices.Delete(user);
@@ -51,7 +51,7 @@ public class UserServiceImpl : IUserService
         var user = _userAccountDataServices.GetById(id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(id);
+            throw new NotFoundException<UserDto>(id, _logger);
         }
 
         return new UserDto(user);
@@ -84,7 +84,7 @@ public class UserServiceImpl : IUserService
         var user = _userAccountDataServices.GetById(dto.Id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(dto);
+            throw new NotFoundException<UserDto>(dto, _logger);
         }
 
         user.FirstName = dto.FirstName;
