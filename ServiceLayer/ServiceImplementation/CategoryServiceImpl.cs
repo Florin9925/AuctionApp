@@ -1,47 +1,96 @@
 ﻿using DataMapper;
 using DomainModel.Dto;
+using DomainModel.Entity;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
+using ServiceLayer.Exception;
 
 namespace ServiceLayer.ServiceImplementation;
 
 public class CategoryServiceImpl : ICategoryService
 {
     private readonly ICategoryDataServices _categoryDataServices;
-    private readonly IUserDataServices _userDataServices;
     private readonly ILogger<CategoryServiceImpl> _logger;
+    private readonly CategoryDtoValidator _validator;
 
     public CategoryServiceImpl(
         ICategoryDataServices categoryDataServices,
-        IUserDataServices userDataServices,
-        ILogger<CategoryServiceImpl> logger)
+        ILogger<CategoryServiceImpl> logger,
+        CategoryDtoValidator validator)
     {
         _categoryDataServices = categoryDataServices;
-        _userDataServices = userDataServices;
         _logger = logger;
+        _validator = validator;
     }
 
     void ICRUDService<CategoryDto>.Delete(CategoryDto dto)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Delete category {0}", dto);
+
+        var category = _categoryDataServices.GetById(dto.Id);
+        if (category == null)
+        {
+            throw new NotFoundException<CategoryDto>(dto);
+        }
+
+        _categoryDataServices.Delete(category);
     }
 
     IList<CategoryDto> ICRUDService<CategoryDto>.GetAll()
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Get all categories");
+
+        return _categoryDataServices.GetAll().Select(c => new CategoryDto(c)).ToList();
     }
 
     CategoryDto ICRUDService<CategoryDto>.GetById(int id)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Get category by id {0}", id);
+
+        var category = _categoryDataServices.GetById(id);
+        if (category == null)
+        {
+            throw new NotFoundException<CategoryDto>(id);
+        }
+
+        return new CategoryDto(category);
     }
 
     CategoryDto ICRUDService<CategoryDto>.Insert(CategoryDto dto)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Insert category {0}", dto);
+
+        _validator.ValidateAndThrow(dto);
+
+        var category = new Category
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            ChildCategories = dto.ChildCategoryIds.Select(id => _categoryDataServices.GetById(id)).ToList(),
+            ParentCategories = dto.ParentCategoryIds.Select(id => _categoryDataServices.GetById(id)).ToList()
+        };
+
+        _categoryDataServices.Insert(category);
+
+        return new CategoryDto(category);
     }
 
     CategoryDto ICRUDService<CategoryDto>.Update(CategoryDto dto)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Update category {0}", dto);
+
+        _validator.ValidateAndThrow(dto);
+
+        var category = _categoryDataServices.GetById(dto.Id);
+        if (category == null)
+        {
+            throw new NotFoundException<CategoryDto>(dto);
+        }
+
+        category.Name = dto.Name;
+        category.ChildCategories = dto.ChildCategoryIds.Select(id => _categoryDataServices.GetById(id)).ToList();
+        category.ParentCategories = dto.ParentCategoryIds.Select(id => _categoryDataServices.GetById(id)).ToList();
+
+        return new CategoryDto(_categoryDataServices.Update(category));
     }
 }
