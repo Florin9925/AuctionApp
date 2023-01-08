@@ -189,6 +189,30 @@ public class ProductDtoTest
         var result = _validator.TestValidate(product);
         result.ShouldNotHaveValidationErrorFor(p => p.Amount);
     }
+    
+    [Test]
+    public void ProductDtoInitialPriceIsInvalid()
+    {
+        var product = new ProductDto
+        {
+            InitialPrice = -1
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldHaveValidationErrorFor(p => p.InitialPrice);
+    }
+
+    [Test]
+    public void ProductDtoInitialPriceIsValid()
+    {
+        var product = new ProductDto
+        {
+            InitialPrice = 1
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldNotHaveValidationErrorFor(p => p.InitialPrice);
+    }
 
     [Test]
     public void ProductDtoCurrencyIsValid()

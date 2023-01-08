@@ -21,6 +21,7 @@ public class Product : BaseEntity
     [Required] public User Owner { get; set; }
 
     [Required] public int Amount { get; set; } = 1;
+    [Required] public decimal InitialPrice { get; set; } = 0;
 
     [Required] public Currency Currency { get; set; }
 
@@ -43,6 +44,7 @@ public class ProductValidator : AbstractValidator<Product>
         RuleFor(p => p.Category).NotNull();
         RuleFor(p => p.Currency).IsInEnum();
         RuleFor(p => p.Amount).GreaterThan(0);
+        RuleFor(p => p.InitialPrice).GreaterThanOrEqualTo(0);
         RuleFor(p => p.Offers).NotNull();
     }
 }

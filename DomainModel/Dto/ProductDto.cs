@@ -14,6 +14,7 @@ public class ProductDto : BaseDto
     public Currency Currency { get; set; }
     public int CategoryId { get; set; }
     public int Amount { get; set; }
+    public decimal InitialPrice { get; set; }
 
     public ProductDto(Product product)
     {
@@ -26,6 +27,7 @@ public class ProductDto : BaseDto
         Currency = product.Currency;
         Amount = product.Amount;
         CategoryId = product.Category.Id;
+        InitialPrice = product.InitialPrice;
     }
 
     public ProductDto()
@@ -43,9 +45,10 @@ public class ProductDtoValidator : AbstractValidator<ProductDto>
         RuleFor(p => p.Description).MinimumLength(2);
         RuleFor(p => p.StartDate).LessThan(p => p.EndDate).WithMessage("Start date must be before end date");
         RuleFor(p => p.StartDate).GreaterThan(DateTime.Now).WithMessage("Start date must be in the future");
-        RuleFor(p=>p.OwnerId).GreaterThan(0);
+        RuleFor(p => p.OwnerId).GreaterThan(0);
         RuleFor(p => p.Currency).IsInEnum();
         RuleFor(p => p.Amount).GreaterThan(0);
         RuleFor(p => p.CategoryId).GreaterThan(0);
+        RuleFor(p => p.InitialPrice).GreaterThanOrEqualTo(0);
     }
 }

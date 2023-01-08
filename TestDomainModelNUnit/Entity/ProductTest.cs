@@ -261,4 +261,27 @@ public class ProductTest
         result.ShouldNotHaveValidationErrorFor(p => p.Offers);
     }
     
+    [Test]
+    public void ProductInitialPriceIsInvalid()
+    {
+        var product = new Product
+        {
+            InitialPrice = -1
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldHaveValidationErrorFor(p => p.InitialPrice);
+    }
+
+    [Test]
+    public void ProductInitialPriceIsValid()
+    {
+        var product = new Product
+        {
+            InitialPrice = 1
+        };
+
+        var result = _validator.TestValidate(product);
+        result.ShouldNotHaveValidationErrorFor(p => p.InitialPrice);
+    }
 }
