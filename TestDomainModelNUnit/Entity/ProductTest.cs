@@ -212,7 +212,7 @@ public class ProductTest
         var result = _validator.TestValidate(product);
         result.ShouldHaveValidationErrorFor(p => p.Currency);
     }
-    
+
     [Test]
     public void ProductCategoryIsNull()
     {
@@ -236,7 +236,7 @@ public class ProductTest
         var result = _validator.TestValidate(product);
         result.ShouldNotHaveValidationErrorFor(p => p.Category);
     }
-    
+
     [Test]
     public void ProductOffersIsNull()
     {
@@ -260,7 +260,7 @@ public class ProductTest
         var result = _validator.TestValidate(product);
         result.ShouldNotHaveValidationErrorFor(p => p.Offers);
     }
-    
+
     [Test]
     public void ProductInitialPriceIsInvalid()
     {
@@ -283,5 +283,11 @@ public class ProductTest
 
         var result = _validator.TestValidate(product);
         result.ShouldNotHaveValidationErrorFor(p => p.InitialPrice);
+    }
+
+    [Test]
+    public void ProductIsCompletedDefaultFalse()
+    {
+        Assert.That(new Product().IsCompleted, Is.False);
     }
 }

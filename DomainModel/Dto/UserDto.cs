@@ -27,6 +27,11 @@ public class UserDto : BaseDto
     public string Address { get; set; }
     public string PhoneNumber { get; set; }
     public string Username { get; set; }
+
+    public override string ToString()
+    {
+        return $"{FirstName} {LastName}";
+    }
 }
 
 public partial class UserDtoValidator : AbstractValidator<UserDto>

@@ -22,6 +22,11 @@ public class OfferDto : BaseDto
         BidderId = offer.Bidder.Id;
         DateTime = offer.DateTime;
     }
+
+    public override string ToString()
+    {
+        return $"OfferDto: Id={Id}, ProductId={ProductId}, Price={Price}, BidderId={BidderId}, DateTime={DateTime}";
+    }
 }
 
 public class OfferDtoValidator : AbstractValidator<OfferDto>

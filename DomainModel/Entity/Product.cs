@@ -27,6 +27,8 @@ public class Product : BaseEntity
 
     [Required] public Category Category { get; set; }
 
+    [Required] public bool IsCompleted { get; set; } = false;
+
     public virtual IList<Offer> Offers { get; set; } = new List<Offer>();
 }
 

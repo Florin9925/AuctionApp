@@ -55,4 +55,12 @@ public class PostgresOfferDataServices : IOfferDataServices
     {
         return _context.Offers.ToList();
     }
+
+    public Offer GetLastProductOffer(int productId)
+    {
+        return _context.Offers
+            .Where(o => o.Product.Id == productId)
+            .OrderBy(o => o.DateTime)
+            .LastOrDefault();
+    }
 }

@@ -15,6 +15,7 @@ public class ProductDto : BaseDto
     public int CategoryId { get; set; }
     public int Amount { get; set; }
     public decimal InitialPrice { get; set; }
+    public bool IsCompleted{ get; set; } = false;
 
     public ProductDto(Product product)
     {
@@ -28,6 +29,7 @@ public class ProductDto : BaseDto
         Amount = product.Amount;
         CategoryId = product.Category.Id;
         InitialPrice = product.InitialPrice;
+        IsCompleted = product.IsCompleted;
     }
 
     public ProductDto()
