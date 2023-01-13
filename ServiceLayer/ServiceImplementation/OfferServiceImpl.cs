@@ -83,16 +83,16 @@ public class OfferServiceImpl : IOfferService
         {
             var product = _productDataServices.GetById(dto.ProductId);
 
-            if (dto.Price > product.InitialPrice * 3)
+            if (dto.Price > product.InitialPrice * 4)
             {
-                throw new InvalidOfferException(dto, _logger);
+                throw new InvalidDataException<OfferDto>(dto, _logger);
             }
         }
         else
         {
             if (dto.Price > lastOffer.Price * 3)
             {
-                throw new InvalidOfferException(dto, _logger);
+                throw new InvalidDataException<OfferDto>(dto, _logger);
             }
         }
 
