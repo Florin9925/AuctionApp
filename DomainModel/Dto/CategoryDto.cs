@@ -20,6 +20,22 @@ public class CategoryDto : BaseDto
         ChildCategoryIds = category.ChildCategories.Select(x => x.Id).ToList();
         ParentCategoryIds = category.ParentCategories.Select(x => x.Id).ToList();
     }
+
+    public override bool Equals(object obj)
+    {
+        var role = obj as CategoryDto;
+        return role != null &&
+               Id == role.Id &&
+               Name == role.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -1509228638;
+        hashCode = hashCode * -1521134295 + Id.GetHashCode();
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+        return hashCode;
+    }
 }
 
 public class CategoryDtoValidator : AbstractValidator<CategoryDto>

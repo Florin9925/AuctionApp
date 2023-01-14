@@ -64,15 +64,13 @@ public class CategoryServiceImpl : ICategoryService
 
         var category = new Category
         {
-            Id = dto.Id,
+            Id = 0,
             Name = dto.Name,
             ChildCategories = dto.ChildCategoryIds.Select(id => _categoryDataServices.GetById(id)).ToList(),
             ParentCategories = dto.ParentCategoryIds.Select(id => _categoryDataServices.GetById(id)).ToList()
         };
-
-        _categoryDataServices.Insert(category);
-
-        return new CategoryDto(category);
+        
+        return new CategoryDto(_categoryDataServices.Insert(category));
     }
 
     CategoryDto ICRUDService<CategoryDto>.Update(CategoryDto dto)
