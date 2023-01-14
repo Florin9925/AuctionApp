@@ -32,6 +32,23 @@ public class UserDto : BaseDto
     {
         return $"{FirstName} {LastName}";
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is UserDto dto &&
+               Id == dto.Id &&
+               FirstName == dto.FirstName &&
+               LastName == dto.LastName &&
+               Email == dto.Email &&
+               Address == dto.Address &&
+               PhoneNumber == dto.PhoneNumber &&
+               Username == dto.Username;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, FirstName, LastName, Email, Address, PhoneNumber, Username);
+    }
 }
 
 public partial class UserDtoValidator : AbstractValidator<UserDto>

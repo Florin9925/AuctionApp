@@ -64,7 +64,7 @@ public class UserServiceImpl : IUserService
 
         var user = new User
         {
-            Id = dto.Id,
+            Id = 0,
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Email = dto.Email,

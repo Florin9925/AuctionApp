@@ -1,5 +1,6 @@
 ﻿using DomainModel.Dto;
 using DomainModel.Entity;
+using FluentValidation;
 
 namespace AuctionApp.Extensions;
 
@@ -7,6 +8,7 @@ public static class ValidatorExtensions
 {
     public static void AddValidators(this IServiceCollection services)
     {
+        //services.AddScoped<IValidator<Category>, CategoryValidator>();
         services.AddScoped<CategoryValidator>();
         services.AddScoped<CategoryDtoValidator>();
 
