@@ -1,10 +1,8 @@
 ﻿using DataMapper;
-using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using ServiceLayer.Exception;
 
 namespace ServiceLayer.ServiceImplementation;
@@ -16,22 +14,19 @@ public class OfferServiceImpl : IOfferService
     private readonly IUserDataServices _userDataServices;
     private readonly ILogger<OfferServiceImpl> _logger;
     private readonly OfferDtoValidator _validator;
-    private readonly MyConfiguration _myConfiguration;
 
     public OfferServiceImpl(
         IOfferDataServices offerDataServices,
         IProductDataServices productDataServices,
         IUserDataServices userDataServices,
         ILogger<OfferServiceImpl> logger,
-        OfferDtoValidator validator,
-        IOptions<MyConfiguration> myConfiguration)
+        OfferDtoValidator validator)
     {
         _offerDataServices = offerDataServices;
         _productDataServices = productDataServices;
         _userDataServices = userDataServices;
         _logger = logger;
         _validator = validator;
-        _myConfiguration = myConfiguration.Value;
     }
 
     public IList<OfferDto> GetAll()
@@ -54,6 +49,7 @@ public class OfferServiceImpl : IOfferService
         _offerDataServices.Delete(offer);
     }
 
+    [Obsolete("Method not allowed")]
     public OfferDto Update(OfferDto dto)
     {
         throw new NotImplementedException();
@@ -72,40 +68,80 @@ public class OfferServiceImpl : IOfferService
         return new OfferDto(offer);
     }
 
+    public IList<OfferDto> GetAllProductOffers(int productId)
+    {
+        _logger.LogInformation("Get all offers for product {0}", productId);
+
+        return _offerDataServices
+            .GetAllProductOffers(productId)
+            .Select(x => new OfferDto(x))
+            .ToList();
+    }
+
+    public OfferDto GetLastProductOffer(int productId)
+    {
+        _logger.LogInformation("Get last offer for product {0}", productId);
+
+        var product = _productDataServices.GetById(productId);
+
+        if (product == null)
+        {
+            throw new NotFoundException<ProductDto>(productId, _logger);
+        }
+
+        var offer = _offerDataServices.GetLastProductOffer(productId);
+
+        return offer != null ? new OfferDto(offer) : null;
+    }
+
     public OfferDto Insert(OfferDto dto)
     {
         _logger.LogInformation("Insert offer {0}", dto);
 
         _validator.ValidateAndThrow(dto);
 
-        var lastOffer = _offerDataServices.GetLastProductOffer(dto.ProductId);
-        if (lastOffer == null)
+        var product = _productDataServices.GetById(dto.ProductId);
+        if (product == null)
         {
-            var product = _productDataServices.GetById(dto.ProductId);
+            throw new NotFoundException<ProductDto>(dto.ProductId, _logger);
+        }
 
-            if (dto.Price > product.InitialPrice * 4)
-            {
-                throw new InvalidDataException<OfferDto>(dto, _logger);
-            }
-        }
-        else
+        var user = _userDataServices.GetById(dto.BidderId);
+        if (user == null)
         {
-            if (dto.Price > lastOffer.Price * 3)
-            {
-                throw new InvalidDataException<OfferDto>(dto, _logger);
-            }
+            throw new NotFoundException<UserDto>(dto.BidderId, _logger);
         }
+
+        CheckLastOffer(dto, product);
 
         var offer = new Offer
         {
             Id = 0,
             Product = _productDataServices.GetById(dto.ProductId),
             Bidder = _userDataServices.GetById(dto.BidderId),
+            DateTime = dto.DateTime,
             Price = dto.Price,
         };
 
-        _offerDataServices.Insert(offer);
+        return new OfferDto(_offerDataServices.Insert(offer));
+    }
 
-        return new OfferDto(offer);
+    private void CheckLastOffer(OfferDto dto, Product product)
+    {
+        var lastOffer = _offerDataServices.GetLastProductOffer(dto.ProductId);
+        if (lastOffer == null)
+        {
+            if (dto.Price > product.InitialPrice * 4 || dto.Price < product.InitialPrice)
+            {
+                throw new InvalidDataException<OfferDto>(dto, _logger);
+            }
+        }
+        else
+        {
+            if (dto.Price > lastOffer.Price * 4 || dto.Price < lastOffer.Price)
+            {
+                throw new InvalidDataException<OfferDto>(dto, _logger);
+            }
+        }
     }
 }

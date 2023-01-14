@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ServiceLayer.Exception;
 
-public class ToManyProductsException : System.Exception
+public class TooManyProductsException : System.Exception
 {
-    public ToManyProductsException(ILogger logger) : base("Too many products")
+    public TooManyProductsException(ILogger logger) : base("Too many products")
     {
         logger.LogError("Too many products");
     }

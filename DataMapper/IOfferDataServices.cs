@@ -5,4 +5,6 @@ namespace DataMapper;
 public interface IOfferDataServices : IRepository<Offer>
 {
     Offer GetLastProductOffer(int productId);
+    
+    IList<Offer> GetAllProductOffers(int productId);
 }

@@ -63,4 +63,12 @@ public class PostgresOfferDataServices : IOfferDataServices
             .OrderBy(o => o.DateTime)
             .LastOrDefault();
     }
+
+    public IList<Offer> GetAllProductOffers(int productId)
+    {
+        return _context.Offers
+            .Where(o => o.Product.Id == productId)
+            .OrderBy(o => o.DateTime)
+            .ToList();
+    }
 }

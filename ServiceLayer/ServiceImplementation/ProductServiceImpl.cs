@@ -80,7 +80,7 @@ public class ProductServiceImpl : IProductService
 
         if (_productDataServices.GetActiveUserProductsCount(dto.OwnerId) > _myConfiguration.K)
         {
-            throw new ToManyProductsException(_logger);
+            throw new TooManyProductsException(_logger);
         }
 
         var product = new Product

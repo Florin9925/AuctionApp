@@ -124,9 +124,7 @@ public class CategoryServiceTest
         categoryDataServicesMock.Setup(x => x.GetById(INVALID_ID))
             .Returns(nullCategory);
 
-        var result = categoryService.GetById(INVALID_ID);
-
-        Assert.IsNull(result);
+        categoryService.GetById(INVALID_ID);
     }
 
     [TestMethod]

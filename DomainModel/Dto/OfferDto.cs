@@ -27,6 +27,20 @@ public class OfferDto : BaseDto
     {
         return $"OfferDto: Id={Id}, ProductId={ProductId}, Price={Price}, BidderId={BidderId}, DateTime={DateTime}";
     }
+
+    public override bool Equals(object obj)
+    {
+        return obj is OfferDto dto &&
+               Id == dto.Id &&
+               ProductId == dto.ProductId &&
+               Price == dto.Price &&
+               BidderId == dto.BidderId;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, ProductId, Price, BidderId, DateTime);
+    }
 }
 
 public class OfferDtoValidator : AbstractValidator<OfferDto>
