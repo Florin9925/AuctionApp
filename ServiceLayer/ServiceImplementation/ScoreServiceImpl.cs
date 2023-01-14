@@ -1,8 +1,10 @@
 ﻿using DataMapper;
+using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ServiceLayer.Exception;
 
 namespace ServiceLayer.ServiceImplementation;
@@ -13,17 +15,21 @@ public class ScoreServiceImpl : IScoreService
     private readonly IUserDataServices _userDataServices;
     private readonly ILogger<ScoreServiceImpl> _logger;
     private readonly ScoreDtoValidator _validator;
+    private readonly MyConfiguration _myConfiguration;
+
 
     public ScoreServiceImpl(
         IScoreDataServices scoreDataServices,
         ILogger<ScoreServiceImpl> logger,
         IUserDataServices userDataServices,
-        ScoreDtoValidator validator)
+        ScoreDtoValidator validator,
+        IOptions<MyConfiguration> myConfiguration)
     {
         _scoreDataServices = scoreDataServices;
         _logger = logger;
         _userDataServices = userDataServices;
         _validator = validator;
+        _myConfiguration = myConfiguration.Value;
     }
 
     public IList<ScoreDto> GetAll()
@@ -89,5 +95,12 @@ public class ScoreServiceImpl : IScoreService
         };
 
         return new ScoreDto(_scoreDataServices.Insert(score));
+    }
+
+    public decimal GetUserScore(int userId)
+    {
+        var score = _scoreDataServices.GetUserScore(userId);
+
+        return score == -1 ? _myConfiguration.S : score;
     }
 }

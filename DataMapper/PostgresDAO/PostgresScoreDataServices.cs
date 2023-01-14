@@ -52,4 +52,9 @@ public class PostgresScoreDataServices : IScoreDataServices
     {
         return _context.Scores.ToList();
     }
+
+    public decimal GetUserScore(int userId)
+    {
+        throw new NotImplementedException();
+    }
 }
