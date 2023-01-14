@@ -4,7 +4,7 @@ public interface ICRUDService<T>
 {
     IList<T> GetAll();
 
-    void Delete(T dto);
+    void DeleteById(int id);
 
     T Update(T dto);
 

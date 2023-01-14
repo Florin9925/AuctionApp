@@ -23,14 +23,14 @@ public class UserServiceImpl : IUserService
         _validator = validator;
     }
 
-    void ICRUDService<UserDto>.Delete(UserDto dto)
+    void ICRUDService<UserDto>.DeleteById(int id)
     {
-        _logger.LogInformation("Delete user with id {0}", dto.Id);
+        _logger.LogInformation("Delete user with id {0}", id);
 
-        var user = _userAccountDataServices.GetById(dto.Id);
+        var user = _userAccountDataServices.GetById(id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(dto, _logger);
+            throw new NotFoundException<UserDto>(id, _logger);
         }
 
         _userAccountDataServices.Delete(user);

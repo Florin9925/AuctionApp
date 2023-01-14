@@ -36,14 +36,14 @@ public class ProductServiceImpl : IProductService
         _myConfiguration = myConfiguration.Value;
     }
 
-    void ICRUDService<ProductDto>.Delete(ProductDto dto)
+    void ICRUDService<ProductDto>.DeleteById(int id)
     {
         _logger.LogInformation("Delete product");
-        var product = _productDataServices.GetById(dto.Id);
+        var product = _productDataServices.GetById(id);
 
         if (product == null)
         {
-            throw new NotFoundException<ProductDto>(dto, _logger);
+            throw new NotFoundException<ProductDto>(id, _logger);
         }
 
         _productDataServices.Delete(product);

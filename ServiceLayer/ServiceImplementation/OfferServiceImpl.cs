@@ -41,14 +41,14 @@ public class OfferServiceImpl : IOfferService
         return _offerDataServices.GetAll().Select(o => new OfferDto(o)).ToList();
     }
 
-    public void Delete(OfferDto dto)
+    public void DeleteById(int id)
     {
-        _logger.LogInformation("Delete offer {0}", dto);
+        _logger.LogInformation("Delete offer {0}", id);
 
-        var offer = _offerDataServices.GetById(dto.Id);
+        var offer = _offerDataServices.GetById(id);
         if (offer == null)
         {
-            throw new NotFoundException<OfferDto>(dto, _logger);
+            throw new NotFoundException<OfferDto>(id, _logger);
         }
 
         _offerDataServices.Delete(offer);

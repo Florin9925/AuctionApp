@@ -23,14 +23,14 @@ public class CategoryServiceImpl : ICategoryService
         _validator = validator;
     }
 
-    void ICRUDService<CategoryDto>.Delete(CategoryDto dto)
+    void ICRUDService<CategoryDto>.DeleteById(int id)
     {
-        _logger.LogInformation("Delete category {0}", dto);
+        _logger.LogInformation("Delete category {0}", id);
 
-        var category = _categoryDataServices.GetById(dto.Id);
+        var category = _categoryDataServices.GetById(id);
         if (category == null)
         {
-            throw new NotFoundException<CategoryDto>(dto, _logger);
+            throw new NotFoundException<CategoryDto>(id, _logger);
         }
 
         _categoryDataServices.Delete(category);

@@ -38,13 +38,13 @@ public class ScoreServiceImpl : IScoreService
         return _scoreDataServices.GetAll().Select(s => new ScoreDto(s)).ToList();
     }
 
-    public void Delete(ScoreDto dto)
+    public void DeleteById(int id)
     {
-        _logger.LogInformation("Deleting score with id {0}", dto.Id);
-        var score = _scoreDataServices.GetById(dto.Id);
+        _logger.LogInformation("Deleting score with id {0}", id);
+        var score = _scoreDataServices.GetById(id);
         if (score == null)
         {
-            throw new NotFoundException<ScoreDto>(dto, _logger);
+            throw new NotFoundException<ScoreDto>(id, _logger);
         }
 
         _scoreDataServices.Delete(score);

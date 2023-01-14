@@ -24,17 +24,18 @@ public class RoleServiceImpl : IRoleService
     public IList<RoleDto> GetAll()
     {
         _logger.LogInformation("Getting all roles");
+
         return _roleDataServices.GetAll().Select(role => new RoleDto(role)).ToList();
     }
 
-    public void Delete(RoleDto dto)
+    public void DeleteById(int id)
     {
-        _logger.LogInformation("Deleting role with id {0}", dto.Id);
+        _logger.LogInformation("Deleting role {0}", id);
 
-        var role = _roleDataServices.GetById(dto.Id);
+        var role = _roleDataServices.GetById(id);
         if (role == null)
         {
-            throw new NotFoundException<RoleDto>(dto, _logger);
+            throw new NotFoundException<RoleDto>(id, _logger);
         }
 
         _roleDataServices.Delete(role);
@@ -42,13 +43,13 @@ public class RoleServiceImpl : IRoleService
 
     public RoleDto Update(RoleDto dto)
     {
-        _logger.LogInformation("Updating role with id {0}", dto.Id);
+        _logger.LogInformation("Updating role {0}", dto);
 
         _validator.ValidateAndThrow(dto);
 
         var role = _roleDataServices.GetById(dto.Id);
         if (role == null)
-        { 
+        {
             throw new NotFoundException<RoleDto>(dto, _logger);
         }
 
@@ -72,7 +73,7 @@ public class RoleServiceImpl : IRoleService
 
     public RoleDto Insert(RoleDto dto)
     {
-        _logger.LogInformation("Inserting role with name {0}", dto.Name);
+        _logger.LogInformation("Inserting role {0}", dto);
 
         _validator.ValidateAndThrow(dto);
 
