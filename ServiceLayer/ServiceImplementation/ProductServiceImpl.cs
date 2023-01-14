@@ -1,9 +1,12 @@
 ﻿using DataMapper;
+using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ServiceLayer.Exception;
+using ServiceLayer.Utils;
 
 namespace ServiceLayer.ServiceImplementation;
 
@@ -14,19 +17,23 @@ public class ProductServiceImpl : IProductService
     private readonly IUserDataServices _userDataServices;
     private readonly ILogger<ProductServiceImpl> _logger;
     private readonly ProductDtoValidator _validator;
+    private readonly MyConfiguration _myConfiguration;
+
 
     public ProductServiceImpl(
         IProductDataServices productDataServices,
         ILogger<ProductServiceImpl> logger,
         ICategoryDataServices categoryDataServices,
         IUserDataServices userDataServices,
-        ProductDtoValidator validator)
+        ProductDtoValidator validator,
+        IOptions<MyConfiguration> myConfiguration)
     {
         _productDataServices = productDataServices;
         _logger = logger;
         _categoryDataServices = categoryDataServices;
         _userDataServices = userDataServices;
         _validator = validator;
+        _myConfiguration = myConfiguration.Value;
     }
 
     void ICRUDService<ProductDto>.Delete(ProductDto dto)
@@ -69,6 +76,13 @@ public class ProductServiceImpl : IProductService
 
         _validator.ValidateAndThrow(dto);
 
+        CheckProductDescription(dto);
+
+        if (_productDataServices.GetActiveUserProductsCount(dto.OwnerId) > _myConfiguration.K)
+        {
+            throw new ToManyProductsException(_logger);
+        }
+
         var product = new Product
         {
             Name = dto.Name,
@@ -81,12 +95,43 @@ public class ProductServiceImpl : IProductService
             Category = _categoryDataServices.GetById(dto.CategoryId),
             Owner = _userDataServices.GetById(dto.OwnerId)
         };
-        
+
         return new ProductDto(_productDataServices.Insert(product));
+    }
+
+    private void CheckProductDescription(ProductDto dto)
+    {
+        var descriptions = _productDataServices.GetUserProductDescriptions(dto.OwnerId);
+
+        if (descriptions.Any(description => StringDistance.LevenshteinDistance(dto.Description, description) < 20))
+        {
+            throw new ProductDescriptionSimilarException(_logger);
+        }
     }
 
     ProductDto ICRUDService<ProductDto>.Update(ProductDto dto)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Update product");
+
+        _validator.ValidateAndThrow(dto);
+
+        var product = _productDataServices.GetById(dto.Id);
+
+        if (product == null)
+        {
+            throw new NotFoundException<ProductDto>(dto, _logger);
+        }
+
+        product.Name = dto.Name;
+        product.Description = dto.Description;
+        product.Amount = dto.Amount;
+        product.StartDate = dto.StartDate;
+        product.EndDate = dto.EndDate;
+        product.Currency = dto.Currency;
+        product.IsCompleted = dto.IsCompleted;
+        product.InitialPrice = dto.InitialPrice;
+        product.Category = _categoryDataServices.GetById(dto.CategoryId);
+
+        return new ProductDto(_productDataServices.Update(product));
     }
 }

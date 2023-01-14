@@ -29,6 +29,20 @@ public class PostgresProductDataServices : IProductDataServices
         return _context.Products.ToList();
     }
 
+    public IEnumerable<string> GetUserProductDescriptions(int userId)
+    {
+        return _context.Products
+            .Where(p => p.Owner.Id == userId)
+            .Select(p => p.Description)
+            .ToList();
+    }
+
+    public int GetActiveUserProductsCount(int userId)
+    {
+        return _context.Products
+            .Count(p => p.Owner.Id == userId && (!p.IsCompleted && p.EndDate > DateTime.Now));
+    }
+
     Product IRepository<Product>.GetById(object id)
     {
         return _context.Products.Find(id);
