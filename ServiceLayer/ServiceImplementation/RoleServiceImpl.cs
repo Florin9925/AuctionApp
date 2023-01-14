@@ -78,7 +78,7 @@ public class RoleServiceImpl : IRoleService
 
         var role = new Role
         {
-            Id = dto.Id,
+            Id = 0,
             Name = dto.Name
         };
 

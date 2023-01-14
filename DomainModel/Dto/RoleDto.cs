@@ -16,6 +16,22 @@ public class RoleDto : BaseDto
     public RoleDto()
     {
     }
+
+    public override bool Equals(object obj)
+    {
+        var role = obj as RoleDto;
+        return role != null &&
+               Id == role.Id &&
+               Name == role.Name;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -1509228638;
+        hashCode = hashCode * -1521134295 + Id.GetHashCode();
+        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+        return hashCode;
+    }
 }
 
 public class RoleDtoValidator : AbstractValidator<RoleDto>
