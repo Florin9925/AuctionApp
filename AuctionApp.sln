@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataMapper", "DataMapper\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDomainModelNUnit", "TestDomainModelNUnit\TestDomainModelNUnit.csproj", "{DC72F551-DCFF-46A3-A91E-F591867AF08D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServiceLayer", "TestServiceLayer\TestServiceLayer.csproj", "{1E3D47E3-2F2B-4BE2-BCCE-B517C9B7CC7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DC72F551-DCFF-46A3-A91E-F591867AF08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC72F551-DCFF-46A3-A91E-F591867AF08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC72F551-DCFF-46A3-A91E-F591867AF08D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E3D47E3-2F2B-4BE2-BCCE-B517C9B7CC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E3D47E3-2F2B-4BE2-BCCE-B517C9B7CC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E3D47E3-2F2B-4BE2-BCCE-B517C9B7CC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E3D47E3-2F2B-4BE2-BCCE-B517C9B7CC7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{9E71DDB5-1494-49FF-B173-DEFAA8E70D30} = {29BDE608-AADF-4C2E-B13E-014FD70795AA}
 		{47229BE9-D8D6-4B93-B075-B582A6280BEE} = {F41F5146-42BA-4BC0-8B29-326F6955AEC7}
 		{DC72F551-DCFF-46A3-A91E-F591867AF08D} = {29BDE608-AADF-4C2E-B13E-014FD70795AA}
+		{1E3D47E3-2F2B-4BE2-BCCE-B517C9B7CC7B} = {F41F5146-42BA-4BC0-8B29-326F6955AEC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A64826B3-1FA4-4406-8149-C263E6E3B5E0}
