@@ -85,13 +85,26 @@ public class ScoreServiceImpl : IScoreService
 
         _validator.ValidateAndThrow(dto);
 
+        var receiver = _userDataServices.GetById(dto.ReceiverId);
+        if (receiver == null)
+        {
+            throw new NotFoundException<UserDto>(dto.ReceiverId, _logger);
+        }
+
+        var reviewer = _userDataServices.GetById(dto.ReviewerId);
+        if (reviewer == null)
+        {
+            throw new NotFoundException<UserDto>(dto.ReviewerId, _logger);
+        }
+
         var score = new Score
         {
+            Id = 0,
             Value = dto.Value,
-            Reviewer = _userDataServices.GetById(dto.ReviewerId),
-            ReviewerId = dto.ReviewerId,
-            Receiver = _userDataServices.GetById(dto.ReceiverId),
-            ReceiverId = dto.ReceiverId
+            Reviewer = reviewer,
+            ReviewerId = reviewer.Id,
+            Receiver = receiver,
+            ReceiverId = receiver.Id
         };
 
         return new ScoreDto(_scoreDataServices.Insert(score));
