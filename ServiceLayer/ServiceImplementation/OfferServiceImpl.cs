@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="OfferServiceImpl.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace ServiceLayer.ServiceImplementation;
+
+using DataMapper;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
@@ -6,16 +12,26 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using ServiceLayer.Exception;
 
-namespace ServiceLayer.ServiceImplementation;
-
+/// <summary>
+/// OfferServiceImpl.
+/// </summary>
+/// <seealso cref="ServiceLayer.IOfferService" />
 public class OfferServiceImpl : IOfferService
 {
-    private readonly IOfferDataServices _offerDataServices;
-    private readonly IProductDataServices _productDataServices;
-    private readonly IUserDataServices _userDataServices;
-    private readonly ILogger<OfferServiceImpl> _logger;
-    private readonly OfferDtoValidator _validator;
+    private readonly IOfferDataServices offerDataServices;
+    private readonly IProductDataServices productDataServices;
+    private readonly IUserDataServices userDataServices;
+    private readonly ILogger<OfferServiceImpl> logger;
+    private readonly OfferDtoValidator validator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OfferServiceImpl"/> class.
+    /// </summary>
+    /// <param name="offerDataServices">The offer data services.</param>
+    /// <param name="productDataServices">The product data services.</param>
+    /// <param name="userDataServices">The user data services.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="validator">The validator.</param>
     public OfferServiceImpl(
         IOfferDataServices offerDataServices,
         IProductDataServices productDataServices,
@@ -23,125 +39,170 @@ public class OfferServiceImpl : IOfferService
         ILogger<OfferServiceImpl> logger,
         OfferDtoValidator validator)
     {
-        _offerDataServices = offerDataServices;
-        _productDataServices = productDataServices;
-        _userDataServices = userDataServices;
-        _logger = logger;
-        _validator = validator;
+        this.offerDataServices = offerDataServices;
+        this.productDataServices = productDataServices;
+        this.userDataServices = userDataServices;
+        this.logger = logger;
+        this.validator = validator;
     }
 
+    /// <summary>
+    /// Gets all.
+    /// </summary>
+    /// <returns>list of offers.</returns>
     public IList<OfferDto> GetAll()
     {
-        _logger.LogInformation("Get all offers");
+        this.logger.LogInformation("Get all offers");
 
-        return _offerDataServices.GetAll().Select(o => new OfferDto(o)).ToList();
+        return this.offerDataServices.GetAll().Select(o => new OfferDto(o)).ToList();
     }
 
+    /// <summary>
+    /// Deletes the by identifier.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <exception cref="NotFoundException&lt;OfferDto&gt;">not found.</exception>
     public void DeleteById(int id)
     {
-        _logger.LogInformation("Delete offer {0}", id);
+        this.logger.LogInformation("Delete offer {0}", id);
 
-        var offer = _offerDataServices.GetById(id);
+        var offer = this.offerDataServices.GetById(id);
         if (offer == null)
         {
-            throw new NotFoundException<OfferDto>(id, _logger);
+            throw new NotFoundException<OfferDto>(id, this.logger);
         }
 
-        _offerDataServices.Delete(offer);
+        this.offerDataServices.Delete(offer);
     }
 
+    /// <summary>
+    /// Updates the specified dto.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns>offer.</returns>
+    /// <exception cref="System.NotImplementedException"> not implemented.</exception>
     [Obsolete("Method not allowed")]
     public OfferDto Update(OfferDto dto)
     {
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Gets the by identifier.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <returns>offer.</returns>
+    /// <exception cref="NotFoundException&lt;OfferDto&gt;">not found.</exception>
     public OfferDto GetById(int id)
     {
-        _logger.LogInformation("Get offer by id {0}", id);
+        this.logger.LogInformation("Get offer by id {0}", id);
 
-        var offer = _offerDataServices.GetById(id);
+        var offer = this.offerDataServices.GetById(id);
         if (offer == null)
         {
-            throw new NotFoundException<OfferDto>(id, _logger);
+            throw new NotFoundException<OfferDto>(id, this.logger);
         }
 
         return new OfferDto(offer);
     }
 
+    /// <summary>
+    /// Gets all product offers.
+    /// </summary>
+    /// <param name="productId">The product identifier.</param>
+    /// <returns>list offer.</returns>
     public IList<OfferDto> GetAllProductOffers(int productId)
     {
-        _logger.LogInformation("Get all offers for product {0}", productId);
+        this.logger.LogInformation("Get all offers for product {0}", productId);
 
-        return _offerDataServices
+        return this.offerDataServices
             .GetAllProductOffers(productId)
             .Select(x => new OfferDto(x))
             .ToList();
     }
 
+    /// <summary>
+    /// Gets the last product offer.
+    /// </summary>
+    /// <param name="productId">The product identifier.</param>
+    /// <returns>offer.</returns>
+    /// <exception cref="NotFoundException&lt;ProductDto&gt;">not found.</exception>
     public OfferDto GetLastProductOffer(int productId)
     {
-        _logger.LogInformation("Get last offer for product {0}", productId);
+        this.logger.LogInformation("Get last offer for product {0}", productId);
 
-        var product = _productDataServices.GetById(productId);
+        var product = this.productDataServices.GetById(productId);
 
         if (product == null)
         {
-            throw new NotFoundException<ProductDto>(productId, _logger);
+            throw new NotFoundException<ProductDto>(productId, this.logger);
         }
 
-        var offer = _offerDataServices.GetLastProductOffer(productId);
+        var offer = this.offerDataServices.GetLastProductOffer(productId);
 
         return offer != null ? new OfferDto(offer) : null;
     }
 
+    /// <summary>
+    /// Inserts the specified dto.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <returns>offer.</returns>
+    /// <exception cref="NotFoundException&lt;ProductDto&gt;">not found product.</exception>
+    /// <exception cref="NotFoundException&lt;UserDto&gt;">not found user.</exception>
     public OfferDto Insert(OfferDto dto)
     {
-        _logger.LogInformation("Insert offer {0}", dto);
+        this.logger.LogInformation("Insert offer {0}", dto);
 
-        _validator.ValidateAndThrow(dto);
+        this.validator.ValidateAndThrow(dto);
 
-        var product = _productDataServices.GetById(dto.ProductId);
+        var product = this.productDataServices.GetById(dto.ProductId);
         if (product == null)
         {
-            throw new NotFoundException<ProductDto>(dto.ProductId, _logger);
+            throw new NotFoundException<ProductDto>(dto.ProductId, this.logger);
         }
 
-        var user = _userDataServices.GetById(dto.BidderId);
+        var user = this.userDataServices.GetById(dto.BidderId);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(dto.BidderId, _logger);
+            throw new NotFoundException<UserDto>(dto.BidderId, this.logger);
         }
 
-        CheckLastOffer(dto, product);
+        this.CheckLastOffer(dto, product);
 
         var offer = new Offer
         {
             Id = 0,
-            Product = _productDataServices.GetById(dto.ProductId),
-            Bidder = _userDataServices.GetById(dto.BidderId),
+            Product = this.productDataServices.GetById(dto.ProductId),
+            Bidder = this.userDataServices.GetById(dto.BidderId),
             DateTime = dto.DateTime,
             Price = dto.Price,
         };
 
-        return new OfferDto(_offerDataServices.Insert(offer));
+        return new OfferDto(this.offerDataServices.Insert(offer));
     }
 
+    /// <summary>
+    /// Checks the last offer.
+    /// </summary>
+    /// <param name="dto">The dto.</param>
+    /// <param name="product">The product.</param>
+    /// <exception cref="InvalidDataException&lt;OfferDto&gt;">invalid data.</exception>
     private void CheckLastOffer(OfferDto dto, Product product)
     {
-        var lastOffer = _offerDataServices.GetLastProductOffer(dto.ProductId);
+        var lastOffer = this.offerDataServices.GetLastProductOffer(dto.ProductId);
         if (lastOffer == null)
         {
             if (dto.Price > product.InitialPrice * 4 || dto.Price < product.InitialPrice)
             {
-                throw new InvalidDataException<OfferDto>(dto, _logger);
+                throw new InvalidDataException<OfferDto>(dto, this.logger);
             }
         }
         else
         {
             if (dto.Price > lastOffer.Price * 4 || dto.Price < lastOffer.Price)
             {
-                throw new InvalidDataException<OfferDto>(dto, _logger);
+                throw new InvalidDataException<OfferDto>(dto, this.logger);
             }
         }
     }

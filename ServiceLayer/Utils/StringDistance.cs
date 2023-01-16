@@ -1,15 +1,25 @@
-﻿namespace ServiceLayer.Utils;
+﻿// <copyright file="StringDistance.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
 
+namespace ServiceLayer.Utils;
+
+/// <summary>
+/// StringDistance.
+/// </summary>
 public static class StringDistance
 {
     /// <summary>
-    /// Compute the distance between two strings.
+    /// Levenshteins the distance.
     /// </summary>
+    /// <param name="s">The s.</param>
+    /// <param name="t">The t.</param>
+    /// <returns>string distance.</returns>
     public static int LevenshteinDistance(string s, string t)
     {
         s = s.RemoveNonAlphaNumeric();
         t = t.RemoveNonAlphaNumeric();
-        
+
         var n = s.Length;
         var m = t.Length;
         var d = new int[n + 1, m + 1];

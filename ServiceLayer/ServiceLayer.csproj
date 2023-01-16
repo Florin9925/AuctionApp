@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataMapper\DataMapper.csproj" />
     <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
   </ItemGroup>

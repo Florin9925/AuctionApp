@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="UserServiceImpl.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace ServiceLayer.ServiceImplementation;
+
+using DataMapper;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
@@ -6,62 +12,92 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using ServiceLayer.Exception;
 
-namespace ServiceLayer.ServiceImplementation;
-
+/// <summary>
+/// UserServiceImpl.
+/// </summary>
+/// <seealso cref="ServiceLayer.IUserService" />
 public class UserServiceImpl : IUserService
 {
-    private readonly IUserDataServices _userAccountDataServices;
-    private readonly ILogger<UserServiceImpl> _logger;
-    private readonly UserDtoValidator _validator;
+    private readonly IUserDataServices userAccountDataServices;
+    private readonly ILogger<UserServiceImpl> logger;
+    private readonly UserDtoValidator validator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserServiceImpl"/> class.
+    /// </summary>
+    /// <param name="userAccountDataServices">The user account data services.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="validator">The validator.</param>
     public UserServiceImpl(
         IUserDataServices userAccountDataServices,
         ILogger<UserServiceImpl> logger,
         UserDtoValidator validator)
     {
-        _userAccountDataServices = userAccountDataServices;
-        _logger = logger;
-        _validator = validator;
+        this.userAccountDataServices = userAccountDataServices;
+        this.logger = logger;
+        this.validator = validator;
     }
 
-    void ICRUDService<UserDto>.DeleteById(int id)
+    /// <summary>
+    /// > Delete the user with the given id.
+    /// </summary>
+    /// <param name="id">The id of the user to delete.</param>
+    void ICrudService<UserDto>.DeleteById(int id)
     {
-        _logger.LogInformation("Delete user with id {0}", id);
+        this.logger.LogInformation("Delete user with id {0}", id);
 
-        var user = _userAccountDataServices.GetById(id);
+        var user = this.userAccountDataServices.GetById(id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(id, _logger);
+            throw new NotFoundException<UserDto>(id, this.logger);
         }
 
-        _userAccountDataServices.Delete(user);
+        this.userAccountDataServices.Delete(user);
     }
 
-    IList<UserDto> ICRUDService<UserDto>.GetAll()
+    /// <summary>
+    /// Gets all.
+    /// </summary>
+    /// <returns>list of users.</returns>
+    IList<UserDto> ICrudService<UserDto>.GetAll()
     {
-        _logger.LogInformation("Get all users");
-        var users = _userAccountDataServices.GetAll();
+        this.logger.LogInformation("Get all users");
+        var users = this.userAccountDataServices.GetAll();
 
         return users.Select(user => new UserDto(user)).ToList();
     }
 
-    UserDto ICRUDService<UserDto>.GetById(int id)
+    /// <summary>
+    /// > Get the user with the specified id, or throw a NotFoundException if the user doesn't exist.
+    /// </summary>
+    /// <param name="id">The id of the user to get.</param>
+    /// <returns>
+    /// A UserDto object.
+    /// </returns>
+    UserDto ICrudService<UserDto>.GetById(int id)
     {
-        _logger.LogInformation("Get user with id {0}", id);
+        this.logger.LogInformation("Get user with id {0}", id);
 
-        var user = _userAccountDataServices.GetById(id);
+        var user = this.userAccountDataServices.GetById(id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(id, _logger);
+            throw new NotFoundException<UserDto>(id, this.logger);
         }
 
         return new UserDto(user);
     }
 
-    UserDto ICRUDService<UserDto>.Insert(UserDto dto)
+    /// <summary>
+    /// > The function takes a UserDto object, validates it, and then inserts it into the database.
+    /// </summary>
+    /// <param name="dto">The type of the object that will be passed in.</param>
+    /// <returns>
+    /// A new UserDto object is being returned.
+    /// </returns>
+    UserDto ICrudService<UserDto>.Insert(UserDto dto)
     {
-        _logger.LogInformation("Insert user {0}", dto);
-        _validator.ValidateAndThrow(dto);
+        this.logger.LogInformation("Insert user {0}", dto);
+        this.validator.ValidateAndThrow(dto);
 
         var user = new User
         {
@@ -71,21 +107,28 @@ public class UserServiceImpl : IUserService
             Email = dto.Email,
             Username = dto.Username,
             Address = dto.Address,
-            PhoneNumber = dto.PhoneNumber
+            PhoneNumber = dto.PhoneNumber,
         };
 
-        return new UserDto(_userAccountDataServices.Insert(user));
+        return new UserDto(this.userAccountDataServices.Insert(user));
     }
 
-    UserDto ICRUDService<UserDto>.Update(UserDto dto)
+    /// <summary>
+    /// > Update a user in the database.
+    /// </summary>
+    /// <param name="dto">The type of the object that will be returned by the service.</param>
+    /// <returns>
+    /// A UserDto object.
+    /// </returns>
+    UserDto ICrudService<UserDto>.Update(UserDto dto)
     {
-        _logger.LogInformation("Update user {0}", dto);
-        _validator.ValidateAndThrow(dto);
+        this.logger.LogInformation("Update user {0}", dto);
+        this.validator.ValidateAndThrow(dto);
 
-        var user = _userAccountDataServices.GetById(dto.Id);
+        var user = this.userAccountDataServices.GetById(dto.Id);
         if (user == null)
         {
-            throw new NotFoundException<UserDto>(dto, _logger);
+            throw new NotFoundException<UserDto>(dto, this.logger);
         }
 
         user.FirstName = dto.FirstName;
@@ -95,6 +138,6 @@ public class UserServiceImpl : IUserService
         user.Address = dto.Address;
         user.PhoneNumber = dto.PhoneNumber;
 
-        return new UserDto(_userAccountDataServices.Update(user));
+        return new UserDto(this.userAccountDataServices.Update(user));
     }
 }

@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="ScoreServiceImpl.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace ServiceLayer.ServiceImplementation;
+
+using DataMapper;
 using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
@@ -8,17 +14,26 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ServiceLayer.Exception;
 
-namespace ServiceLayer.ServiceImplementation;
-
+/// <summary>
+/// ScoreServiceImpl.
+/// </summary>
+/// <seealso cref="ServiceLayer.IScoreService" />
 public class ScoreServiceImpl : IScoreService
 {
-    private readonly IScoreDataServices _scoreDataServices;
-    private readonly IUserDataServices _userDataServices;
-    private readonly ILogger<ScoreServiceImpl> _logger;
-    private readonly ScoreDtoValidator _validator;
-    private readonly MyConfiguration _myConfiguration;
+    private readonly IScoreDataServices scoreDataServices;
+    private readonly IUserDataServices userDataServices;
+    private readonly ILogger<ScoreServiceImpl> logger;
+    private readonly ScoreDtoValidator validator;
+    private readonly MyConfiguration myConfiguration;
 
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScoreServiceImpl"/> class.
+    /// </summary>
+    /// <param name="scoreDataServices">The score data services.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="userDataServices">The user data services.</param>
+    /// <param name="validator">The validator.</param>
+    /// <param name="myConfiguration">My configuration.</param>
     public ScoreServiceImpl(
         IScoreDataServices scoreDataServices,
         ILogger<ScoreServiceImpl> logger,
@@ -26,76 +41,106 @@ public class ScoreServiceImpl : IScoreService
         ScoreDtoValidator validator,
         IOptions<MyConfiguration> myConfiguration)
     {
-        _scoreDataServices = scoreDataServices;
-        _logger = logger;
-        _userDataServices = userDataServices;
-        _validator = validator;
-        _myConfiguration = myConfiguration.Value;
+        this.scoreDataServices = scoreDataServices;
+        this.logger = logger;
+        this.userDataServices = userDataServices;
+        this.validator = validator;
+        this.myConfiguration = myConfiguration.Value;
     }
 
+    /// <summary>
+    /// Gets all.
+    /// </summary>
+    /// <returns>list of scores.</returns>
     public IList<ScoreDto> GetAll()
     {
-        _logger.LogInformation("Getting all scores");
-        return _scoreDataServices.GetAll().Select(s => new ScoreDto(s)).ToList();
+        this.logger.LogInformation("Getting all scores");
+        return this.scoreDataServices.GetAll().Select(s => new ScoreDto(s)).ToList();
     }
 
+    /// <summary>
+    /// Deletes the by identifier.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <exception cref="NotFoundException&lt;ScoreDto&gt;">not found score.</exception>
     public void DeleteById(int id)
     {
-        _logger.LogInformation("Deleting score with id {0}", id);
-        var score = _scoreDataServices.GetById(id);
+        this.logger.LogInformation("Deleting score with id {0}", id);
+        var score = this.scoreDataServices.GetById(id);
         if (score == null)
         {
-            throw new NotFoundException<ScoreDto>(id, _logger);
+            throw new NotFoundException<ScoreDto>(id, this.logger);
         }
 
-        _scoreDataServices.Delete(score);
+        this.scoreDataServices.Delete(score);
     }
 
+    /// <summary>
+    /// > Update a score by id.
+    /// </summary>
+    /// <param name="dto">The DTO that will be used to update the score.</param>
+    /// <returns>
+    /// A ScoreDto object.
+    /// </returns>
     public ScoreDto Update(ScoreDto dto)
     {
-        _logger.LogInformation("Updating score with id {0}", dto.Id);
+        this.logger.LogInformation("Updating score with id {0}", dto.Id);
 
-        _validator.ValidateAndThrow(dto);
+        this.validator.ValidateAndThrow(dto);
 
-        var score = _scoreDataServices.GetById(dto.Id);
+        var score = this.scoreDataServices.GetById(dto.Id);
         if (score == null)
         {
-            throw new NotFoundException<ScoreDto>(dto, _logger);
+            throw new NotFoundException<ScoreDto>(dto, this.logger);
         }
 
         score.Value = dto.Value;
 
-        return new ScoreDto(_scoreDataServices.Update(score));
+        return new ScoreDto(this.scoreDataServices.Update(score));
     }
 
+    /// <summary>
+    /// > Get a score by id.
+    /// </summary>
+    /// <param name="id">The id of the score to get.</param>
+    /// <returns>
+    /// A ScoreDto object.
+    /// </returns>
     public ScoreDto GetById(int id)
     {
-        _logger.LogInformation("Getting score with id {0}", id);
-        var score = _scoreDataServices.GetById(id);
+        this.logger.LogInformation("Getting score with id {0}", id);
+        var score = this.scoreDataServices.GetById(id);
         if (score == null)
         {
-            throw new NotFoundException<ScoreDto>(id, _logger);
+            throw new NotFoundException<ScoreDto>(id, this.logger);
         }
 
         return new ScoreDto(score);
     }
 
+    /// <summary>
+    /// > Inserts a new score into the database.
+    /// </summary>
+    /// <param name="dto">The DTO that will be used to create the new score.</param>
+    /// <returns>
+    /// A ScoreDto object.
+    /// </returns>
     public ScoreDto Insert(ScoreDto dto)
     {
-        _logger.LogInformation("Inserting score with id {0}", dto.Id);
+        this.logger.LogInformation("Inserting score with id {0}", dto.Id);
 
-        _validator.ValidateAndThrow(dto);
+        this.validator.ValidateAndThrow(dto);
 
-        var receiver = _userDataServices.GetById(dto.ReceiverId);
+        var receiver = this.userDataServices.GetById(dto.ReceiverId);
         if (receiver == null)
         {
-            throw new NotFoundException<UserDto>(dto.ReceiverId, _logger);
+            throw new NotFoundException<UserDto>(dto.ReceiverId, this.logger);
         }
 
-        var reviewer = _userDataServices.GetById(dto.ReviewerId);
+        var reviewer = this.userDataServices.GetById(dto.ReviewerId);
         if (reviewer == null)
         {
-            throw new NotFoundException<UserDto>(dto.ReviewerId, _logger);
+            throw new NotFoundException<UserDto>(dto.ReviewerId, this.logger);
         }
 
         var score = new Score
@@ -105,16 +150,23 @@ public class ScoreServiceImpl : IScoreService
             Reviewer = reviewer,
             ReviewerId = reviewer.Id,
             Receiver = receiver,
-            ReceiverId = receiver.Id
+            ReceiverId = receiver.Id,
         };
 
-        return new ScoreDto(_scoreDataServices.Insert(score));
+        return new ScoreDto(this.scoreDataServices.Insert(score));
     }
 
+    /// <summary>
+    /// > Get the user's score from the database, and if it's -1, return the default score from the configuration file.
+    /// </summary>
+    /// <param name="userId">The user's id.</param>
+    /// <returns>
+    /// The user's score.
+    /// </returns>
     public decimal GetUserScore(int userId)
     {
-        var score = _scoreDataServices.GetUserScore(userId);
+        var score = this.scoreDataServices.GetUserScore(userId);
 
-        return score == -1 ? _myConfiguration.S : score;
+        return score == -1 ? this.myConfiguration.S : score;
     }
 }

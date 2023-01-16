@@ -1,10 +1,17 @@
-﻿using DomainModel.Dto;
+﻿// <copyright file="CategoryDtoTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestDomainModelNUnit.Dto;
+
+using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
 using FluentValidation.TestHelper;
 
-namespace TestDomainModelNUnit.Dto;
-
+/// <summary>
+/// CategoryDtoTest.
+/// </summary>
 [TestFixture]
 public class CategoryDtoTest
 {
