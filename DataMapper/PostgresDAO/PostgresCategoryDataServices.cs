@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entity;
+using DomainModel.Entity.Validator;
 using FluentValidation;
 
 namespace DataMapper.PostgresDAO

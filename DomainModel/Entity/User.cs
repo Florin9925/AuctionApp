@@ -1,64 +1,113 @@
-﻿using FluentValidation;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+﻿// <copyright file="User.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
 
 namespace DomainModel.Entity;
 
+using System.ComponentModel.DataAnnotations;
+
+/// <summary>
+/// User.
+/// </summary>
+/// <seealso cref="DomainModel.Entity.BaseEntity" />
 public class User : BaseEntity
 {
+    /// <summary>
+    /// Gets or sets the first name.
+    /// </summary>
+    /// <value>
+    /// The first name.
+    /// </value>
     [Required]
     [StringLength(100, MinimumLength = 2)]
     public string FirstName { get; set; }
 
+    /// <summary>
+    /// Gets or sets the last name.
+    /// </summary>
+    /// <value>
+    /// The last name.
+    /// </value>
     [Required]
     [StringLength(100, MinimumLength = 2)]
     public string LastName { get; set; }
 
+    /// <summary>
+    /// Gets or sets the email.
+    /// </summary>
+    /// <value>
+    /// The email.
+    /// </value>
     [Required]
     [StringLength(100, MinimumLength = 2)]
     public string Email { get; set; }
 
+    /// <summary>
+    /// Gets or sets the username.
+    /// </summary>
+    /// <value>
+    /// The username.
+    /// </value>
     [Required]
     [StringLength(100, MinimumLength = 2)]
     public string Username { get; set; }
 
-    [Required] public string PhoneNumber { get; set; }
+    /// <summary>
+    /// Gets or sets the phone number.
+    /// </summary>
+    /// <value>
+    /// The phone number.
+    /// </value>
+    [Required]
+    public string PhoneNumber { get; set; }
 
+    /// <summary>
+    /// Gets or sets the address.
+    /// </summary>
+    /// <value>
+    /// The address.
+    /// </value>
     [Required]
     [StringLength(100, MinimumLength = 2)]
     public string Address { get; set; }
 
+    /// <summary>
+    /// Gets or sets the products.
+    /// </summary>
+    /// <value>
+    /// The products.
+    /// </value>
     public virtual IList<Product> Products { get; set; } = new List<Product>();
+
+    /// <summary>
+    /// Gets or sets the offers.
+    /// </summary>
+    /// <value>
+    /// The offers.
+    /// </value>
     public virtual IList<Offer> Offers { get; set; } = new List<Offer>();
+
+    /// <summary>
+    /// Gets or sets the roles.
+    /// </summary>
+    /// <value>
+    /// The roles.
+    /// </value>
     public virtual IList<Role> Roles { get; set; } = new List<Role>();
+
+    /// <summary>
+    /// Gets or sets the get scores.
+    /// </summary>
+    /// <value>
+    /// The get scores.
+    /// </value>
     public virtual IList<Score> GetScores { get; set; } = new List<Score>();
+
+    /// <summary>
+    /// Gets or sets the given scores.
+    /// </summary>
+    /// <value>
+    /// The given scores.
+    /// </value>
     public virtual IList<Score> GivenScores { get; set; } = new List<Score>();
-}
-
-public partial class UserValidator : AbstractValidator<User>
-{
-    public UserValidator()
-    {
-        RuleFor(u => u.Id).GreaterThanOrEqualTo(0);
-        RuleFor(u => u.FirstName).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.LastName).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.Username).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.Email).NotNull().EmailAddress();
-        RuleFor(u => u.Address).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.PhoneNumber)
-            .NotEmpty()
-            .NotNull().WithMessage("Phone Number is required.")
-            .MinimumLength(10).WithMessage("PhoneNumber must not be less than 10 characters.")
-            .MaximumLength(20).WithMessage("PhoneNumber must not exceed 50 characters.")
-            .Matches(MyRegex()).WithMessage("PhoneNumber not valid");
-
-        RuleFor(u => u.GetScores).NotNull();
-        RuleFor(u => u.GivenScores).NotNull();
-        RuleFor(u => u.Offers).NotNull();
-        RuleFor(u => u.Products).NotNull();
-        RuleFor(u => u.Roles).NotNull();
-    }
-
-    [GeneratedRegex("^(\\+4|)?(07[0-9]{2}|02[0-9]{2}|03[0-9]{2}){1}?(\\s|\\.|\\-)?([0-9]{3}(\\s|\\.|\\-|)){2}$")]
-    private static partial Regex MyRegex();
 }

@@ -1,4 +1,5 @@
 ﻿using DomainModel.Entity;
+using DomainModel.Entity.Validator;
 using DomainModel.Enum;
 using FluentValidation.TestHelper;
 

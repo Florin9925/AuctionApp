@@ -1,74 +1,127 @@
-﻿using System.Text.RegularExpressions;
-using DomainModel.Entity;
-using FluentValidation;
+﻿// <copyright file="UserDto.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
 
 namespace DomainModel.Dto;
 
+using System.Text.RegularExpressions;
+using DomainModel.Entity;
+using FluentValidation;
+
+/// <summary>
+/// UserDto.
+/// </summary>
+/// <seealso cref="DomainModel.Dto.BaseDto" />
 public class UserDto : BaseDto
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserDto"/> class.
+    /// </summary>
     public UserDto()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserDto"/> class.
+    /// </summary>
+    /// <param name="user"> entity. </param>
     public UserDto(User user)
     {
-        Id = user.Id;
-        FirstName = user.FirstName;
-        LastName = user.LastName;
-        Email = user.Email;
-        Address = user.Address;
-        PhoneNumber = user.PhoneNumber;
-        Username = user.Username;
+        this.Id = user.Id;
+        this.FirstName = user.FirstName;
+        this.LastName = user.LastName;
+        this.Email = user.Email;
+        this.Address = user.Address;
+        this.PhoneNumber = user.PhoneNumber;
+        this.Username = user.Username;
     }
 
+    /// <summary>
+    /// Gets or sets the first name.
+    /// </summary>
+    /// <value>
+    /// The first name.
+    /// </value>
     public string FirstName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the last name.
+    /// </summary>
+    /// <value>
+    /// The last name.
+    /// </value>
     public string LastName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the email.
+    /// </summary>
+    /// <value>
+    /// The email.
+    /// </value>
     public string Email { get; set; }
+
+    /// <summary>
+    /// Gets or sets the address.
+    /// </summary>
+    /// <value>
+    /// The address.
+    /// </value>
     public string Address { get; set; }
+
+    /// <summary>
+    /// Gets or sets the phone number.
+    /// </summary>
+    /// <value>
+    /// The phone number.
+    /// </value>
     public string PhoneNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the username.
+    /// </summary>
+    /// <value>
+    /// The username.
+    /// </value>
     public string Username { get; set; }
 
+    /// <summary>
+    /// Converts to string.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="string" /> that represents this instance.
+    /// </returns>
     public override string ToString()
     {
-        return $"{FirstName} {LastName}";
+        return $"{this.FirstName} {this.LastName}";
     }
 
+    /// <summary>
+    /// Determines whether the specified object is equal to the current object.
+    /// </summary>
+    /// <param name="obj">The object to compare with the current object.</param>
+    /// <returns>
+    ///   <see langword="true" /> if the specified object  is equal to the current object; otherwise, <see langword="false" />.
+    /// </returns>
     public override bool Equals(object? obj)
     {
         return obj is UserDto dto &&
-               Id == dto.Id &&
-               FirstName == dto.FirstName &&
-               LastName == dto.LastName &&
-               Email == dto.Email &&
-               Address == dto.Address &&
-               PhoneNumber == dto.PhoneNumber &&
-               Username == dto.Username;
+               this.Id == dto.Id &&
+               this.FirstName == dto.FirstName &&
+               this.LastName == dto.LastName &&
+               this.Email == dto.Email &&
+               this.Address == dto.Address &&
+               this.PhoneNumber == dto.PhoneNumber &&
+               this.Username == dto.Username;
     }
 
+    /// <summary>
+    /// Returns a hash code for this instance.
+    /// </summary>
+    /// <returns>
+    /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+    /// </returns>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, FirstName, LastName, Email, Address, PhoneNumber, Username);
+        return HashCode.Combine(this.Id, this.FirstName, this.LastName, this.Email, this.Address, this.PhoneNumber, this.Username);
     }
-}
-
-public partial class UserDtoValidator : AbstractValidator<UserDto>
-{
-    public UserDtoValidator()
-    {
-        RuleFor(u => u.Id).GreaterThanOrEqualTo(0);
-        RuleFor(u => u.FirstName).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.LastName).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.Username).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.Email).NotNull().EmailAddress();
-        RuleFor(u => u.Address).NotEmpty().MinimumLength(2);
-        RuleFor(u => u.PhoneNumber)
-            .NotEmpty()
-            .NotNull().WithMessage("Phone Number is required.")
-            .MinimumLength(10).WithMessage("PhoneNumber must not be less than 10 characters.")
-            .MaximumLength(20).WithMessage("PhoneNumber must not exceed 50 characters.")
-            .Matches(MyRegex()).WithMessage("PhoneNumber not valid");
-    }
-
-    [GeneratedRegex("^(\\+4|)?(07[0-9]{2}|02[0-9]{2}|03[0-9]{2}){1}?(\\s|\\.|\\-)?([0-9]{3}(\\s|\\.|\\-|)){2}$")]
-    private static partial Regex MyRegex();
 }

@@ -1,5 +1,6 @@
 ﻿using DataMapper;
 using DomainModel.Dto;
+using DomainModel.Dto.Validator;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -142,28 +143,28 @@ public class CategoryServiceTest
     {
         categoryService.Insert(nullCategoryDto);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestInsertCategoryInvalid()
     {
         categoryService.Insert(invalidCategoryDto);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestUpdateCategoryNull()
     {
         categoryService.Update(nullCategoryDto);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestUpdateCategoryInvalid()
     {
         categoryService.Update(invalidCategoryDto);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<CategoryDto>))]
     public void TestUpdateCategoryNotFound()
@@ -173,16 +174,16 @@ public class CategoryServiceTest
 
         categoryService.Update(notFoundCategoryDto);
     }
-    
+
     [TestMethod]
     public void TestUpdateCategory()
     {
         categoryDataServicesMock.Setup(x => x.GetById(category.Id))
             .Returns(category);
-        
+
         categoryDataServicesMock.Setup(x => x.GetById(categoryParent.Id))
             .Returns(categoryParent);
-        
+
         categoryDataServicesMock.Setup(x => x.GetById(categoryChild.Id))
             .Returns(categoryChild);
 
@@ -191,7 +192,7 @@ public class CategoryServiceTest
 
         Assert.AreEqual(categoryService.Update(categoryDto), categoryDto);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<CategoryDto>))]
     public void TestDeleteByIdCategoryNotFound()
@@ -200,7 +201,7 @@ public class CategoryServiceTest
 
         categoryService.DeleteById(notFoundCategoryDto.Id);
     }
-    
+
     [TestMethod]
     public void TestDeleteByIdCategory()
     {

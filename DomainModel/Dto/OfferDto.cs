@@ -1,56 +1,105 @@
-﻿using DomainModel.Entity;
-using FluentValidation;
+﻿// <copyright file="OfferDto.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
 
 namespace DomainModel.Dto;
 
+using DomainModel.Entity;
+using FluentValidation;
+
+/// <summary>
+/// OfferDto.
+/// </summary>
+/// <seealso cref="DomainModel.Dto.BaseDto" />
 public class OfferDto : BaseDto
 {
-    public int ProductId { get; set; }
-    public decimal Price { get; set; }
-    public int BidderId { get; set; }
-    public DateTime DateTime { get; set; }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OfferDto"/> class.
+    /// </summary>
     public OfferDto()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OfferDto"/> class.
+    /// </summary>
+    /// <param name="offer"> Offer entity.</param>
     public OfferDto(Offer offer)
     {
-        Id = offer.Id;
-        ProductId = offer.Product.Id;
-        Price = offer.Price;
-        BidderId = offer.Bidder.Id;
-        DateTime = offer.DateTime;
+        this.Id = offer.Id;
+        this.ProductId = offer.Product.Id;
+        this.Price = offer.Price;
+        this.BidderId = offer.Bidder.Id;
+        this.DateTime = offer.DateTime;
     }
 
+    /// <summary>
+    /// Gets or sets the product identifier.
+    /// </summary>
+    /// <value>
+    /// The product identifier.
+    /// </value>
+    public int ProductId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the price.
+    /// </summary>
+    /// <value>
+    /// The price.
+    /// </value>
+    public decimal Price { get; set; }
+
+    /// <summary>
+    /// Gets or sets the bidder identifier.
+    /// </summary>
+    /// <value>
+    /// The bidder identifier.
+    /// </value>
+    public int BidderId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the date time.
+    /// </summary>
+    /// <value>
+    /// The date time.
+    /// </value>
+    public DateTime DateTime { get; set; }
+
+    /// <summary>
+    /// Converts to string.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="string" /> that represents this instance.
+    /// </returns>
     public override string ToString()
     {
-        return $"OfferDto: Id={Id}, ProductId={ProductId}, Price={Price}, BidderId={BidderId}, DateTime={DateTime}";
+        return $"OfferDto: Id={this.Id}, ProductId={this.ProductId}, Price={this.Price}, BidderId={this.BidderId}, DateTime={this.DateTime}";
     }
 
+    /// <summary>
+    /// Determines whether the specified <see cref="object" />, is equal to this instance.
+    /// </summary>
+    /// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
+    /// <returns>
+    ///   <c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.
+    /// </returns>
     public override bool Equals(object obj)
     {
         return obj is OfferDto dto &&
-               Id == dto.Id &&
-               ProductId == dto.ProductId &&
-               Price == dto.Price &&
-               BidderId == dto.BidderId;
+               this.Id == dto.Id &&
+               this.ProductId == dto.ProductId &&
+               this.Price == dto.Price &&
+               this.BidderId == dto.BidderId;
     }
 
+    /// <summary>
+    /// Returns a hash code for this instance.
+    /// </summary>
+    /// <returns>
+    /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+    /// </returns>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, ProductId, Price, BidderId, DateTime);
-    }
-}
-
-public class OfferDtoValidator : AbstractValidator<OfferDto>
-{
-    public OfferDtoValidator()
-    {
-        RuleFor(o => o.Id).GreaterThanOrEqualTo(0);
-        RuleFor(o => o.Price).GreaterThan(0);
-        RuleFor(o => o.BidderId).GreaterThan(0);
-        RuleFor(o => o.ProductId).GreaterThan(0);
-        RuleFor(o => o.DateTime).GreaterThanOrEqualTo(DateTime.Now);
+        return HashCode.Combine(this.Id, this.ProductId, this.Price, this.BidderId, this.DateTime);
     }
 }

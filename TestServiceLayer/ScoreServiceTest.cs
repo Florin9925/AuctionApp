@@ -2,6 +2,7 @@
 using DataMapper;
 using DomainModel.Configuration;
 using DomainModel.Dto;
+using DomainModel.Dto.Validator;
 using DomainModel.Entity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

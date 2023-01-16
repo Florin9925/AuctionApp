@@ -1,5 +1,6 @@
 ﻿using DataMapper;
 using DomainModel.Dto;
+using DomainModel.Dto.Validator;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;

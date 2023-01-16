@@ -7,6 +7,9 @@ public static class StringDistance
     /// </summary>
     public static int LevenshteinDistance(string s, string t)
     {
+        s = s.RemoveNonAlphaNumeric();
+        t = t.RemoveNonAlphaNumeric();
+        
         var n = s.Length;
         var m = t.Length;
         var d = new int[n + 1, m + 1];
