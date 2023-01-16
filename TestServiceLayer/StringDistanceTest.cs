@@ -10,14 +10,14 @@ public class StringDistanceTest
     private string descriptionSimilar = "This is a test of the string distance algorithm 2";
 
     private string descriptionDifferent = "This is't a description of a sequence of characters";
-    
+
     [TestMethod]
     public void TestStringDistanceSimilar()
     {
         var distance = StringDistance.LevenshteinDistance(description, descriptionSimilar);
         Assert.IsTrue(distance < 10);
     }
-    
+
     [TestMethod]
     public void TestStringDistanceDifferent()
     {

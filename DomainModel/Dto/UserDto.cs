@@ -4,9 +4,7 @@
 
 namespace DomainModel.Dto;
 
-using System.Text.RegularExpressions;
 using DomainModel.Entity;
-using FluentValidation;
 
 /// <summary>
 /// UserDto.

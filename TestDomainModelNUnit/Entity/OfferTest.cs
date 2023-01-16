@@ -80,7 +80,7 @@ public class OfferTest
         var result = _validator.TestValidate(offer);
         result.ShouldHaveValidationErrorFor(p => p.DateTime);
     }
-    
+
     [Test]
     public void OfferBidderIsNull()
     {
@@ -92,7 +92,7 @@ public class OfferTest
         var result = _validator.TestValidate(offer);
         result.ShouldHaveValidationErrorFor(p => p.Bidder);
     }
-    
+
     [Test]
     public void OfferBidderIsNotNull()
     {
@@ -104,7 +104,7 @@ public class OfferTest
         var result = _validator.TestValidate(offer);
         result.ShouldNotHaveValidationErrorFor(p => p.Bidder);
     }
-    
+
     [Test]
     public void OfferProductIsNull()
     {
@@ -116,7 +116,7 @@ public class OfferTest
         var result = _validator.TestValidate(offer);
         result.ShouldHaveValidationErrorFor(p => p.Product);
     }
-    
+
     [Test]
     public void OfferProductIsNotNull()
     {

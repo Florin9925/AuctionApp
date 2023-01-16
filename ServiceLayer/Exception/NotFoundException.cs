@@ -29,7 +29,7 @@ public class NotFoundException<T> : System.Exception
     /// </summary>
     /// <param name="id">The identifier.</param>
     /// <param name="logger">The logger.</param>
-    public NotFoundException(int id, ILogger logger) 
+    public NotFoundException(int id, ILogger logger)
         : base($"Not found {typeof(T).Name} id: {id}")
     {
         logger.LogError($"Not found {typeof(T).Name} id: {id}");

@@ -4,7 +4,6 @@
 
 namespace DomainModel.Dto.Validator;
 
-using DomainModel.Entity;
 using FluentValidation;
 
 /// <summary>

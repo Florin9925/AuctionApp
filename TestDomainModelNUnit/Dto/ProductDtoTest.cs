@@ -190,7 +190,7 @@ public class ProductDtoTest
         var result = _validator.TestValidate(product);
         result.ShouldNotHaveValidationErrorFor(p => p.Amount);
     }
-    
+
     [Test]
     public void ProductDtoInitialPriceIsInvalid()
     {

@@ -4,11 +4,8 @@
 
 namespace AuctionApp.Extensions;
 
-using DomainModel.Dto;
 using DomainModel.Dto.Validator;
-using DomainModel.Entity;
 using DomainModel.Entity.Validator;
-using FluentValidation;
 
 /// <summary>
 /// ValidatorExtensions.

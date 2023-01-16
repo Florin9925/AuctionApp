@@ -5,7 +5,6 @@
 namespace DomainModel.Dto;
 
 using DomainModel.Entity;
-using FluentValidation;
 
 /// <summary>
 /// CategoryDto.
@@ -75,7 +74,7 @@ public class CategoryDto : BaseDto
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>
-    /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+    /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
     /// </returns>
     public override int GetHashCode()
     {

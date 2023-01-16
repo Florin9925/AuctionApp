@@ -72,7 +72,10 @@ public class ProductServiceTest
         productDataServicesMock = new Mock<IProductDataServices>();
         myConfiguration = new MyConfiguration
         {
-            K = 5, P = 5, S = 5, Z = 5
+            K = 5,
+            P = 5,
+            S = 5,
+            Z = 5
         };
 
         productService = new ProductServiceImpl(

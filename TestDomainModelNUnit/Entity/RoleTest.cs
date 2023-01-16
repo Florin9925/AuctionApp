@@ -8,13 +8,13 @@ namespace TestDomainModelNUnit.Entity;
 public class RoleTest
 {
     private RoleValidator _validator;
-    
+
     [SetUp]
     public void SetUp()
     {
         _validator = new RoleValidator();
     }
-    
+
     [Test]
     public void RoleNameIsNull()
     {
@@ -69,7 +69,7 @@ public class RoleTest
         var result = _validator.TestValidate(role);
         result.ShouldNotHaveValidationErrorFor(r => r.Id);
     }
-    
+
     [Test]
     public void RoleUsersIsNull()
     {
@@ -80,7 +80,7 @@ public class RoleTest
         var result = _validator.TestValidate(role);
         result.ShouldHaveValidationErrorFor(r => r.Users);
     }
-    
+
     [Test]
     public void RoleUsersIsNotNull()
     {

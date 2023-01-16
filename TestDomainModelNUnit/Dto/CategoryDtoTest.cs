@@ -139,8 +139,8 @@ public class CategoryDtoTest
         {
             Assert.That(categoryDto.Id, Is.EqualTo(category.Id));
             Assert.That(categoryDto.Name, Is.EqualTo(category.Name));
-            Assert.That(categoryDto.ChildCategoryIds, Is.EqualTo(category.ChildCategories.Select(c=>c.Id).ToList()));
-            Assert.That(categoryDto.ParentCategoryIds, Is.EqualTo(category.ChildCategories.Select(c=>c.Id).ToList()));
+            Assert.That(categoryDto.ChildCategoryIds, Is.EqualTo(category.ChildCategories.Select(c => c.Id).ToList()));
+            Assert.That(categoryDto.ParentCategoryIds, Is.EqualTo(category.ChildCategories.Select(c => c.Id).ToList()));
         });
     }
 }

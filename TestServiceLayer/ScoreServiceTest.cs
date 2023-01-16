@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DataMapper;
+﻿using DataMapper;
 using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;

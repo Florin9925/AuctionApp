@@ -36,7 +36,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.Id);
     }
-    
+
     [Test]
     public void UserFirstNameIsNull()
     {
@@ -47,7 +47,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.FirstName);
     }
-    
+
     [Test]
     public void UserFirstNameIsEmpty()
     {
@@ -58,7 +58,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.FirstName);
     }
-    
+
     [Test]
     public void UserFirstNameIsValid()
     {
@@ -69,7 +69,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.FirstName);
     }
-    
+
     [Test]
     public void UserLastNameIsNull()
     {
@@ -80,7 +80,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.LastName);
     }
-    
+
     [Test]
     public void UserLastNameIsEmpty()
     {
@@ -91,7 +91,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.LastName);
     }
-    
+
     [Test]
     public void UserLastNameIsValid()
     {
@@ -102,7 +102,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.LastName);
     }
-    
+
     [Test]
     public void UserUsernameIsNull()
     {
@@ -113,7 +113,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Username);
     }
-    
+
     [Test]
     public void UserUsernameIsEmpty()
     {
@@ -124,7 +124,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Username);
     }
-    
+
     [Test]
     public void UserUsernameIsValid()
     {
@@ -135,7 +135,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.Username);
     }
-    
+
     [Test]
     public void UserEmailIsNull()
     {
@@ -146,7 +146,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Email);
     }
-    
+
     [Test]
     public void UserEmailIsEmpty()
     {
@@ -157,7 +157,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Email);
     }
-    
+
     [Test]
     public void UserEmailIsInvalid1()
     {
@@ -168,7 +168,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Email);
     }
-    
+
     [Test]
     public void UserEmailIsInvalid2()
     {
@@ -179,7 +179,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Email);
     }
-    
+
     [Test]
     public void UserEmailIsValid()
     {
@@ -190,7 +190,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.Email);
     }
-    
+
     [Test]
     public void UserAddressIsNull()
     {
@@ -201,7 +201,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Address);
     }
-    
+
     [Test]
     public void UserAddressIsEmpty()
     {
@@ -212,7 +212,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Address);
     }
-    
+
     [Test]
     public void UserAddressIsValid()
     {
@@ -223,7 +223,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.Address);
     }
-    
+
     [Test]
     public void UserPhoneNumberIsNull()
     {
@@ -234,7 +234,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.PhoneNumber);
     }
-    
+
     [Test]
     public void UserPhoneNumberIsEmpty()
     {
@@ -245,7 +245,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.PhoneNumber);
     }
-    
+
     [Test]
     public void UserPhoneNumberIsInvalid()
     {
@@ -256,7 +256,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.PhoneNumber);
     }
-    
+
     [Test]
     public void UserPhoneNumberIsValid()
     {
@@ -267,7 +267,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.PhoneNumber);
     }
-    
+
     [Test]
     public void UserProductsIsNull()
     {
@@ -278,7 +278,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Products);
     }
-    
+
     [Test]
     public void UserProductsIsNotNull()
     {
@@ -289,7 +289,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.Products);
     }
-    
+
     [Test]
     public void UserRolesIsNull()
     {
@@ -300,7 +300,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Roles);
     }
-    
+
     [Test]
     public void UserRolesIsNotNull()
     {
@@ -310,8 +310,8 @@ public class UserTest
         };
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.Roles);
-    }   
-    
+    }
+
     [Test]
     public void UserGetScoresIsNull()
     {
@@ -322,7 +322,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.GetScores);
     }
-    
+
     [Test]
     public void UserGetScoresIsNotNull()
     {
@@ -333,7 +333,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.GetScores);
     }
-    
+
     [Test]
     public void UserGivenScoresIsNull()
     {
@@ -344,7 +344,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.GivenScores);
     }
-    
+
     [Test]
     public void UserGivenScoresIsNotNull()
     {
@@ -355,7 +355,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldNotHaveValidationErrorFor(u => u.GivenScores);
     }
-    
+
     [Test]
     public void UserOffersIsNull()
     {
@@ -366,7 +366,7 @@ public class UserTest
         var result = _validator.TestValidate(user);
         result.ShouldHaveValidationErrorFor(u => u.Offers);
     }
-    
+
     [Test]
     public void UserOffersIsNotNull()
     {

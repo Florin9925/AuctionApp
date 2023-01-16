@@ -4,7 +4,6 @@ using DomainModel.Dto.Validator;
 using DomainModel.Entity;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using Moq;
 using ServiceLayer;
 using ServiceLayer.Exception;
@@ -132,7 +131,7 @@ public class UserServiceTest
         userDataServicesMock.Setup(x => x.GetById(user.Id)).Returns(nullUser);
         userService.Update(userDto);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestUserDeleteInvalidUser()
@@ -146,7 +145,7 @@ public class UserServiceTest
     {
         userDataServicesMock.Setup(x => x.GetById(user.Id)).Returns(user);
         userService.DeleteById(user.Id);
-        
+
         Assert.IsTrue(true);
     }
 }
