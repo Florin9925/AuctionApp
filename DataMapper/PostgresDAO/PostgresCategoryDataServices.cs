@@ -1,60 +1,99 @@
-﻿using DomainModel.Entity;
+﻿// <copyright file="PostgresCategoryDataServices.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace DataMapper.PostgresDAO;
+
+using DomainModel.Entity;
 using DomainModel.Entity.Validator;
 using FluentValidation;
 
-namespace DataMapper.PostgresDAO
+/// <summary>
+/// PostgresCategoryDataServices.
+/// </summary>
+/// <seealso cref="DataMapper.ICategoryDataServices" />
+public class PostgresCategoryDataServices : ICategoryDataServices
 {
-    public class PostgresCategoryDataServices : ICategoryDataServices
+    private readonly AuctionAppContext context;
+    private readonly CategoryValidator validator;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PostgresCategoryDataServices"/> class.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <param name="validator">The validator.</param>
+    public PostgresCategoryDataServices(AuctionAppContext context, CategoryValidator validator)
     {
-        private readonly AuctionAppContext _context;
-        private readonly CategoryValidator _validator;
+        this.context = context;
+        this.validator = validator;
+    }
 
-        public PostgresCategoryDataServices(AuctionAppContext context, CategoryValidator validator)
+    /// <summary>
+    /// Deletes the specified entity.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
+    void IRepository<Category>.Delete(Category entity)
+    {
+        var category = this.context.Categories.Find(entity.Id);
+        if (category == null)
         {
-            _context = context;
-            _validator = validator;
+            return;
         }
 
-        void IRepository<Category>.Delete(Category entity)
-        {
-            var category = _context.Categories.Find(entity.Id);
-            if (category == null)
-                return;
+        this.context.Remove(category);
+        this.context.SaveChanges();
+    }
 
-            _context.Remove(category);
-            _context.SaveChanges();
-        }
+    /// <summary>
+    /// Gets all.
+    /// </summary>
+    /// <returns>list of categories.</returns>
+    IList<Category> IRepository<Category>.GetAll()
+    {
+        return this.context.Categories.ToList();
+    }
 
-        IList<Category> IRepository<Category>.GetAll()
-        {
-            return _context.Categories.ToList();
-        }
+    /// <summary>
+    /// Gets the by identifier.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <returns>category.</returns>
+    /// <exception cref="System.ArgumentNullException">null.</exception>
+    Category IRepository<Category>.GetById(object id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        return this.context.Categories.Find(id);
+    }
 
-        Category IRepository<Category>.GetById(object id)
-        {
-            ArgumentNullException.ThrowIfNull(id);
-            return _context.Categories.Find(id);
-        }
+    /// <summary>
+    /// Inserts the specified entity.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
+    /// <returns>category.</returns>
+    Category IRepository<Category>.Insert(Category entity)
+    {
+        this.validator.ValidateAndThrow(entity);
+        var category = this.context.Add(entity);
+        this.context.SaveChanges();
+        return category.Entity;
+    }
 
-        Category IRepository<Category>.Insert(Category entity)
-        {
-            _validator.ValidateAndThrow(entity);
-            var category = _context.Add(entity);
-            _context.SaveChanges();
-            return category.Entity;
-        }
+    /// <summary>
+    /// Updates the specified item.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns>category.</returns>
+    /// <exception cref="System.ArgumentNullException">argument null.</exception>
+    Category IRepository<Category>.Update(Category item)
+    {
+        this.validator.ValidateAndThrow(item);
+        var entity = this.context.Categories.Find(item.Id);
 
-        Category IRepository<Category>.Update(Category item)
-        {
-            _validator.ValidateAndThrow(item);
-            var entity = _context.Categories.Find(item.Id);
+        ArgumentNullException.ThrowIfNull(entity);
 
-            ArgumentNullException.ThrowIfNull(entity);
-
-            _context.Entry(entity).CurrentValues
-                .SetValues(item);
-            _context.SaveChanges();
-            return item;
-        }
+        this.context.Entry(entity).CurrentValues
+            .SetValues(item);
+        this.context.SaveChanges();
+        return item;
     }
 }
