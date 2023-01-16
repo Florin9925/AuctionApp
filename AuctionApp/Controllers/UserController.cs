@@ -1,113 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ServiceLayer;
-using DomainModel.Dto;
+﻿// <copyright file="UserController.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
 
 namespace AuctionApp.Controllers;
 
+using DomainModel.Dto;
+using Microsoft.AspNetCore.Mvc;
+using ServiceLayer;
+
+/// <summary>
+/// UserController.
+/// </summary>
+/// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IUserService userService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserController"/> class.
+    /// </summary>
+    /// <param name="userService">The user service.</param>
     public UserController(IUserService userService)
     {
-        _userService = userService;
+        this.userService = userService;
     }
 
     // GET: api/UserAccounts
+    /// <summary>
+    /// Gets the user account.
+    /// </summary>
+    /// <returns>list of users.</returns>
     [HttpGet]
     public ActionResult<IEnumerable<UserDto>> GetUserAccount()
     {
-        var users = _userService.GetAll();
+        var users = this.userService.GetAll();
         return users.ToList();
     }
-
-    //// GET: api/UserAccounts/5
-    //[HttpGet("{id}")]
-    //public async Task<ActionResult<User>> GetUserAccount(int id)
-    //{
-    //    if (_context.Users == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    var userAccount = await _context.Users.FindAsync(id);
-
-    //    if (userAccount == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    return userAccount;
-    //}
-
-    //// PUT: api/UserAccounts/5
-    //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    //[HttpPut("{id}")]
-    //public async Task<IActionResult> PutUserAccount(int id, User userAccount)
-    //{
-    //    if (id != userAccount.Id)
-    //    {
-    //        return BadRequest();
-    //    }
-
-    //    _context.Entry(userAccount).State = EntityState.Modified;
-
-    //    try
-    //    {
-    //        await _context.SaveChangesAsync();
-    //    }
-    //    catch (DbUpdateConcurrencyException)
-    //    {
-    //        if (!UserAccountExists(id))
-    //        {
-    //            return NotFound();
-    //        }
-    //        else
-    //        {
-    //            throw;
-    //        }
-    //    }
-    //    return NoContent();
-    //}
-
-    //// POST: api/UserAccounts
-    //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    //[HttpPost]
-    //public async Task<ActionResult<User>> PostUserAccount(User userAccount)
-    //{
-    //    if (_context.Users == null)
-    //    {
-    //        return Problem("Entity set 'AuctionAppContext.UserAccount'  is null.");
-    //    }
-    //    _context.Users.Add(userAccount);
-    //    await _context.SaveChangesAsync();
-
-    //    return CreatedAtAction("GetUserAccount", new { id = userAccount.Id }, userAccount);
-    //}
-
-    //// DELETE: api/UserAccounts/5
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> DeleteUserAccount(int id)
-    //{
-    //    if (_context.Users == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    var userAccount = await _context.Users.FindAsync(id);
-    //    if (userAccount == null)
-    //    {
-    //        return NotFound();
-    //    }
-
-    //    _context.Users.Remove(userAccount);
-    //    await _context.SaveChangesAsync();
-
-    //    return NoContent();
-    //}
-
-    //private bool UserAccountExists(int id)
-    //{
-    //    return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-    //}
 }

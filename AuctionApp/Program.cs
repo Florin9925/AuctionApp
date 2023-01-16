@@ -1,3 +1,7 @@
+// <copyright file="Program.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
 using AuctionApp.Extensions;
 using DomainModel.Configuration;
 
@@ -9,9 +13,8 @@ builder.Services.AddConfiguration();
 builder.Services.AddDomainServices();
 builder.Services.AddValidators();
 builder.Services.AddLogging();
+
 // Add services to the container.
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

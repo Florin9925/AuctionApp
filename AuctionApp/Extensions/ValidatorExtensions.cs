@@ -1,16 +1,27 @@
-﻿using DomainModel.Dto;
+﻿// <copyright file="ValidatorExtensions.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace AuctionApp.Extensions;
+
+using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
 using DomainModel.Entity.Validator;
 using FluentValidation;
 
-namespace AuctionApp.Extensions;
-
+/// <summary>
+/// ValidatorExtensions.
+/// </summary>
 public static class ValidatorExtensions
 {
+    /// <summary>
+    /// Adds the validators.
+    /// </summary>
+    /// <param name="services">The services.</param>
     public static void AddValidators(this IServiceCollection services)
     {
-        //services.AddScoped<IValidator<Category>, CategoryValidator>();
+        // services.AddScoped<IValidator<Category>, CategoryValidator>();
         services.AddScoped<CategoryValidator>();
         services.AddScoped<CategoryDtoValidator>();
 
