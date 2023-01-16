@@ -83,8 +83,22 @@ public class ProductServiceImpl : IProductService
             throw new TooManyProductsException(_logger);
         }
 
+        var category = _categoryDataServices.GetById(dto.CategoryId);
+        if (category == null)
+        {
+            throw new NotFoundException<Category>(dto.CategoryId, _logger);
+        }
+        
+        var user = _userDataServices.GetById(dto.OwnerId);
+        if (user == null)
+        {
+            throw new NotFoundException<User>(dto.OwnerId, _logger);
+        }
+        
+
         var product = new Product
         {
+            Id = 0,
             Name = dto.Name,
             Description = dto.Description,
             Offers = new List<Offer>(),
@@ -92,8 +106,8 @@ public class ProductServiceImpl : IProductService
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
             Currency = dto.Currency,
-            Category = _categoryDataServices.GetById(dto.CategoryId),
-            Owner = _userDataServices.GetById(dto.OwnerId)
+            Category = category,
+            Owner = user
         };
 
         return new ProductDto(_productDataServices.Insert(product));

@@ -15,7 +15,7 @@ public class ProductDto : BaseDto
     public int CategoryId { get; set; }
     public int Amount { get; set; }
     public decimal InitialPrice { get; set; }
-    public bool IsCompleted{ get; set; } = false;
+    public bool IsCompleted { get; set; } = false;
 
     public ProductDto(Product product)
     {
@@ -34,6 +34,40 @@ public class ProductDto : BaseDto
 
     public ProductDto()
     {
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is ProductDto dto &&
+               Id == dto.Id &&
+               Name == dto.Name &&
+               Description == dto.Description &&
+               StartDate == dto.StartDate &&
+               EndDate == dto.EndDate &&
+               OwnerId == dto.OwnerId &&
+               Currency == dto.Currency &&
+               CategoryId == dto.CategoryId &&
+               Amount == dto.Amount &&
+               InitialPrice == dto.InitialPrice &&
+               IsCompleted == dto.IsCompleted;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(
+            Id,
+            Name,
+            Description,
+            OwnerId,
+            CategoryId,
+            Amount,
+            InitialPrice,
+            IsCompleted);
+    }
+
+    public override string ToString()
+    {
+        return $"Id: {Id}, Name: {Name}, Description: {Description}, StartDate: {StartDate}, EndDate: {EndDate}, OwnerId: {OwnerId}, Currency: {Currency}, CategoryId: {CategoryId}, Amount: {Amount}, InitialPrice: {InitialPrice}, IsCompleted: {IsCompleted}";
     }
 }
 
