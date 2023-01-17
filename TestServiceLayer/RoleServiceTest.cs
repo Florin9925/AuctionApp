@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="RoleServiceTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestServiceLayer;
+
+using DataMapper;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
@@ -9,8 +15,9 @@ using ServiceLayer;
 using ServiceLayer.Exception;
 using ServiceLayer.ServiceImplementation;
 
-namespace TestServiceLayer;
-
+/// <summary>
+/// RoleServiceTest.
+/// </summary>
 [TestClass]
 public class RoleServiceTest
 {
@@ -28,9 +35,7 @@ public class RoleServiceTest
 
     private Role nullRole = null;
 
-    private int INVALID_ID = -1;
-
-    private int VALID_ID = 1;
+    private int iNVALIDID = -1;
 
     private Mock<IRoleDataServices> roleDataServicesMock;
 
@@ -38,148 +43,187 @@ public class RoleServiceTest
 
     private Mock<ILogger<RoleServiceImpl>> loggerMock;
 
+    /// <summary>
+    /// Setups this instance.
+    /// </summary>
     [TestInitialize]
     public void Setup()
     {
-        roleAdminDto = new RoleDto
+        this.roleAdminDto = new RoleDto
         {
             Id = 1,
-            Name = "Admin"
+            Name = "Admin",
         };
 
-        roleUserDto = new RoleDto
+        this.roleUserDto = new RoleDto
         {
             Id = 2,
-            Name = "User"
+            Name = "User",
         };
 
-        roleAdmin = new Role
+        this.roleAdmin = new Role
         {
             Id = 1,
-            Name = "Admin"
+            Name = "Admin",
         };
 
-        roleUser = new Role
+        this.roleUser = new Role
         {
             Id = 2,
-            Name = "User"
+            Name = "User",
         };
 
-        invalidRoleDto = new RoleDto
+        this.invalidRoleDto = new RoleDto
         {
             Id = 0,
-            Name = ""
+            Name = string.Empty,
         };
 
-        notFoundRoleDto = new RoleDto
+        this.notFoundRoleDto = new RoleDto
         {
             Id = int.MaxValue,
-            Name = "Not Found"
+            Name = "Not Found",
         };
 
-        roleDataServicesMock = new Mock<IRoleDataServices>();
-        loggerMock = new Mock<ILogger<RoleServiceImpl>>();
+        this.roleDataServicesMock = new Mock<IRoleDataServices>();
+        this.loggerMock = new Mock<ILogger<RoleServiceImpl>>();
 
-        roleServiceImpl = new RoleServiceImpl(roleDataServicesMock.Object, loggerMock.Object, new RoleDtoValidator());
+        this.roleServiceImpl = new RoleServiceImpl(this.roleDataServicesMock.Object, this.loggerMock.Object, new RoleDtoValidator());
     }
 
+    /// <summary>
+    /// Tests the get all.
+    /// </summary>
     [TestMethod]
     public void TestGetAll()
     {
-        roleDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Role> { roleAdmin, roleUser });
+        this.roleDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Role> { this.roleAdmin, this.roleUser });
 
-        var result = roleServiceImpl.GetAll();
+        var result = this.roleServiceImpl.GetAll();
 
-        CollectionAssert.AreEquivalent(new List<RoleDto> { roleAdminDto, roleUserDto }, result.ToList());
+        CollectionAssert.AreEquivalent(new List<RoleDto> { this.roleAdminDto, this.roleUserDto }, result.ToList());
     }
 
+    /// <summary>
+    /// Tests the get by identifier with valid identifier.
+    /// </summary>
     [TestMethod]
     public void TestGetByIdWithValidId()
     {
-        roleDataServicesMock.Setup(x => x.GetById(roleAdmin.Id)).Returns(roleAdmin);
+        this.roleDataServicesMock.Setup(x => x.GetById(this.roleAdmin.Id)).Returns(this.roleAdmin);
 
-        var result = roleServiceImpl.GetById(roleAdmin.Id);
+        var result = this.roleServiceImpl.GetById(this.roleAdmin.Id);
 
-        Assert.AreEqual(result, roleAdminDto);
+        Assert.AreEqual(result, this.roleAdminDto);
     }
 
+    /// <summary>
+    /// Tests the get by identifier with invalid identifier.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<RoleDto>))]
     public void TestGetByIdWithInvalidId()
     {
-        roleDataServicesMock.Setup(x => x.GetById(INVALID_ID)).Returns(nullRole);
+        this.roleDataServicesMock.Setup(x => x.GetById(this.iNVALIDID)).Returns(this.nullRole);
 
-        roleServiceImpl.GetById(INVALID_ID);
+        this.roleServiceImpl.GetById(this.iNVALIDID);
     }
 
+    /// <summary>
+    /// Tests the insert null role.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestInsertNullRole()
     {
-        roleServiceImpl.Insert(null);
+        this.roleServiceImpl.Insert(null);
     }
 
+    /// <summary>
+    /// Tests the insert invalid role.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestInsertInvalidRole()
     {
-        roleServiceImpl.Insert(invalidRoleDto);
+        this.roleServiceImpl.Insert(this.invalidRoleDto);
     }
 
+    /// <summary>
+    /// Tests the insert valid role.
+    /// </summary>
     [TestMethod]
     public void TestInsertValidRole()
     {
-        roleDataServicesMock.Setup(x => x.Insert(It.IsAny<Role>())).Returns(roleAdmin);
+        this.roleDataServicesMock.Setup(x => x.Insert(It.IsAny<Role>())).Returns(this.roleAdmin);
 
-        Assert.AreEqual(roleServiceImpl.Insert(roleAdminDto), roleAdminDto);
+        Assert.AreEqual(this.roleServiceImpl.Insert(this.roleAdminDto), this.roleAdminDto);
     }
 
+    /// <summary>
+    /// Tests the update null role.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestUpdateNullRole()
     {
-        roleServiceImpl.Update(null);
+        this.roleServiceImpl.Update(null);
     }
 
+    /// <summary>
+    /// Tests the update invalid role.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestUpdateInvalidRole()
     {
-        roleServiceImpl.Update(invalidRoleDto);
+        this.roleServiceImpl.Update(this.invalidRoleDto);
     }
 
+    /// <summary>
+    /// Tests the update not found role.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<RoleDto>))]
     public void TestUpdateNotFoundRole()
     {
-        roleDataServicesMock.Setup(x => x.GetById(notFoundRoleDto.Id)).Returns(nullRole);
+        this.roleDataServicesMock.Setup(x => x.GetById(this.notFoundRoleDto.Id)).Returns(this.nullRole);
 
-        roleServiceImpl.Update(notFoundRoleDto);
+        this.roleServiceImpl.Update(this.notFoundRoleDto);
     }
 
+    /// <summary>
+    /// Tests the update valid.
+    /// </summary>
     [TestMethod]
     public void TestUpdateValid()
     {
-        roleDataServicesMock.Setup(x => x.GetById(roleAdminDto.Id)).Returns(roleAdmin);
+        this.roleDataServicesMock.Setup(x => x.GetById(this.roleAdminDto.Id)).Returns(this.roleAdmin);
 
-        roleServiceImpl.Update(roleAdminDto);
+        this.roleServiceImpl.Update(this.roleAdminDto);
 
-        roleDataServicesMock.Verify(x => x.Update(roleAdmin), Times.Once);
+        this.roleDataServicesMock.Verify(x => x.Update(this.roleAdmin), Times.Once);
     }
 
+    /// <summary>
+    /// Tests the delete by identifier not found user.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<RoleDto>))]
     public void TestDeleteByIdNotFoundUser()
     {
-        roleDataServicesMock.Setup(x => x.GetById(notFoundRoleDto.Id)).Returns(nullRole);
-        roleServiceImpl.DeleteById(notFoundRoleDto.Id);
+        this.roleDataServicesMock.Setup(x => x.GetById(this.notFoundRoleDto.Id)).Returns(this.nullRole);
+        this.roleServiceImpl.DeleteById(this.notFoundRoleDto.Id);
     }
 
+    /// <summary>
+    /// Tests the delete by identifier valid role.
+    /// </summary>
     [TestMethod]
     public void TestDeleteByIdValidRole()
     {
-        roleDataServicesMock.Setup(x => x.GetById(roleAdminDto.Id)).Returns(roleAdmin);
-        roleServiceImpl.DeleteById(roleAdminDto.Id);
+        this.roleDataServicesMock.Setup(x => x.GetById(this.roleAdminDto.Id)).Returns(this.roleAdmin);
+        this.roleServiceImpl.DeleteById(this.roleAdminDto.Id);
         Assert.IsTrue(true);
     }
 }

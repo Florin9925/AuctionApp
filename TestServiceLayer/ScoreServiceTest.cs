@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="ScoreServiceTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestServiceLayer;
+
+using DataMapper;
 using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
@@ -10,8 +16,9 @@ using ServiceLayer;
 using ServiceLayer.Exception;
 using ServiceLayer.ServiceImplementation;
 
-namespace TestServiceLayer;
-
+/// <summary>
+/// ScoreServiceTest.
+/// </summary>
 [TestClass]
 public class ScoreServiceTest
 {
@@ -37,173 +44,214 @@ public class ScoreServiceTest
 
     private Mock<IUserDataServices> userDataServicesMock;
 
+    /// <summary>
+    /// Setups this instance.
+    /// </summary>
     [TestInitialize]
     public void Setup()
     {
-        receiverUser = new User
-        {
-            Id = 1
-        };
-
-        reviewerUser = new User
-        {
-            Id = 2
-        };
-
-        score = new Score
+        this.receiverUser = new User
         {
             Id = 1,
-            Receiver = receiverUser,
-            Reviewer = reviewerUser,
-            ReceiverId = receiverUser.Id,
-            ReviewerId = reviewerUser.Id,
-            Value = 10
         };
 
+        this.reviewerUser = new User
+        {
+            Id = 2,
+        };
 
-        scoreDto = new ScoreDto(score);
+        this.score = new Score
+        {
+            Id = 1,
+            Receiver = this.receiverUser,
+            Reviewer = this.reviewerUser,
+            ReceiverId = this.receiverUser.Id,
+            ReviewerId = this.reviewerUser.Id,
+            Value = 10,
+        };
 
-        notFoundScoreDto = new ScoreDto
+        this.scoreDto = new ScoreDto(this.score);
+
+        this.notFoundScoreDto = new ScoreDto
         {
             Id = int.MaxValue,
             ReceiverId = int.MaxValue,
             ReviewerId = int.MaxValue,
-            Value = 10
+            Value = 10,
         };
 
-        scoreDataServicesMock = new Mock<IScoreDataServices>();
-        loggerMock = new Mock<ILogger<ScoreServiceImpl>>();
-        myConfiguration = new MyConfiguration
+        this.scoreDataServicesMock = new Mock<IScoreDataServices>();
+        this.loggerMock = new Mock<ILogger<ScoreServiceImpl>>();
+        this.myConfiguration = new MyConfiguration
         {
             K = 5,
             P = 5,
             S = 5,
-            Z = 5
+            Z = 5,
         };
-        userDataServicesMock = new Mock<IUserDataServices>();
+        this.userDataServicesMock = new Mock<IUserDataServices>();
 
-        scoreService = new ScoreServiceImpl(
-            scoreDataServicesMock.Object,
-            loggerMock.Object,
-            userDataServicesMock.Object,
+        this.scoreService = new ScoreServiceImpl(
+            this.scoreDataServicesMock.Object,
+            this.loggerMock.Object,
+            this.userDataServicesMock.Object,
             new ScoreDtoValidator(),
-            Options.Create(myConfiguration));
+            Options.Create(this.myConfiguration));
     }
 
+    /// <summary>
+    /// Tests the score get all.
+    /// </summary>
     [TestMethod]
     public void TestScoreGetAll()
     {
-        scoreDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Score> { score });
-        var result = scoreService.GetAll();
+        this.scoreDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Score> { this.score });
+        var result = this.scoreService.GetAll();
 
-        CollectionAssert.AreEquivalent(new List<ScoreDto> { scoreDto }, result.ToList());
+        CollectionAssert.AreEquivalent(new List<ScoreDto> { this.scoreDto }, result.ToList());
     }
 
+    /// <summary>
+    /// Tests the score get by identifier valid.
+    /// </summary>
     [TestMethod]
     public void TestScoreGetByIdValid()
     {
-        scoreDataServicesMock.Setup(x => x.GetById(score.Id)).Returns(score);
-        var result = scoreService.GetById(scoreDto.Id);
+        this.scoreDataServicesMock.Setup(x => x.GetById(this.score.Id)).Returns(this.score);
+        var result = this.scoreService.GetById(this.scoreDto.Id);
 
-        Assert.AreEqual(scoreDto, result);
+        Assert.AreEqual(this.scoreDto, result);
     }
 
+    /// <summary>
+    /// Tests the score get by identifier not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ScoreDto>))]
     public void TestScoreGetByIdNotFound()
     {
-        scoreDataServicesMock.Setup(x => x.GetById(notFoundScoreDto.Id)).Returns(nullScore);
-        scoreService.GetById(notFoundScoreDto.Id);
+        this.scoreDataServicesMock.Setup(x => x.GetById(this.notFoundScoreDto.Id)).Returns(this.nullScore);
+        this.scoreService.GetById(this.notFoundScoreDto.Id);
     }
 
+    /// <summary>
+    /// Tests the score insert valid.
+    /// </summary>
     [TestMethod]
     public void TestScoreInsertValid()
     {
-        scoreDataServicesMock.Setup(x => x.Insert(It.IsAny<Score>())).Returns(score);
-        userDataServicesMock.Setup(x => x.GetById(score.ReceiverId)).Returns(score.Receiver);
-        userDataServicesMock.Setup(x => x.GetById(score.ReviewerId)).Returns(score.Reviewer);
-        var result = scoreService.Insert(scoreDto);
+        this.scoreDataServicesMock.Setup(x => x.Insert(It.IsAny<Score>())).Returns(this.score);
+        this.userDataServicesMock.Setup(x => x.GetById(this.score.ReceiverId)).Returns(this.score.Receiver);
+        this.userDataServicesMock.Setup(x => x.GetById(this.score.ReviewerId)).Returns(this.score.Reviewer);
+        var result = this.scoreService.Insert(this.scoreDto);
 
-        Assert.AreEqual(scoreDto, result);
+        Assert.AreEqual(this.scoreDto, result);
     }
 
+    /// <summary>
+    /// Tests the score insert not found receiver.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestScoreInsertNotFoundReceiver()
     {
-        scoreDataServicesMock.Setup(x => x.Insert(It.IsAny<Score>())).Returns(score);
-        userDataServicesMock.Setup(x => x.GetById(score.ReceiverId)).Returns((User)null);
-        userDataServicesMock.Setup(x => x.GetById(score.ReviewerId)).Returns(score.Reviewer);
+        this.scoreDataServicesMock.Setup(x => x.Insert(It.IsAny<Score>())).Returns(this.score);
+        this.userDataServicesMock.Setup(x => x.GetById(this.score.ReceiverId)).Returns((User)null);
+        this.userDataServicesMock.Setup(x => x.GetById(this.score.ReviewerId)).Returns(this.score.Reviewer);
 
-        scoreService.Insert(scoreDto);
+        this.scoreService.Insert(this.scoreDto);
     }
 
+    /// <summary>
+    /// Tests the score insert not found reviewer.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestScoreInsertNotFoundReviewer()
     {
-        scoreDataServicesMock.Setup(x => x.Insert(It.IsAny<Score>())).Returns(score);
-        userDataServicesMock.Setup(x => x.GetById(score.ReceiverId)).Returns(score.Receiver);
-        userDataServicesMock.Setup(x => x.GetById(score.ReviewerId)).Returns((User)null);
+        this.scoreDataServicesMock.Setup(x => x.Insert(It.IsAny<Score>())).Returns(this.score);
+        this.userDataServicesMock.Setup(x => x.GetById(this.score.ReceiverId)).Returns(this.score.Receiver);
+        this.userDataServicesMock.Setup(x => x.GetById(this.score.ReviewerId)).Returns((User)null);
 
-        scoreService.Insert(scoreDto);
+        this.scoreService.Insert(this.scoreDto);
     }
 
+    /// <summary>
+    /// Tests the score update invalid.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(FluentValidation.ValidationException))]
     public void TestScoreUpdateInvalid()
     {
-        scoreService.Update(new ScoreDto());
+        this.scoreService.Update(new ScoreDto());
     }
 
+    /// <summary>
+    /// Tests the score update not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ScoreDto>))]
     public void TestScoreUpdateNotFound()
     {
-        scoreService.Update(notFoundScoreDto);
+        this.scoreService.Update(this.notFoundScoreDto);
     }
 
+    /// <summary>
+    /// Tests the score update valid.
+    /// </summary>
     [TestMethod]
     public void TestScoreUpdateValid()
     {
-        scoreDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(score);
-        scoreDataServicesMock.Setup(x => x.Update(It.IsAny<Score>())).Returns(score);
+        this.scoreDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(this.score);
+        this.scoreDataServicesMock.Setup(x => x.Update(It.IsAny<Score>())).Returns(this.score);
 
-        var result = scoreService.Update(scoreDto);
+        var result = this.scoreService.Update(this.scoreDto);
 
-        Assert.AreEqual(scoreDto, result);
+        Assert.AreEqual(this.scoreDto, result);
     }
 
+    /// <summary>
+    /// Tests the score delete not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ScoreDto>))]
     public void TestScoreDeleteNotFound()
     {
-        scoreService.DeleteById(notFoundScoreDto.Id);
+        this.scoreService.DeleteById(this.notFoundScoreDto.Id);
     }
 
+    /// <summary>
+    /// Tests the score delete valid.
+    /// </summary>
     [TestMethod]
     public void TestScoreDeleteValid()
     {
-        scoreDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(score);
-        scoreService.DeleteById(scoreDto.Id);
+        this.scoreDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(this.score);
+        this.scoreService.DeleteById(this.scoreDto.Id);
 
         Assert.IsTrue(true);
     }
 
+    /// <summary>
+    /// Tests the score get user score default.
+    /// </summary>
     [TestMethod]
     public void TestScoreGetUserScoreDefault()
     {
-        scoreDataServicesMock.Setup(x => x.GetUserScore(It.IsAny<int>())).Returns(-1);
-        var result = scoreService.GetUserScore(scoreDto.ReceiverId);
+        this.scoreDataServicesMock.Setup(x => x.GetUserScore(It.IsAny<int>())).Returns(-1);
+        var result = this.scoreService.GetUserScore(this.scoreDto.ReceiverId);
 
-        Assert.AreEqual(result, myConfiguration.S);
+        Assert.AreEqual(result, this.myConfiguration.S);
     }
 
+    /// <summary>
+    /// Tests the score get user score.
+    /// </summary>
     [TestMethod]
     public void TestScoreGetUserScore()
     {
-        scoreDataServicesMock.Setup(x => x.GetUserScore(It.IsAny<int>())).Returns(10);
-        var result = scoreService.GetUserScore(scoreDto.ReceiverId);
+        this.scoreDataServicesMock.Setup(x => x.GetUserScore(It.IsAny<int>())).Returns(10);
+        var result = this.scoreService.GetUserScore(this.scoreDto.ReceiverId);
 
         Assert.AreEqual(result, 10);
     }

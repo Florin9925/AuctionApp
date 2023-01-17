@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="CategoryServiceTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestServiceLayer;
+
+using DataMapper;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
@@ -9,8 +15,9 @@ using ServiceLayer;
 using ServiceLayer.Exception;
 using ServiceLayer.ServiceImplementation;
 
-namespace TestServiceLayer;
-
+/// <summary>
+/// CategoryServiceTest.
+/// </summary>
 [TestClass]
 public class CategoryServiceTest
 {
@@ -36,178 +43,218 @@ public class CategoryServiceTest
 
     private ICategoryService categoryService;
 
-    private int INVALID_ID = -1;
+    private int iNVALIDID = -1;
 
-    private int VALID_ID = 1;
+    private int vALIDID = 1;
 
     private Mock<ICategoryDataServices> categoryDataServicesMock;
 
     private Mock<ILogger<CategoryServiceImpl>> loggerMock;
 
+    /// <summary>
+    /// Setups this instance.
+    /// </summary>
     [TestInitialize]
     public void Setup()
     {
-        categoryParent = new Category
+        this.categoryParent = new Category
         {
             Id = 1,
             Name = "Parent Category",
         };
 
-        category = new Category
+        this.category = new Category
         {
             Id = 2,
             Name = "Category 1",
         };
 
-        categoryChild = new Category
+        this.categoryChild = new Category
         {
             Id = 3,
             Name = "Child Category",
         };
 
-        categoryChild.ParentCategories.Add(category);
-        categoryParent.ChildCategories.Add(category);
-        category.ParentCategories.Add(categoryParent);
-        category.ChildCategories.Add(categoryChild);
+        this.categoryChild.ParentCategories.Add(this.category);
+        this.categoryParent.ChildCategories.Add(this.category);
+        this.category.ParentCategories.Add(this.categoryParent);
+        this.category.ChildCategories.Add(this.categoryChild);
 
-        categoryDto = new CategoryDto(category);
-        categoryParentDto = new CategoryDto(categoryParent);
-        categoryChildDto = new CategoryDto(categoryChild);
+        this.categoryDto = new CategoryDto(this.category);
+        this.categoryParentDto = new CategoryDto(this.categoryParent);
+        this.categoryChildDto = new CategoryDto(this.categoryChild);
 
-        invalidCategoryDto = new CategoryDto
+        this.invalidCategoryDto = new CategoryDto
         {
-            Id = INVALID_ID,
-            Name = "",
+            Id = this.iNVALIDID,
+            Name = string.Empty,
         };
 
-        notFoundCategoryDto = new CategoryDto
+        this.notFoundCategoryDto = new CategoryDto
         {
             Id = int.MaxValue,
             Name = "Not Found Category",
         };
 
-        categoryDataServicesMock = new Mock<ICategoryDataServices>();
-        loggerMock = new Mock<ILogger<CategoryServiceImpl>>();
+        this.categoryDataServicesMock = new Mock<ICategoryDataServices>();
+        this.loggerMock = new Mock<ILogger<CategoryServiceImpl>>();
 
-        categoryService = new CategoryServiceImpl(
-            categoryDataServicesMock.Object,
-            loggerMock.Object,
+        this.categoryService = new CategoryServiceImpl(
+            this.categoryDataServicesMock.Object,
+            this.loggerMock.Object,
             new CategoryDtoValidator());
     }
 
+    /// <summary>
+    /// Tests the get all categories.
+    /// </summary>
     [TestMethod]
     public void TestGetAllCategories()
     {
-        categoryDataServicesMock.Setup(x => x.GetAll())
-            .Returns(new List<Category> { category, categoryParent, categoryChild });
+        this.categoryDataServicesMock.Setup(x => x.GetAll())
+            .Returns(new List<Category> { this.category, this.categoryParent, this.categoryChild });
 
-        var result = categoryService.GetAll();
+        var result = this.categoryService.GetAll();
 
-        CollectionAssert.AreEquivalent(result.ToList(),
-            new List<CategoryDto> { categoryDto, categoryParentDto, categoryChildDto });
+        CollectionAssert.AreEquivalent(
+            result.ToList(),
+            new List<CategoryDto> { this.categoryDto, this.categoryParentDto, this.categoryChildDto });
     }
 
+    /// <summary>
+    /// Tests the get category by identifier.
+    /// </summary>
     [TestMethod]
     public void TestGetCategoryById()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(VALID_ID))
-            .Returns(category);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.vALIDID))
+            .Returns(this.category);
 
-        var result = categoryService.GetById(VALID_ID);
+        var result = this.categoryService.GetById(this.vALIDID);
 
         Assert.AreEqual(result, categoryDto);
     }
 
+    /// <summary>
+    /// Tests the get category by identifier not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<CategoryDto>))]
     public void TestGetCategoryByIdNotFound()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(INVALID_ID))
-            .Returns(nullCategory);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.iNVALIDID))
+            .Returns(this.nullCategory);
 
-        categoryService.GetById(INVALID_ID);
+        this.categoryService.GetById(this.iNVALIDID);
     }
 
+    /// <summary>
+    /// Tests the insert category.
+    /// </summary>
     [TestMethod]
     public void TestInsertCategory()
     {
-        categoryDataServicesMock.Setup(x => x.Insert(It.IsAny<Category>()))
-            .Returns(category);
+        this.categoryDataServicesMock.Setup(x => x.Insert(It.IsAny<Category>()))
+            .Returns(this.category);
 
-        Assert.AreEqual(categoryService.Insert(categoryDto), categoryDto);
+        Assert.AreEqual(this.categoryService.Insert(this.categoryDto), this.categoryDto);
     }
 
+    /// <summary>
+    /// Tests the insert category null.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestInsertCategoryNull()
     {
-        categoryService.Insert(nullCategoryDto);
+        this.categoryService.Insert(this.nullCategoryDto);
     }
 
+    /// <summary>
+    /// Tests the insert category invalid.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestInsertCategoryInvalid()
     {
-        categoryService.Insert(invalidCategoryDto);
+        this.categoryService.Insert(this.invalidCategoryDto);
     }
 
+    /// <summary>
+    /// Tests the update category null.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestUpdateCategoryNull()
     {
-        categoryService.Update(nullCategoryDto);
+        this.categoryService.Update(this.nullCategoryDto);
     }
 
+    /// <summary>
+    /// Tests the update category invalid.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestUpdateCategoryInvalid()
     {
-        categoryService.Update(invalidCategoryDto);
+        this.categoryService.Update(this.invalidCategoryDto);
     }
 
+    /// <summary>
+    /// Tests the update category not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<CategoryDto>))]
     public void TestUpdateCategoryNotFound()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(INVALID_ID))
-            .Returns(nullCategory);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.iNVALIDID))
+            .Returns(this.nullCategory);
 
-        categoryService.Update(notFoundCategoryDto);
+        this.categoryService.Update(this.notFoundCategoryDto);
     }
 
+    /// <summary>
+    /// Tests the update category.
+    /// </summary>
     [TestMethod]
     public void TestUpdateCategory()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(category.Id))
-            .Returns(category);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.category.Id))
+            .Returns(this.category);
 
-        categoryDataServicesMock.Setup(x => x.GetById(categoryParent.Id))
-            .Returns(categoryParent);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.categoryParent.Id))
+            .Returns(this.categoryParent);
 
-        categoryDataServicesMock.Setup(x => x.GetById(categoryChild.Id))
-            .Returns(categoryChild);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.categoryChild.Id))
+            .Returns(this.categoryChild);
 
-        categoryDataServicesMock.Setup(x => x.Update(It.IsAny<Category>()))
-            .Returns(category);
+        this.categoryDataServicesMock.Setup(x => x.Update(It.IsAny<Category>()))
+            .Returns(this.category);
 
-        Assert.AreEqual(categoryService.Update(categoryDto), categoryDto);
+        Assert.AreEqual(this.categoryService.Update(this.categoryDto), this.categoryDto);
     }
 
+    /// <summary>
+    /// Tests the delete by identifier category not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<CategoryDto>))]
     public void TestDeleteByIdCategoryNotFound()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(notFoundCategoryDto.Id)).Returns(nullCategory);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.notFoundCategoryDto.Id)).Returns(this.nullCategory);
 
-        categoryService.DeleteById(notFoundCategoryDto.Id);
+        this.categoryService.DeleteById(this.notFoundCategoryDto.Id);
     }
 
+    /// <summary>
+    /// Tests the delete by identifier category.
+    /// </summary>
     [TestMethod]
     public void TestDeleteByIdCategory()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(category.Id)).Returns(category);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.category.Id)).Returns(this.category);
 
-        categoryService.DeleteById(category.Id);
+        this.categoryService.DeleteById(this.category.Id);
         Assert.IsTrue(true);
     }
 }

@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="ProductServiceTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestServiceLayer;
+
+using DataMapper;
 using DomainModel.Configuration;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
@@ -10,8 +16,9 @@ using ServiceLayer;
 using ServiceLayer.Exception;
 using ServiceLayer.ServiceImplementation;
 
-namespace TestServiceLayer;
-
+/// <summary>
+/// ProductServiceTest.
+/// </summary>
 [TestClass]
 public class ProductServiceTest
 {
@@ -35,10 +42,13 @@ public class ProductServiceTest
 
     private MyConfiguration myConfiguration;
 
+    /// <summary>
+    /// Setups this instance.
+    /// </summary>
     [TestInitialize]
     public void Setup()
     {
-        product = new Product
+        this.product = new Product
         {
             Id = 1,
             Name = "Product 1",
@@ -51,7 +61,7 @@ public class ProductServiceTest
             EndDate = DateTime.Now.AddDays(2),
         };
 
-        notFoundProduct = new ProductDto
+        this.notFoundProduct = new ProductDto
         {
             Id = int.MaxValue,
             Name = "Product 2",
@@ -64,161 +74,200 @@ public class ProductServiceTest
             EndDate = DateTime.Now.AddDays(2),
         };
 
-        productDto = new ProductDto(product);
+        this.productDto = new ProductDto(this.product);
 
-        categoryDataServicesMock = new Mock<ICategoryDataServices>();
-        userDataServicesMock = new Mock<IUserDataServices>();
-        loggerMock = new Mock<ILogger<ProductServiceImpl>>();
-        productDataServicesMock = new Mock<IProductDataServices>();
-        myConfiguration = new MyConfiguration
+        this.categoryDataServicesMock = new Mock<ICategoryDataServices>();
+        this.userDataServicesMock = new Mock<IUserDataServices>();
+        this.loggerMock = new Mock<ILogger<ProductServiceImpl>>();
+        this.productDataServicesMock = new Mock<IProductDataServices>();
+        this.myConfiguration = new MyConfiguration
         {
             K = 5,
             P = 5,
             S = 5,
-            Z = 5
+            Z = 5,
         };
 
-        productService = new ProductServiceImpl(
-            productDataServicesMock.Object,
-            loggerMock.Object,
-            categoryDataServicesMock.Object,
-            userDataServicesMock.Object,
+        this.productService = new ProductServiceImpl(
+            this.productDataServicesMock.Object,
+            this.loggerMock.Object,
+            this.categoryDataServicesMock.Object,
+            this.userDataServicesMock.Object,
             new ProductDtoValidator(),
-            Options.Create(myConfiguration));
+            Options.Create(this.myConfiguration));
     }
 
+    /// <summary>
+    /// Tests the product get all.
+    /// </summary>
     [TestMethod]
     public void TestProductGetAll()
     {
-        productDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Product> { product });
+        this.productDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Product> { this.product });
 
-        var result = productService.GetAll();
+        var result = this.productService.GetAll();
 
-        CollectionAssert.AreEqual(new List<ProductDto> { productDto }, result.ToList());
+        CollectionAssert.AreEqual(new List<ProductDto> { this.productDto }, result.ToList());
     }
 
+    /// <summary>
+    /// Tests the product get by identifier.
+    /// </summary>
     [TestMethod]
     public void TestProductGetById()
     {
-        productDataServicesMock.Setup(x => x.GetById(product.Id)).Returns(product);
+        this.productDataServicesMock.Setup(x => x.GetById(this.product.Id)).Returns(this.product);
 
-        var result = productService.GetById(product.Id);
+        var result = this.productService.GetById(this.product.Id);
 
-        Assert.AreEqual(productDto, result);
+        Assert.AreEqual(this.productDto, result);
     }
 
+    /// <summary>
+    /// Tests the product get by identifier not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ProductDto>))]
     public void TestProductGetByIdNotFound()
     {
-        productDataServicesMock.Setup(x => x.GetById(notFoundProduct.Id)).Returns(nullProduct);
+        this.productDataServicesMock.Setup(x => x.GetById(this.notFoundProduct.Id)).Returns(this.nullProduct);
 
-        productService.GetById(notFoundProduct.Id);
+        this.productService.GetById(this.notFoundProduct.Id);
     }
 
+    /// <summary>
+    /// Tests the product delete by identifier.
+    /// </summary>
     [TestMethod]
     public void TestProductDeleteById()
     {
-        productDataServicesMock.Setup(x => x.GetById(product.Id)).Returns(product);
+        this.productDataServicesMock.Setup(x => x.GetById(this.product.Id)).Returns(this.product);
 
-        productService.DeleteById(product.Id);
+        this.productService.DeleteById(this.product.Id);
 
-        productDataServicesMock.Verify(x => x.Delete(product), Times.Once);
+        this.productDataServicesMock.Verify(x => x.Delete(this.product), Times.Once);
     }
 
+    /// <summary>
+    /// Tests the product delete by identifier not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ProductDto>))]
     public void TestProductDeleteByIdNotFound()
     {
-        productDataServicesMock.Setup(x => x.GetById(notFoundProduct.Id)).Returns(nullProduct);
+        this.productDataServicesMock.Setup(x => x.GetById(this.notFoundProduct.Id)).Returns(this.nullProduct);
 
-        productService.DeleteById(notFoundProduct.Id);
+        this.productService.DeleteById(this.notFoundProduct.Id);
     }
 
+    /// <summary>
+    /// Tests the product insert.
+    /// </summary>
     [TestMethod]
     public void TestProductInsert()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(productDto.CategoryId)).Returns(product.Category);
-        userDataServicesMock.Setup(x => x.GetById(productDto.OwnerId)).Returns(product.Owner);
-        productDataServicesMock.Setup(x => x.Insert(It.IsAny<Product>())).Returns(product);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.productDto.CategoryId)).Returns(this.product.Category);
+        this.userDataServicesMock.Setup(x => x.GetById(this.productDto.OwnerId)).Returns(this.product.Owner);
+        this.productDataServicesMock.Setup(x => x.Insert(It.IsAny<Product>())).Returns(this.product);
 
-        var result = productService.Insert(productDto);
+        var result = this.productService.Insert(this.productDto);
 
-        Assert.AreEqual(productDto, result);
+        Assert.AreEqual(this.productDto, result);
     }
 
+    /// <summary>
+    /// Tests the product insert category not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<Category>))]
     public void TestProductInsertCategoryNotFound()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(productDto.CategoryId)).Returns((Category)null);
-        userDataServicesMock.Setup(x => x.GetById(productDto.OwnerId)).Returns(product.Owner);
-        productDataServicesMock.Setup(x => x.Insert(It.IsAny<Product>())).Returns(product);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.productDto.CategoryId)).Returns((Category)null);
+        this.userDataServicesMock.Setup(x => x.GetById(this.productDto.OwnerId)).Returns(this.product.Owner);
+        this.productDataServicesMock.Setup(x => x.Insert(It.IsAny<Product>())).Returns(this.product);
 
-        var result = productService.Insert(productDto);
+        var result = this.productService.Insert(this.productDto);
 
-        Assert.AreEqual(productDto, result);
+        Assert.AreEqual(this.productDto, result);
     }
 
+    /// <summary>
+    /// Tests the product insert user not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<User>))]
     public void TestProductInsertUserNotFound()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(productDto.CategoryId)).Returns(product.Category);
-        userDataServicesMock.Setup(x => x.GetById(productDto.OwnerId)).Returns((User)null);
-        productDataServicesMock.Setup(x => x.Insert(It.IsAny<Product>())).Returns(product);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.productDto.CategoryId)).Returns(this.product.Category);
+        this.userDataServicesMock.Setup(x => x.GetById(this.productDto.OwnerId)).Returns((User)null);
+        this.productDataServicesMock.Setup(x => x.Insert(It.IsAny<Product>())).Returns(this.product);
 
-        var result = productService.Insert(productDto);
+        var result = this.productService.Insert(this.productDto);
 
-        Assert.AreEqual(productDto, result);
+        Assert.AreEqual(this.productDto, result);
     }
 
+    /// <summary>
+    /// Tests the product insert validation exception.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(FluentValidation.ValidationException))]
     public void TestProductInsertValidationException()
     {
-        productService.Insert(new ProductDto());
+        this.productService.Insert(new ProductDto());
     }
 
+    /// <summary>
+    /// Tests the product insert description similar exception.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ProductDescriptionSimilarException))]
     public void TestProductInsertDescriptionSimilarException()
     {
-        categoryDataServicesMock.Setup(x => x.GetById(productDto.CategoryId)).Returns(product.Category);
-        userDataServicesMock.Setup(x => x.GetById(productDto.OwnerId)).Returns(product.Owner);
-        productDataServicesMock.Setup(x => x.GetUserProductDescriptions(It.IsAny<int>()))
-            .Returns(new List<string> { product.Description });
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.productDto.CategoryId)).Returns(this.product.Category);
+        this.userDataServicesMock.Setup(x => x.GetById(this.productDto.OwnerId)).Returns(this.product.Owner);
+        this.productDataServicesMock.Setup(x => x.GetUserProductDescriptions(It.IsAny<int>()))
+            .Returns(new List<string> { this.product.Description });
 
-        productService.Insert(productDto);
+        this.productService.Insert(this.productDto);
     }
 
+    /// <summary>
+    /// Tests the product insert too many products exception.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(TooManyProductsException))]
     public void TestProductInsertTooManyProductsException()
     {
-        productDataServicesMock.Setup(x => x.GetActiveUserProductsCount(It.IsAny<int>())).Returns(int.MaxValue);
+        this.productDataServicesMock.Setup(x => x.GetActiveUserProductsCount(It.IsAny<int>())).Returns(int.MaxValue);
 
-        productService.Insert(productDto);
+        this.productService.Insert(this.productDto);
     }
 
+    /// <summary>
+    /// Tests the product update.
+    /// </summary>
     [TestMethod]
     public void TestProductUpdate()
     {
-        productDataServicesMock.Setup(x => x.GetById(product.Id)).Returns(product);
-        categoryDataServicesMock.Setup(x => x.GetById(productDto.CategoryId)).Returns(product.Category);
-        userDataServicesMock.Setup(x => x.GetById(productDto.OwnerId)).Returns(product.Owner);
-        productDataServicesMock.Setup(x => x.Update(It.IsAny<Product>())).Returns(product);
+        this.productDataServicesMock.Setup(x => x.GetById(this.product.Id)).Returns(this.product);
+        this.categoryDataServicesMock.Setup(x => x.GetById(this.productDto.CategoryId)).Returns(this.product.Category);
+        this.userDataServicesMock.Setup(x => x.GetById(this.productDto.OwnerId)).Returns(this.product.Owner);
+        this.productDataServicesMock.Setup(x => x.Update(It.IsAny<Product>())).Returns(this.product);
 
-        var result = productService.Update(productDto);
+        var result = this.productService.Update(this.productDto);
 
-        Assert.AreEqual(productDto, result);
+        Assert.AreEqual(this.productDto, result);
     }
 
+    /// <summary>
+    /// Tests the product update not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ProductDto>))]
     public void TestProductUpdateNotFound()
     {
-        productDataServicesMock.Setup(x => x.GetById(product.Id)).Returns(nullProduct);
-        productService.Update(productDto);
+        this.productDataServicesMock.Setup(x => x.GetById(this.product.Id)).Returns(this.nullProduct);
+        this.productService.Update(this.productDto);
     }
 }

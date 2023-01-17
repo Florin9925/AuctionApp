@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="OfferServiceTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestServiceLayer;
+
+using DataMapper;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
@@ -8,8 +14,9 @@ using ServiceLayer;
 using ServiceLayer.Exception;
 using ServiceLayer.ServiceImplementation;
 
-namespace TestServiceLayer;
-
+/// <summary>
+/// OfferServiceTest.
+/// </summary>
 [TestClass]
 public class OfferServiceTest
 {
@@ -36,6 +43,9 @@ public class OfferServiceTest
 
     private Mock<ILogger<OfferServiceImpl>> loggerMock;
 
+    /// <summary>
+    /// Tests the initialize.
+    /// </summary>
     [TestInitialize]
     public void TestInitialize()
     {
@@ -46,202 +56,247 @@ public class OfferServiceTest
             StartDate = DateTime.Now.AddDays(1),
             EndDate = DateTime.Now.AddDays(2),
             Category = new Category { Id = 1 },
-            Owner = new User { Id = 1 }
+            Owner = new User { Id = 1 },
         };
 
-        offer = new Offer
+        this.offer = new Offer
         {
             Id = 2,
             Product = product,
             Bidder = new User { Id = 2 },
             Price = 200,
-            DateTime = DateTime.Now.AddMinutes(1)
+            DateTime = DateTime.Now.AddMinutes(1),
         };
 
-        lastOffer = new Offer
+        this.lastOffer = new Offer
         {
             Id = 1,
             Product = product,
             Bidder = new User { Id = 2 },
-            Price = 150
+            Price = 150,
         };
 
-        notFoundOfferDto = new OfferDto
+        this.notFoundOfferDto = new OfferDto
         {
             Id = int.MaxValue,
             ProductId = int.MaxValue,
             BidderId = int.MaxValue,
-            Price = 200
+            Price = 200,
         };
 
-        invalidOfferDto = new OfferDto
+        this.invalidOfferDto = new OfferDto
         {
             Id = 1,
             ProductId = 1,
             BidderId = 1,
             Price = int.MaxValue,
-            DateTime = DateTime.Now.AddMinutes(1)
+            DateTime = DateTime.Now.AddMinutes(1),
         };
 
-        offerDataServicesMock = new Mock<IOfferDataServices>();
-        productServiceMock = new Mock<IProductDataServices>();
-        userDataServicesMock = new Mock<IUserDataServices>();
-        loggerMock = new Mock<ILogger<OfferServiceImpl>>();
+        this.offerDataServicesMock = new Mock<IOfferDataServices>();
+        this.productServiceMock = new Mock<IProductDataServices>();
+        this.userDataServicesMock = new Mock<IUserDataServices>();
+        this.loggerMock = new Mock<ILogger<OfferServiceImpl>>();
 
-        offerDto = new OfferDto(offer);
-        lastOfferDto = new OfferDto(lastOffer);
+        this.offerDto = new OfferDto(this.offer);
+        this.lastOfferDto = new OfferDto(this.lastOffer);
 
-        offerService = new OfferServiceImpl(
-            offerDataServicesMock.Object,
-            productServiceMock.Object,
-            userDataServicesMock.Object,
-            loggerMock.Object,
+        this.offerService = new OfferServiceImpl(
+            this.offerDataServicesMock.Object,
+            this.productServiceMock.Object,
+            this.userDataServicesMock.Object,
+            this.loggerMock.Object,
             new OfferDtoValidator());
     }
 
+    /// <summary>
+    /// Tests the offer get all.
+    /// </summary>
     [TestMethod]
     public void TestOfferGetAll()
     {
-        offerDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Offer> { offer, lastOffer });
+        this.offerDataServicesMock.Setup(x => x.GetAll()).Returns(new List<Offer> { this.offer, this.lastOffer });
 
-        var result = offerService.GetAll();
+        var result = this.offerService.GetAll();
 
-        CollectionAssert.AreEquivalent(new List<OfferDto> { offerDto, lastOfferDto }, result.ToList());
+        CollectionAssert.AreEquivalent(new List<OfferDto> { this.offerDto, this.lastOfferDto }, result.ToList());
     }
 
+    /// <summary>
+    /// Tests the offer get all product offers.
+    /// </summary>
     [TestMethod]
     public void TestOfferGetAllProductOffers()
     {
-        offerDataServicesMock.Setup(x => x.GetAllProductOffers(offerDto.ProductId))
-            .Returns(new List<Offer> { offer, lastOffer });
+        this.offerDataServicesMock.Setup(x => x.GetAllProductOffers(this.offerDto.ProductId))
+            .Returns(new List<Offer> { this.offer, this.lastOffer });
 
-        var result = offerService.GetAllProductOffers(offerDto.ProductId);
+        var result = this.offerService.GetAllProductOffers(this.offerDto.ProductId);
 
-        CollectionAssert.AreEquivalent(new List<OfferDto> { offerDto, lastOfferDto }, result.ToList());
+        CollectionAssert.AreEquivalent(new List<OfferDto> { this.offerDto, this.lastOfferDto }, result.ToList());
     }
 
+    /// <summary>
+    /// Tests the offer get by identifier.
+    /// </summary>
     [TestMethod]
     public void TestOfferGetById()
     {
-        offerDataServicesMock.Setup(x => x.GetById(offer.Id)).Returns(offer);
+        this.offerDataServicesMock.Setup(x => x.GetById(this.offer.Id)).Returns(this.offer);
 
-        var result = offerService.GetById(offer.Id);
+        var result = this.offerService.GetById(this.offer.Id);
 
-        Assert.AreEqual(offerDto, result);
+        Assert.AreEqual(this.offerDto, result);
     }
 
+    /// <summary>
+    /// Tests the offer get by identifier not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<OfferDto>))]
     public void TestOfferGetByIdNotFound()
     {
-        offerDataServicesMock.Setup(x => x.GetById(notFoundOfferDto)).Returns(nullOffer);
-        offerService.GetById(offer.Id);
+        this.offerDataServicesMock.Setup(x => x.GetById(this.notFoundOfferDto)).Returns(this.nullOffer);
+        this.offerService.GetById(this.offer.Id);
     }
 
+    /// <summary>
+    /// Tests the offer get last offer.
+    /// </summary>
     [TestMethod]
     public void TestOfferGetLastOffer()
     {
-        offerDataServicesMock.Setup(x => x.GetLastProductOffer(offerDto.ProductId)).Returns(lastOffer);
-        productServiceMock.Setup(x => x.GetById(offerDto.ProductId)).Returns(offer.Product);
+        this.offerDataServicesMock.Setup(x => x.GetLastProductOffer(this.offerDto.ProductId)).Returns(this.lastOffer);
+        this.productServiceMock.Setup(x => x.GetById(this.offerDto.ProductId)).Returns(this.offer.Product);
 
-        var result = offerService.GetLastProductOffer(offerDto.ProductId);
+        var result = this.offerService.GetLastProductOffer(this.offerDto.ProductId);
 
-        Assert.AreEqual(lastOfferDto, result);
+        Assert.AreEqual(this.lastOfferDto, result);
     }
 
+    /// <summary>
+    /// Tests the offer get last offer not exist.
+    /// </summary>
     [TestMethod]
     public void TestOfferGetLastOfferNotExist()
     {
-        offerDataServicesMock.Setup(x => x.GetLastProductOffer(offerDto.ProductId)).Returns(nullOffer);
-        productServiceMock.Setup(x => x.GetById(offerDto.ProductId)).Returns(offer.Product);
+        this.offerDataServicesMock.Setup(x => x.GetLastProductOffer(this.offerDto.ProductId)).Returns(this.nullOffer);
+        this.productServiceMock.Setup(x => x.GetById(this.offerDto.ProductId)).Returns(this.offer.Product);
 
-        var result = offerService.GetLastProductOffer(offerDto.ProductId);
+        var result = this.offerService.GetLastProductOffer(this.offerDto.ProductId);
 
         Assert.AreEqual(null, result);
     }
 
+    /// <summary>
+    /// Tests the offer get last offer bot found product.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ProductDto>))]
     public void TestOfferGetLastOfferBotFoundProduct()
     {
-        offerDataServicesMock.Setup(x => x.GetLastProductOffer(offerDto.ProductId)).Returns(nullOffer);
-        offerService.GetLastProductOffer(offerDto.ProductId);
+        this.offerDataServicesMock.Setup(x => x.GetLastProductOffer(this.offerDto.ProductId)).Returns(this.nullOffer);
+        this.offerService.GetLastProductOffer(this.offerDto.ProductId);
     }
 
+    /// <summary>
+    /// Tests the offer create.
+    /// </summary>
     [TestMethod]
     public void TestOfferCreate()
     {
-        offerDataServicesMock.Setup(x => x.Insert(It.IsAny<Offer>())).Returns(offer);
-        productServiceMock.Setup(x => x.GetById(offerDto.ProductId)).Returns(offer.Product);
-        userDataServicesMock.Setup(x => x.GetById(offerDto.BidderId)).Returns(offer.Bidder);
+        this.offerDataServicesMock.Setup(x => x.Insert(It.IsAny<Offer>())).Returns(this.offer);
+        this.productServiceMock.Setup(x => x.GetById(this.offerDto.ProductId)).Returns(this.offer.Product);
+        this.userDataServicesMock.Setup(x => x.GetById(this.offerDto.BidderId)).Returns(this.offer.Bidder);
 
-        var result = offerService.Insert(offerDto);
+        var result = this.offerService.Insert(this.offerDto);
 
-        Assert.AreEqual(offerDto, result);
+        Assert.AreEqual(this.offerDto, result);
     }
 
+    /// <summary>
+    /// Tests the offer create invalid offer.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(InvalidDataException<OfferDto>))]
     public void TestOfferCreateInvalidOffer()
     {
-        productServiceMock.Setup(x => x.GetById(offerDto.ProductId)).Returns(offer.Product);
-        userDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(offer.Bidder);
-        offerDataServicesMock.Setup(x => x.GetLastProductOffer(It.IsAny<int>())).Returns(lastOffer);
+        this.productServiceMock.Setup(x => x.GetById(this.offerDto.ProductId)).Returns(this.offer.Product);
+        this.userDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(this.offer.Bidder);
+        this.offerDataServicesMock.Setup(x => x.GetLastProductOffer(It.IsAny<int>())).Returns(this.lastOffer);
 
-        offerService.Insert(invalidOfferDto);
+        this.offerService.Insert(this.invalidOfferDto);
     }
 
+    /// <summary>
+    /// Tests the offer create invalid offer2.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(InvalidDataException<OfferDto>))]
     public void TestOfferCreateInvalidOffer2()
     {
-        offerDataServicesMock.Setup(x => x.GetLastProductOffer(offerDto.ProductId)).Returns(nullOffer);
-        productServiceMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(offer.Product);
-        userDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(offer.Bidder);
+        this.offerDataServicesMock.Setup(x => x.GetLastProductOffer(this.offerDto.ProductId)).Returns(this.nullOffer);
+        this.productServiceMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(this.offer.Product);
+        this.userDataServicesMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(this.offer.Bidder);
 
-        offerService.Insert(invalidOfferDto);
+        this.offerService.Insert(this.invalidOfferDto);
     }
 
+    /// <summary>
+    /// Tests the offer create not found product.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<ProductDto>))]
     public void TestOfferCreateNotFoundProduct()
     {
-        productServiceMock.Setup(x => x.GetById(offerDto.ProductId)).Returns((Product)null);
+        this.productServiceMock.Setup(x => x.GetById(this.offerDto.ProductId)).Returns((Product)null);
 
-        offerService.Insert(invalidOfferDto);
+        this.offerService.Insert(this.invalidOfferDto);
     }
 
+    /// <summary>
+    /// Tests the offer create not found user.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestOfferCreateNotFoundUser()
     {
-        productServiceMock.Setup(x => x.GetById(offerDto.ProductId)).Returns(offer.Product);
-        userDataServicesMock.Setup(x => x.GetById(offerDto.BidderId)).Returns((User)null);
+        this.productServiceMock.Setup(x => x.GetById(this.offerDto.ProductId)).Returns(this.offer.Product);
+        this.userDataServicesMock.Setup(x => x.GetById(this.offerDto.BidderId)).Returns((User)null);
 
-        offerService.Insert(invalidOfferDto);
+        this.offerService.Insert(this.invalidOfferDto);
     }
 
+    /// <summary>
+    /// Tests the offer delete not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<OfferDto>))]
     public void TestOfferDeleteNotFound()
     {
-        offerDataServicesMock.Setup(x => x.GetById(invalidOfferDto.Id)).Returns(nullOffer);
+        this.offerDataServicesMock.Setup(x => x.GetById(this.invalidOfferDto.Id)).Returns(this.nullOffer);
 
-        offerService.DeleteById(invalidOfferDto.Id);
+        this.offerService.DeleteById(this.invalidOfferDto.Id);
     }
 
+    /// <summary>
+    /// Tests the offer delete.
+    /// </summary>
     [TestMethod]
     public void TestOfferDelete()
     {
-        offerDataServicesMock.Setup(x => x.GetById(offer.Id)).Returns(offer);
+        this.offerDataServicesMock.Setup(x => x.GetById(this.offer.Id)).Returns(this.offer);
 
-        offerService.DeleteById(offerDto.Id);
+        this.offerService.DeleteById(this.offerDto.Id);
     }
 
+    /// <summary>
+    /// Tests the offer update.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotImplementedException))]
     public void TestOfferUpdate()
     {
-        offerService.Update(offerDto);
+        this.offerService.Update(this.offerDto);
     }
 }

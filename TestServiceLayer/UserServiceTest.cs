@@ -1,4 +1,10 @@
-﻿using DataMapper;
+﻿// <copyright file="UserServiceTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
+
+namespace TestServiceLayer;
+
+using DataMapper;
 using DomainModel.Dto;
 using DomainModel.Dto.Validator;
 using DomainModel.Entity;
@@ -9,8 +15,9 @@ using ServiceLayer;
 using ServiceLayer.Exception;
 using ServiceLayer.ServiceImplementation;
 
-namespace TestServiceLayer;
-
+/// <summary>
+/// UserServiceTest.
+/// </summary>
 [TestClass]
 public class UserServiceTest
 {
@@ -30,10 +37,13 @@ public class UserServiceTest
 
     private Mock<ILogger<UserServiceImpl>> loggerMock;
 
+    /// <summary>
+    /// Setups this instance.
+    /// </summary>
     [TestInitialize]
     public void Setup()
     {
-        user = new User
+        this.user = new User
         {
             Id = 1,
             FirstName = "FirstName",
@@ -41,110 +51,140 @@ public class UserServiceTest
             Email = "Test@Test.com",
             PhoneNumber = "0722222222",
             Address = "This is a dummy address",
-            Username = "TestUsername"
+            Username = "TestUsername",
         };
 
-        userDto = new UserDto(user);
+        this.userDto = new UserDto(this.user);
 
-        nullUser = null;
-        nullUserDto = null;
+        this.nullUser = null;
+        this.nullUserDto = null;
 
-        notFoundUserDto = new UserDto
+        this.notFoundUserDto = new UserDto
         {
-            Id = int.MaxValue
+            Id = int.MaxValue,
         };
 
-        userDataServicesMock = new Mock<IUserDataServices>();
-        loggerMock = new Mock<ILogger<UserServiceImpl>>();
+        this.userDataServicesMock = new Mock<IUserDataServices>();
+        this.loggerMock = new Mock<ILogger<UserServiceImpl>>();
 
-        userService = new UserServiceImpl(userDataServicesMock.Object, loggerMock.Object, new UserDtoValidator());
+        this.userService = new UserServiceImpl(this.userDataServicesMock.Object, this.loggerMock.Object, new UserDtoValidator());
     }
 
+    /// <summary>
+    /// Tests the user get all.
+    /// </summary>
     [TestMethod]
     public void TestUserGetAll()
     {
-        userDataServicesMock.Setup(x => x.GetAll()).Returns(new List<User> { user });
+        this.userDataServicesMock.Setup(x => x.GetAll()).Returns(new List<User> { this.user });
 
-        var result = userService.GetAll();
+        var result = this.userService.GetAll();
 
-        CollectionAssert.AreEquivalent(new List<UserDto> { userDto }, result.ToList());
+        CollectionAssert.AreEquivalent(new List<UserDto> { this.userDto }, result.ToList());
     }
 
+    /// <summary>
+    /// Tests the user get by identifier valid.
+    /// </summary>
     [TestMethod]
     public void TestUserGetByIdValid()
     {
-        userDataServicesMock.Setup(x => x.GetById(user.Id)).Returns(user);
+        this.userDataServicesMock.Setup(x => x.GetById(this.user.Id)).Returns(this.user);
 
-        var result = userService.GetById(user.Id);
+        var result = this.userService.GetById(this.user.Id);
 
-        Assert.AreEqual(result, userDto);
+        Assert.AreEqual(result, this.userDto);
     }
 
+    /// <summary>
+    /// Tests the user get by identifier invalid.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestUserGetByIdInvalid()
     {
-        userDataServicesMock.Setup(x => x.GetById(notFoundUserDto.Id)).Returns(nullUser);
+        this.userDataServicesMock.Setup(x => x.GetById(this.notFoundUserDto.Id)).Returns(this.nullUser);
 
-        var result = userService.GetById(notFoundUserDto.Id);
+        var result = this.userService.GetById(this.notFoundUserDto.Id);
 
-        Assert.AreEqual(result, nullUserDto);
+        Assert.AreEqual(result, this.nullUserDto);
     }
 
+    /// <summary>
+    /// Tests the user insert invalid user.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestUserInsertInvalidUser()
     {
-        userService.Insert(notFoundUserDto);
+        this.userService.Insert(this.notFoundUserDto);
     }
 
+    /// <summary>
+    /// Tests the user insert valid.
+    /// </summary>
     [TestMethod]
     public void TestUserInsertValid()
     {
-        userDataServicesMock.Setup(x => x.Insert(It.IsAny<User>())).Returns(user);
-        var result = userService.Insert(userDto);
+        this.userDataServicesMock.Setup(x => x.Insert(It.IsAny<User>())).Returns(this.user);
+        var result = this.userService.Insert(this.userDto);
 
-        Assert.AreEqual(result, userDto);
+        Assert.AreEqual(result, this.userDto);
     }
 
+    /// <summary>
+    /// Tests the user update invalid user.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(ValidationException))]
     public void TestUserUpdateInvalidUser()
     {
-        userService.Update(notFoundUserDto);
+        this.userService.Update(this.notFoundUserDto);
     }
 
+    /// <summary>
+    /// Tests the user update valid.
+    /// </summary>
     [TestMethod]
     public void TestUserUpdateValid()
     {
-        userDataServicesMock.Setup(x => x.GetById(user.Id)).Returns(user);
-        userDataServicesMock.Setup(x => x.Update(It.IsAny<User>())).Returns(user);
-        var result = userService.Update(userDto);
+        this.userDataServicesMock.Setup(x => x.GetById(this.user.Id)).Returns(this.user);
+        this.userDataServicesMock.Setup(x => x.Update(It.IsAny<User>())).Returns(this.user);
+        var result = this.userService.Update(this.userDto);
 
-        Assert.AreEqual(result, userDto);
+        Assert.AreEqual(result, this.userDto);
     }
 
+    /// <summary>
+    /// Tests the user update not found.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestUserUpdateNotFound()
     {
-        userDataServicesMock.Setup(x => x.GetById(user.Id)).Returns(nullUser);
-        userService.Update(userDto);
+        this.userDataServicesMock.Setup(x => x.GetById(this.user.Id)).Returns(this.nullUser);
+        this.userService.Update(this.userDto);
     }
 
+    /// <summary>
+    /// Tests the user delete invalid user.
+    /// </summary>
     [TestMethod]
     [ExpectedException(typeof(NotFoundException<UserDto>))]
     public void TestUserDeleteInvalidUser()
     {
-        userDataServicesMock.Setup(x => x.GetById(notFoundUserDto.Id)).Returns(nullUser);
-        userService.DeleteById(notFoundUserDto.Id);
+        this.userDataServicesMock.Setup(x => x.GetById(this.notFoundUserDto.Id)).Returns(this.nullUser);
+        this.userService.DeleteById(this.notFoundUserDto.Id);
     }
 
+    /// <summary>
+    /// Tests the user delete valid.
+    /// </summary>
     [TestMethod]
     public void TestUserDeleteValid()
     {
-        userDataServicesMock.Setup(x => x.GetById(user.Id)).Returns(user);
-        userService.DeleteById(user.Id);
+        this.userDataServicesMock.Setup(x => x.GetById(this.user.Id)).Returns(this.user);
+        this.userService.DeleteById(this.user.Id);
 
         Assert.IsTrue(true);
     }
