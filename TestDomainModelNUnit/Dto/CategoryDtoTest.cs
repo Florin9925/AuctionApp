@@ -15,113 +15,146 @@ using FluentValidation.TestHelper;
 [TestFixture]
 public class CategoryDtoTest
 {
-    private CategoryDtoValidator _validator;
+    private CategoryDtoValidator validator;
 
+    /// <summary>
+    /// Sets up.
+    /// </summary>
     [SetUp]
     public void SetUp()
     {
-        _validator = new CategoryDtoValidator();
+        this.validator = new CategoryDtoValidator();
     }
 
+    /// <summary>
+    /// Categories the dto name is null.
+    /// </summary>
     [Test]
     public void CategoryDtoNameIsNull()
     {
         var categoryDto = new CategoryDto
         {
-            Name = null
+            Name = null,
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldHaveValidationErrorFor(c => c.Name);
     }
 
+    /// <summary>
+    /// Categories the dto name is empty.
+    /// </summary>
     [Test]
     public void CategoryDtoNameIsEmpty()
     {
         var categoryDto = new CategoryDto
         {
-            Name = ""
+            Name = string.Empty,
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldHaveValidationErrorFor(c => c.Name);
     }
 
+    /// <summary>
+    /// Categories the dto name is not empty.
+    /// </summary>
     [Test]
     public void CategoryDtoNameIsNotEmpty()
     {
         var categoryDto = new CategoryDto
         {
-            Name = "Test"
+            Name = "Test",
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldNotHaveValidationErrorFor(c => c.Name);
     }
 
+    /// <summary>
+    /// Categories the dto identifier invalid.
+    /// </summary>
     [Test]
     public void CategoryDtoIdInvalid()
     {
         var categoryDto = new CategoryDto
         {
-            Id = -1
+            Id = -1,
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldHaveValidationErrorFor(c => c.Id);
     }
 
+    /// <summary>
+    /// Categories the dto identifier valid.
+    /// </summary>
     [Test]
     public void CategoryDtoIdValid()
     {
         var categoryDto = new CategoryDto
         {
-            Id = 0
+            Id = 0,
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldNotHaveValidationErrorFor(c => c.Id);
     }
 
+    /// <summary>
+    /// Categories the dto child categories is null.
+    /// </summary>
     [Test]
     public void CategoryDtoChildCategoriesIsNull()
     {
         var categoryDto = new CategoryDto
         {
-            ChildCategoryIds = null
+            ChildCategoryIds = null,
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldHaveValidationErrorFor(c => c.ChildCategoryIds);
     }
 
+    /// <summary>
+    /// Categories the dto child categories is not null.
+    /// </summary>
     [Test]
     public void CategoryDtoChildCategoriesIsNotNull()
     {
         var categoryDto = new CategoryDto
         {
-            ChildCategoryIds = new List<int>()
+            ChildCategoryIds = new List<int>(),
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldNotHaveValidationErrorFor(c => c.ChildCategoryIds);
     }
 
+    /// <summary>
+    /// Categories the dto parent categories is null.
+    /// </summary>
     [Test]
     public void CategoryDtoParentCategoriesIsNull()
     {
         var categoryDto = new CategoryDto
         {
-            ParentCategoryIds = null
+            ParentCategoryIds = null,
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldHaveValidationErrorFor(c => c.ParentCategoryIds);
     }
 
+    /// <summary>
+    /// Categories the dto parent categories is not null.
+    /// </summary>
     [Test]
     public void CategoryDtoParentCategoriesIsNotNull()
     {
         var categoryDto = new CategoryDto
         {
-            ParentCategoryIds = new List<int>()
+            ParentCategoryIds = new List<int>(),
         };
-        var result = _validator.TestValidate(categoryDto);
+        var result = this.validator.TestValidate(categoryDto);
         result.ShouldNotHaveValidationErrorFor(c => c.ParentCategoryIds);
     }
 
+    /// <summary>
+    /// Roles the dto ctor.
+    /// </summary>
     [Test]
     public void RoleDtoCtor()
     {
@@ -130,7 +163,7 @@ public class CategoryDtoTest
             Id = 1,
             Name = "Test",
             ChildCategories = new List<Category>(),
-            ParentCategories = new List<Category>()
+            ParentCategories = new List<Category>(),
         };
 
         var categoryDto = new CategoryDto(category);

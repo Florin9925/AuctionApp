@@ -1,138 +1,181 @@
-﻿using DomainModel.Entity;
-using DomainModel.Entity.Validator;
-using FluentValidation.TestHelper;
+﻿// <copyright file="CategoryTest.cs" company="Transilvania University of Brasov">
+// Copyright (c) student Arhip Florin, Transilvania University of Brasov. All rights reserved.
+// </copyright>
 
 namespace TestDomainModelNUnit.Entity;
 
+using DomainModel.Entity;
+using DomainModel.Entity.Validator;
+using FluentValidation.TestHelper;
+
+/// <summary>
+/// CategoryTest.
+/// </summary>
 [TestFixture]
 public class CategoryTest
 {
-    private CategoryValidator _validator;
+    private CategoryValidator validator;
 
+    /// <summary>
+    /// Sets up.
+    /// </summary>
     [SetUp]
     public void SetUp()
     {
-        _validator = new CategoryValidator();
+        this.validator = new CategoryValidator();
     }
 
+    /// <summary>
+    /// Categories the name is null.
+    /// </summary>
     [Test]
     public void CategoryNameIsNull()
     {
         var category = new Category
         {
-            Name = null
+            Name = null,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldHaveValidationErrorFor(c => c.Name);
     }
 
+    /// <summary>
+    /// Categories the name is empty.
+    /// </summary>
     [Test]
     public void CategoryNameIsEmpty()
     {
         var category = new Category
         {
-            Name = ""
+            Name = string.Empty,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldHaveValidationErrorFor(c => c.Name);
     }
 
+    /// <summary>
+    /// Categories the name is not empty.
+    /// </summary>
     [Test]
     public void CategoryNameIsNotEmpty()
     {
         var category = new Category
         {
-            Name = "Test"
+            Name = "Test",
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldNotHaveValidationErrorFor(c => c.Name);
     }
 
+    /// <summary>
+    /// Categories the identifier invalid.
+    /// </summary>
     [Test]
     public void CategoryIdInvalid()
     {
         var category = new Category
         {
-            Id = -1
+            Id = -1,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldHaveValidationErrorFor(c => c.Id);
     }
 
+    /// <summary>
+    /// Categories the identifier valid.
+    /// </summary>
     [Test]
     public void CategoryIdValid()
     {
         var category = new Category
         {
-            Id = 0
+            Id = 0,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldNotHaveValidationErrorFor(c => c.Id);
     }
 
+    /// <summary>
+    /// Categories the products is null.
+    /// </summary>
     [Test]
     public void CategoryProductsIsNull()
     {
         var category = new Category
         {
-            Products = null
+            Products = null,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldHaveValidationErrorFor(c => c.Products);
     }
 
+    /// <summary>
+    /// Categories the products is not null.
+    /// </summary>
     [Test]
     public void CategoryProductsIsNotNull()
     {
         var category = new Category
         {
-            Products = new List<Product>()
+            Products = new List<Product>(),
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldNotHaveValidationErrorFor(c => c.Products);
     }
 
+    /// <summary>
+    /// Categories the child categories is null.
+    /// </summary>
     [Test]
     public void CategoryChildCategoriesIsNull()
     {
         var category = new Category
         {
-            ChildCategories = null
+            ChildCategories = null,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldHaveValidationErrorFor(c => c.ChildCategories);
     }
 
+    /// <summary>
+    /// Categories the child categories is not null.
+    /// </summary>
     [Test]
     public void CategoryChildCategoriesIsNotNull()
     {
         var category = new Category
         {
-            ChildCategories = new List<Category>()
+            ChildCategories = new List<Category>(),
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldNotHaveValidationErrorFor(c => c.ChildCategories);
     }
 
+    /// <summary>
+    /// Categories the parent categories is null.
+    /// </summary>
     [Test]
     public void CategoryParentCategoriesIsNull()
     {
         var category = new Category
         {
-            ParentCategories = null
+            ParentCategories = null,
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldHaveValidationErrorFor(c => c.ParentCategories);
     }
 
+    /// <summary>
+    /// Categories the parent categories is not null.
+    /// </summary>
     [Test]
     public void CategoryParentCategoriesIsNotNull()
     {
         var category = new Category
         {
-            ParentCategories = new List<Category>()
+            ParentCategories = new List<Category>(),
         };
-        var result = _validator.TestValidate(category);
+        var result = this.validator.TestValidate(category);
         result.ShouldNotHaveValidationErrorFor(c => c.ParentCategories);
     }
 }
