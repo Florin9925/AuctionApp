@@ -102,6 +102,30 @@ public class PostgresScoreDataServices : IScoreDataServices
     /// <exception cref="System.NotImplementedException">argument null.</exception>
     public decimal GetUserScore(int userId)
     {
-        return 0;
+        var scores = this.context.Scores.Where(x => x.ReceiverId == userId).Select(x => (decimal)x.Value).ToList();
+        if (scores.Count == 0)
+        {
+            return -1;
+        }
+
+        return Median(scores);
+    }
+
+    /// <summary>
+    /// Medians the specified source.
+    /// </summary>
+    /// <param name="source">The source.</param>
+    /// <returns>median.</returns>
+    private static decimal Median(IEnumerable<decimal> source)
+    {
+        var temp = source.OrderBy(n => n).ToList();
+        var count = temp.Count;
+        var itemIndex = count / 2;
+        if (count % 2 == 0)
+        {
+            return (temp[itemIndex] + temp[itemIndex - 1]) / 2;
+        }
+
+        return temp[itemIndex];
     }
 }
