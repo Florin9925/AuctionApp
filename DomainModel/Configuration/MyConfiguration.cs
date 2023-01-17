@@ -5,7 +5,7 @@
 namespace DomainModel.Configuration;
 
 /// <summary>
-///   <br />
+///   MyConfiguration.
 /// </summary>
 public class MyConfiguration
 {
